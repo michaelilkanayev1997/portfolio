@@ -1,7 +1,6 @@
 import React from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
-import { BsFillPersonLinesFill } from "react-icons/bs";
 
 const SocialLinks = () => {
   const links = [
@@ -37,16 +36,15 @@ const SocialLinks = () => {
       id: 4,
       child: (
         <>
-          Resume <BsFillPersonLinesFill size={30} />
+          YouTube <FaYoutube size={30} />
         </>
       ),
-      href: "/Michael Ilkanayev CV.pdf",
+      href: "https://www.youtube.com/@michaelilkanayev9593",
       style: "rounded-br-md",
-      download: true,
     },
   ];
   return (
-    <div className="flex flex-col top-[35%] left-0 fixed">
+    <div className="hidden lg:flex flex-col top-[35%] left-0 fixed">
       <ul>
         {links.map(({ id, child, href, style, download }) => (
           <li
@@ -60,8 +58,9 @@ const SocialLinks = () => {
             <a
               href={href}
               className="flex justify-between items-center w-full text-white"
-              download={download}
-              targer="_blank"
+              download={false}
+              target="_blank"
+              rel="noreferrer"
             >
               {child}
             </a>

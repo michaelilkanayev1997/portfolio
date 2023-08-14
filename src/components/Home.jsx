@@ -1,6 +1,6 @@
 import React from "react";
 import HeroImage from "../assets/heroImage.png";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { HiChevronDoubleRight } from "react-icons/hi";
 
 const Home = () => {
   return (
@@ -19,15 +19,33 @@ const Home = () => {
             technologies like React, Tailwind, Next JS and Firebase.
           </p>
           <div>
-            <button
-              className="group text-white w-fit px-6 py-3 my-2 flex items-center
+            <div className="flex flex-row space-x-6">
+              <button
+                className="group text-white w-fit px-6 py-3 my-2 flex items-center
              rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 cursor-pointer"
-            >
-              Portfolio
-              <span className="group-hover:rotate-90 duration-300">
-                <MdOutlineKeyboardArrowRight size={25} className="ml-1" />
-              </span>
-            </button>
+              >
+                Portfolio
+                <span className="group-hover:rotate-90 duration-300">
+                  <HiChevronDoubleRight size={25} className="ml-1" />
+                </span>
+              </button>
+              <a
+                href={"/Michael Ilkanayev CV.pdf"}
+                download={false}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <button
+                  className="group text-white w-fit px-6 py-3 my-2 flex items-center
+             rounded-md bg-gradient-to-r from-indigo-600 to-blue-400 cursor-pointer"
+                >
+                  Resume
+                  <span className="group-hover:rotate-90 duration-300">
+                    <HiChevronDoubleRight size={25} className="ml-1" />
+                  </span>
+                </button>
+              </a>
+            </div>
           </div>
         </div>
         <div>
