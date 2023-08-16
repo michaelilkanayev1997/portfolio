@@ -6,6 +6,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.half-blue-half-yellow-shadow {
+  box-shadow: 3px 6px 7px -4px #dbfd00, -1px 4px 5px 1px #1739b6;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

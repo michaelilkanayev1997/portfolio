@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { BsWhatsapp } from "react-icons/bs";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -22,13 +23,33 @@ const Contact = () => {
     e.preventDefault();
 
     if (isValid) {
+      // Validate email format using regular expression
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!email.match(emailPattern)) {
+        toast.error("Please enter a valid email address", {
+          position: "bottom-left",
+          autoClose: 3900,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            fontFamily: "Arial",
+            fontSize: "15px",
+            fontWeight: "bold",
+            color: "red",
+            borderRadius: "5px",
+            padding: "10px",
+          },
+        });
+        return;
+      }
       setIsLoading(true); // Start loading
       emailjs
         .sendForm(
-          "service_vc2eajt",
-          "template_sm6ergi",
+          process.env.REACT_APP_SERVICE,
+          process.env.REACT_APP_TEMPLATE,
           form.current,
-          "hMRJWLU76Wnb1vfav"
+          process.env.REACT_APP_KEY
         )
         .then(
           async (result) => {
