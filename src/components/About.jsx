@@ -24,8 +24,8 @@ const About = () => {
       name="about"
       className="w-full h-screen bg-gradient-to-b from-gray-800 to-black text-white"
     >
-      <div className="max-w-screen-lg p-4 mx-auto flex flex-col justify-center w-full h-full">
-        <div className="md:pb-8 pb-6">
+      <div className="max-w-screen-lg p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center w-full h-full">
+        <div className="md:pb-8 pb-2 sm:pb-6">
           <p className="text-4xl font-bold inline border-b-4 border-gray-500">
             About Me
           </p>
@@ -37,9 +37,10 @@ const About = () => {
           </p>
         </div>
 
-        <div className="text-xl mt-6">
-          <div className="flex items-center mb-4">
-            <p>Let me share a bit about myself:</p>
+        <div className="text-lg sm:text-xl mt-4 sm:mt-6">
+          <div className="flex items-center sm:mb-4">
+            <p>Let me share a bit about myself </p>
+            <span className="text-2xl ml-2 leading-none font-bold">:</span>
           </div>
 
           {ulText.map((item, index) => (
