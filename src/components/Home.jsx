@@ -2,6 +2,7 @@ import React from "react";
 import HeroImage from "../assets/heroImage.png";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import ParticlesContainer from "./ParticlesContainer";
+import { Link } from "react-scroll";
 
 const Home = () => {
   return (
@@ -22,7 +23,10 @@ const Home = () => {
           </p>
           <div>
             <div className="flex flex-row space-x-6">
-              <button
+              <Link
+                to="portfolio"
+                smooth
+                duration={500}
                 className="group text-white w-fit px-6 py-3 my-2 flex items-center
              rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 cursor-pointer z-10"
               >
@@ -30,7 +34,7 @@ const Home = () => {
                 <span className="group-hover:rotate-90 duration-300">
                   <HiChevronDoubleRight size={25} className="ml-1" />
                 </span>
-              </button>
+              </Link>
               <a
                 href={"/Michael Ilkanayev CV.pdf"}
                 download={false}
