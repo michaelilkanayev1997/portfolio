@@ -5,19 +5,24 @@ import About from "./components/About";
 import Portfolio from "./components/Portfolio";
 import Experience from "./components/Experience";
 import Contact from "./components/Contact";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
-    <div>
-      <NavBar />
-      <Home />
-      <About />
-      <Portfolio />
-      <Experience />
-      <Contact />
+    <>
+      <ToastContainer />
+      <div>
+        <NavBar />
+        <Home />
+        <About />
+        <Portfolio />
+        <Experience />
+        <Contact />
 
-      <SocialLinks />
-    </div>
+        <SocialLinks />
+      </div>
+    </>
   );
 }
 
