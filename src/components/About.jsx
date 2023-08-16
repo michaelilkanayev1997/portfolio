@@ -1,29 +1,69 @@
 import React from "react";
 
 const About = () => {
+  const ulText = [
+    {
+      text: "I'm a highly motivated and serious individual with a strong curiosity and a keen eye for detail.",
+    },
+    {
+      text: "Pursuing B.Sc. in Software Engineering with a GPA of 90.",
+    },
+    {
+      text: "Actively seeking a student position or junior role within a dynamic and expanding technology company.",
+    },
+    {
+      text: "A technology enthusiast with a passion for coding, eager to explore the latest tech trends.",
+    },
+    {
+      text: "Dedicated to continuous learning, I embrace Udemy courses to expand my skills and apply them innovatively.",
+    },
+  ];
+
   return (
     <div
       name="about"
       className="w-full h-screen bg-gradient-to-b from-gray-800 to-black text-white"
     >
       <div className="max-w-screen-lg p-4 mx-auto flex flex-col justify-center w-full h-full">
-        <div className="pb-8">
+        <div className="md:pb-8 pb-6">
           <p className="text-4xl font-bold inline border-b-4 border-gray-500">
-            About
+            About Me
           </p>
         </div>
-        <p className="text-xl mt-20">
-          My name is Michael, and I'm a fourth-year student of Software
-          Engineering at Sami Shamoon College of Engineering.
-        </p>
-        <br />
+        <div className="text-xl md:mt-5 mt-0">
+          <p>
+            Hello there! My name is Michael, a 4th-year Software Engineering
+            student at SCE - Sami Shamoon College of Engineering.
+          </p>
+        </div>
 
-        <p className="text-xl">
-          A bit about myself : * I'm a highly motivated and serious individual
-          with a strong curiosity and a keen eye for detail. * B.Sc. in Software
-          Engineering with GPA 90. * I am actively seeking a student position or
-          junior role within a dynamic and expanding technology company.
-        </p>
+        <div className="text-xl mt-6">
+          <div className="flex items-center mb-4">
+            <p>Let me share a bit about myself:</p>
+          </div>
+
+          {ulText.map((item, index) => (
+            <ul key={index} className="list-none pl-1.5 md:pl-6 mt-2">
+              <li className="mb-4 flex items-start">
+                <svg
+                  className="w-5 h-5 mr-2 text-cyan-500 flex-shrink-0 md:w-6 md:h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                <p className="text-base md:text-lg">{item.text}</p>
+              </li>
+            </ul>
+          ))}
+        </div>
       </div>
     </div>
   );
