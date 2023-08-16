@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
-import { BsWhatsapp } from "react-icons/bs";
 
 const Contact = () => {
   const [name, setName] = useState("");
