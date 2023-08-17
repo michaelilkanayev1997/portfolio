@@ -1,51 +1,8 @@
-import React from "react";
-import gameofdeath from "../assets/portfolio/GameOfDeath.png";
-import scemoviesocial from "../assets/portfolio/SceMovieSocial.png";
-import crwnclothing from "../assets/portfolio/CrwnClothing.png";
-import travelagency from "../assets/portfolio/TravelAgency.png";
-import gatsbyblog from "../assets/portfolio/Gatsbyblog.png";
-import passwordmanager from "../assets/portfolio/PasswordManager.png";
+import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
+import portfolios from "../portfolioData";
 
 const Portfolio = () => {
-  const portfolios = [
-    {
-      id: 1,
-      src: scemoviesocial,
-      title: "SCE-MOVIE-SOCIAL",
-      techs: ["React", "Context", "styled", "Firebase", "TMDB's api"],
-    },
-    {
-      id: 2,
-      src: crwnclothing,
-      title: "Crwn-Clothing",
-      techs: ["React", "Redux", "GraphQl", "Firebase", "Stripe api"],
-    },
-    {
-      id: 3,
-      src: gameofdeath,
-      title: "Game-Of-Death",
-      techs: ["Unreal-Engine 5", "C++", "BluePrints"],
-    },
-    {
-      id: 4,
-      src: travelagency,
-      title: "Travel-Agency",
-      techs: ["React", "styled", "Firebase", "PayPal api"],
-    },
-    {
-      id: 5,
-      src: gatsbyblog,
-      title: "Gatsby-blog",
-      techs: ["Gatsby", "React", "styled", "GraphQl"],
-    },
-    {
-      id: 6,
-      src: passwordmanager,
-      title: "Password-Manager",
-      techs: ["Java", "GUI", "AES encryption", "Excel"],
-    },
-  ];
-
   return (
     <div
       name="portfolio"
@@ -60,7 +17,7 @@ const Portfolio = () => {
         </div>
 
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 px-12 sm:px-12">
-          {portfolios.map(({ id, src, title, techs }) => (
+          {portfolios.map(({ id, src, title, techs, details }) => (
             <div
               key={id}
               className="shadow-md shadow-gray-600 rounded-lg duration-200 hover:scale-105 z-10"
@@ -76,24 +33,22 @@ const Portfolio = () => {
               <div className="p-4">
                 <div className="flex flex-wrap gap-2 overflow-x-auto">
                   {techs.map((tech, index) => (
-                    <>
-                      <span
-                        key={index}
-                        className=" text-gray-300 duration-200 hover:scale-90"
-                      >
+                    <Fragment key={index}>
+                      <span className="text-gray-300 duration-200 hover:scale-90">
                         {tech}
                       </span>
-                      |
-                    </>
+                      {index < techs.length - 1 && " | "}{" "}
+                    </Fragment>
                   ))}
                 </div>
               </div>
-
-              <div className="flex items-center justify-center">
-                <button className="rounded-md font-semibold tracking-wide transform w-full px-6 py-2 m-1 sm:m-4 duration-200 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-purple-500 hover:to-blue-500 text-white hover:text-white hover:scale-105 hover:shadow-md">
-                  Read More
-                </button>
-              </div>
+              <Link to={title} state={{ project: details }}>
+                <div className="flex items-center justify-center">
+                  <button className="rounded-md font-semibold tracking-wide transform w-full px-6 py-2 m-1 sm:m-4 duration-200 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-purple-500 hover:to-blue-500 text-white hover:text-white hover:scale-105 hover:shadow-md">
+                    Read More
+                  </button>
+                </div>
+              </Link>
             </div>
           ))}
         </div>
