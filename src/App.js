@@ -1,27 +1,16 @@
+import { Routes, Route } from "react-router-dom";
+import ProjectDetails from "./pages/ProjectDetails";
+import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
-import Home from "./components/Home";
-import SocialLinks from "./components/SocialLinks";
-import About from "./components/About";
-import Portfolio from "./components/Portfolio";
-import Experience from "./components/Experience";
-import Contact from "./components/Contact";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
-      <ToastContainer />
-      <div>
-        <NavBar />
-        <Home />
-        <About />
-        <Portfolio />
-        <Experience />
-        <Contact />
-
-        <SocialLinks />
-      </div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path=":project" element={<ProjectDetails />} />
+      </Routes>
     </>
   );
 }
