@@ -86,13 +86,13 @@ const ProjectDetails = () => {
           <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex">
             Videos
           </h2>
-          <iframe
+          {/* <iframe
             title="video"
             className="w-full h-auto sm:h-[315px] md:h-[420px] lg:h-[560px] xl:h-[576px] z-10"
             src="https://www.youtube.com/embed/PMsAm4yWlOA"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-          ></iframe>
+          ></iframe> */}
           <p className="mt-4">
             You can download the game for free at the following link:{" "}
             <a
