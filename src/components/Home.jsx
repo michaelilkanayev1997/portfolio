@@ -56,6 +56,39 @@ const Home = () => {
           </div>
         </div>
 
+        <div className="flex flex-row gap-10 items-center justify-center mb-4 sm:hidden">
+          <a
+            href="https://www.linkedin.com/in/michael-ilkanayev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition duration-300 transform hover:scale-110"
+          >
+            <i className="fab fa-linkedin fade fa-2x text-blue-500"></i>
+          </a>
+          <a
+            href="https://github.com/michaelilkanayev1997"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition duration-300 transform hover:scale-110"
+          >
+            <i className="fab fa-github fa-2x text-gray-400"></i>
+          </a>
+          <a
+            href="tel:972546132140"
+            className="transition duration-300 transform hover:scale-110 text-teal-500"
+          >
+            <i className="fa-solid fa-phone fa-2x"></i>
+          </a>
+          <a
+            href="https://api.whatsapp.com/send?phone=972546132140"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition duration-300 transform hover:scale-110"
+          >
+            <i className="fab fa-whatsapp fa-2x text-green-600"></i>
+          </a>
+        </div>
+
         <div className="z-10">
           <img
             src={HeroImage}
