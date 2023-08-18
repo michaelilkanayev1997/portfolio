@@ -13,8 +13,6 @@ const PicturesSlide = ({ backdrops }) => {
       slidesPerView={1.25}
       centeredSlides
       style={{
-        "--swiper-pagination-color": "#FFBA08",
-        "--swiper-pagination-bullet-inactive-color": "white",
         "--swiper-pagination-bullet-size": "10px",
         "--swiper-pagination-bullet-horizontal-gap": "15px",
         "--swiper-pagination-bottom": "-7px",

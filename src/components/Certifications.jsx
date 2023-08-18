@@ -18,6 +18,11 @@ const certifications = [
     img: "https://udemy-certificate.s3.amazonaws.com/image/UC-45c1f880-d0f4-47d7-ba80-6b72780ea5c6.jpg?v=1664539516000",
     src: "https://www.udemy.com/certificate/UC-45c1f880-d0f4-47d7-ba80-6b72780ea5c6/",
   },
+  {
+    id: 4,
+    img: "https://udemy-certificate.s3.amazonaws.com/image/UC-f923fe11-2e24-4a11-bb2f-eb2499e08417.jpg?v=1692396219000",
+    src: "https://www.udemy.com/certificate/UC-f923fe11-2e24-4a11-bb2f-eb2499e08417/",
+  },
 ];
 
 const Certifications = () => {
