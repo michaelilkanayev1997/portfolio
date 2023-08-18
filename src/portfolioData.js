@@ -4,6 +4,13 @@ import gameofdeath2 from "./assets/portfolio/GameOfDeath/gameofdeath2.png";
 import gameofdeath3 from "./assets/portfolio/GameOfDeath/gameofdeath3.png";
 import gameofdeath4 from "./assets/portfolio/GameOfDeath/gameofdeath4.png";
 import gameofdeath5 from "./assets/portfolio/GameOfDeath/gameofdeath5.png";
+import gameofdeath6 from "./assets/portfolio/GameOfDeath/gameofdeath6.png";
+import lowergameofdeath1 from "./assets/portfolio/GameOfDeath/lowergameofdeath1.png";
+import lowergameofdeath2 from "./assets/portfolio/GameOfDeath/lowergameofdeath2.png";
+import lowergameofdeath3 from "./assets/portfolio/GameOfDeath/lowergameofdeath3.png";
+import lowergameofdeath4 from "./assets/portfolio/GameOfDeath/lowergameofdeath4.png";
+import lowergameofdeath5 from "./assets/portfolio/GameOfDeath/lowergameofdeath5.png";
+import lowergameofdeath6 from "./assets/portfolio/GameOfDeath/lowergameofdeath6.png";
 
 import scemoviesocial from "./assets/portfolio/SceMovieSocial.png";
 import crwnclothing from "./assets/portfolio/CrwnClothing.png";
@@ -21,12 +28,13 @@ const portfolios = [
       introduction:
         "'Game of Death' stands not only as a personal project but also as a testament to my journey of self-improvement as a software engineer. This large and immersive third-person game, was built in Unreal Engine 5, with C++ and Blueprint scripting.",
       pictures: [
-        gameofdeath0,
-        gameofdeath1,
-        gameofdeath2,
-        gameofdeath3,
-        gameofdeath4,
-        gameofdeath5,
+        { lower: gameofdeath0, big: gameofdeath0 },
+        { lower: lowergameofdeath1, big: gameofdeath1 },
+        { lower: lowergameofdeath2, big: gameofdeath2 },
+        { lower: lowergameofdeath3, big: gameofdeath3 },
+        { lower: lowergameofdeath4, big: gameofdeath4 },
+        { lower: lowergameofdeath5, big: gameofdeath5 },
+        { lower: lowergameofdeath6, big: gameofdeath6 },
       ],
       secondTitle: "Crafting the Experience",
       secondText:

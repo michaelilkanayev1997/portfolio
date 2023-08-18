@@ -27,7 +27,19 @@ const PicturesSlide = ({ backdrops }) => {
     >
       {[...backdrops].splice(0, 10).map((item, index) => (
         <SwiperSlide key={index}>
-          <img src={`${item}`} alt="" />
+          <a
+            key={index}
+            href={item.big}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={item.lower}
+              alt={`_${index}`}
+              className="w-full h-auto cursor-pointer"
+              loading="lazy"
+            />
+          </a>
         </SwiperSlide>
       ))}
     </Swiper>
