@@ -80,14 +80,17 @@ const ProjectDetails = () => {
           )}
 
           <div className="flex justify-center space-x-8 pt-8 pb-8">
-            <a
-              href={download ? download : demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
-            >
-              {download ? "Download" : "Demo"}
-            </a>
+            {demo && (
+              <a
+                href={download ? download : demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
+              >
+                {download ? "Download" : "Demo"}
+              </a>
+            )}
+
             <a
               href={git}
               target="_blank"
