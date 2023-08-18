@@ -25,10 +25,55 @@ import lowerscemoviesocial4 from "./assets/portfolio/SceMovieSocial/lowerscemovi
 import lowerscemoviesocial5 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial5.png";
 import lowerscemoviesocial6 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial6.png";
 
-import crwnclothing from "./assets/portfolio/CrwnClothing.png";
-import travelagency from "./assets/portfolio/TravelAgency.png";
-import gatsbyblog from "./assets/portfolio/Gatsbyblog.png";
-import passwordmanager from "./assets/portfolio/PasswordManager.png";
+import crwnclothing0 from "./assets/portfolio/CrwnClothing/crwnclothing0.png";
+import crwnclothing1 from "./assets/portfolio/CrwnClothing/crwnclothing1.png";
+import crwnclothing2 from "./assets/portfolio/CrwnClothing/crwnclothing2.png";
+import crwnclothing3 from "./assets/portfolio/CrwnClothing/crwnclothing3.png";
+import crwnclothing4 from "./assets/portfolio/CrwnClothing/crwnclothing4.png";
+import crwnclothing5 from "./assets/portfolio/CrwnClothing/crwnclothing5.png";
+import crwnclothing6 from "./assets/portfolio/CrwnClothing/crwnclothing6.png";
+import crwnclothing7 from "./assets/portfolio/CrwnClothing/crwnclothing7.png";
+import crwnclothing8 from "./assets/portfolio/CrwnClothing/crwnclothing8.png";
+import crwnclothing9 from "./assets/portfolio/CrwnClothing/crwnclothing9.png";
+import lowercrwnclothing0 from "./assets/portfolio/CrwnClothing/lowercrwnclothing0.png";
+import lowercrwnclothing1 from "./assets/portfolio/CrwnClothing/lowercrwnclothing1.png";
+import lowercrwnclothing2 from "./assets/portfolio/CrwnClothing/lowercrwnclothing2.png";
+import lowercrwnclothing3 from "./assets/portfolio/CrwnClothing/lowercrwnclothing3.png";
+import lowercrwnclothing4 from "./assets/portfolio/CrwnClothing/lowercrwnclothing4.png";
+import lowercrwnclothing5 from "./assets/portfolio/CrwnClothing/lowercrwnclothing5.png";
+import lowercrwnclothing6 from "./assets/portfolio/CrwnClothing/lowercrwnclothing6.png";
+import lowercrwnclothing7 from "./assets/portfolio/CrwnClothing/lowercrwnclothing7.png";
+import lowercrwnclothing8 from "./assets/portfolio/CrwnClothing/lowercrwnclothing8.png";
+import lowercrwnclothing9 from "./assets/portfolio/CrwnClothing/lowercrwnclothing9.png";
+
+import travelagency0 from "./assets/portfolio/TravelAgency/travelagency0.png";
+import travelagency1 from "./assets/portfolio/TravelAgency/travelagency1.png";
+import travelagency2 from "./assets/portfolio/TravelAgency/travelagency2.png";
+import travelagency3 from "./assets/portfolio/TravelAgency/travelagency3.png";
+import travelagency4 from "./assets/portfolio/TravelAgency/travelagency4.png";
+import travelagency5 from "./assets/portfolio/TravelAgency/travelagency5.png";
+import lowertravelagency0 from "./assets/portfolio/TravelAgency/lowertravelagency0.png";
+import lowertravelagency1 from "./assets/portfolio/TravelAgency/lowertravelagency1.png";
+import lowertravelagency2 from "./assets/portfolio/TravelAgency/lowertravelagency2.png";
+import lowertravelagency3 from "./assets/portfolio/TravelAgency/lowertravelagency3.png";
+import lowertravelagency4 from "./assets/portfolio/TravelAgency/lowertravelagency4.png";
+import lowertravelagency5 from "./assets/portfolio/TravelAgency/lowertravelagency5.png";
+
+import gatsbyblog0 from "./assets/portfolio/GatsbyBlog/gatsbyblog0.png";
+import gatsbyblog1 from "./assets/portfolio/GatsbyBlog/gatsbyblog1.png";
+import gatsbyblog2 from "./assets/portfolio/GatsbyBlog/gatsbyblog2.png";
+import lowergatsbyblog0 from "./assets/portfolio/GatsbyBlog/lowergatsbyblog0.png";
+import lowergatsbyblog1 from "./assets/portfolio/GatsbyBlog/lowergatsbyblog1.png";
+import lowergatsbyblog2 from "./assets/portfolio/GatsbyBlog/lowergatsbyblog2.png";
+
+import passwordmanager0 from "./assets/portfolio/PasswordManager/passwordmanager0.png";
+import passwordmanager1 from "./assets/portfolio/PasswordManager/passwordmanager1.png";
+import passwordmanager2 from "./assets/portfolio/PasswordManager/passwordmanager2.png";
+import passwordmanager3 from "./assets/portfolio/PasswordManager/passwordmanager3.png";
+import lowerpasswordmanager0 from "./assets/portfolio/PasswordManager/lowerpasswordmanager0.png";
+import lowerpasswordmanager1 from "./assets/portfolio/PasswordManager/lowerpasswordmanager1.png";
+import lowerpasswordmanager2 from "./assets/portfolio/PasswordManager/lowerpasswordmanager2.png";
+import lowerpasswordmanager3 from "./assets/portfolio/PasswordManager/lowerpasswordmanager3.png";
 
 const portfolios = [
   {
@@ -62,10 +107,31 @@ const portfolios = [
   },
   {
     id: 2,
-    src: crwnclothing,
+    src: lowercrwnclothing0,
     title: "Crwn-Clothing",
     techs: ["React", "Redux", "GraphQl", "Firebase", "Stripe api"],
-    details: [],
+    details: {
+      introduction:
+        "Crwn-Clothing is an E-commerce app was developed as part of the 'Complete React Developer in 2023' course on Udemy. Throughout the course, I acquired proficiency in the latest features and best practices of the React ecosystem.In addition, I took the initiative to add my own unique features to the E-commerce app. Leveraging the skills and knowledge gained from the course, I incorporated custom functionalities that enhance the user experience and provide added value to the application.",
+      pictures: [
+        { lower: lowercrwnclothing0, big: crwnclothing0 },
+        { lower: lowercrwnclothing1, big: crwnclothing1 },
+        { lower: lowercrwnclothing2, big: crwnclothing2 },
+        { lower: lowercrwnclothing3, big: crwnclothing3 },
+        { lower: lowercrwnclothing4, big: crwnclothing4 },
+        { lower: lowercrwnclothing5, big: crwnclothing5 },
+        { lower: lowercrwnclothing6, big: crwnclothing6 },
+        { lower: lowercrwnclothing7, big: crwnclothing7 },
+        { lower: lowercrwnclothing8, big: crwnclothing8 },
+        { lower: lowercrwnclothing9, big: crwnclothing9 },
+      ],
+      thirdTitle: "Features",
+      thirdText:
+        "The app provides features such as secure user registration and login, intuitive product categorization, detailed product pages, streamlined cart management, Stripe API payments, responsive design, a Progressive Web App (PWA), and comprehensive unit and integration tests to ensure code reliability.",
+      videos: ["https://www.youtube.com/embed/87ueDmQ7244"],
+      demo: "https://michael-crwn-clothing.netlify.app/",
+      git: "https://github.com/michaelilkanayev1997/Crwn-Clothing",
+    },
   },
   {
     id: 3,
@@ -102,24 +168,69 @@ const portfolios = [
   },
   {
     id: 4,
-    src: travelagency,
+    src: lowertravelagency0,
     title: "Travel-Agency",
     techs: ["React", "styled", "Firebase", "PayPal api"],
-    details: [],
+    details: {
+      introduction:
+        "Travel-Agency is a Website for managing Travel Flight bookings at a Travel Agency. This is a project I did in REACT with FIREBASE as part of an introductory computer communication course in the third year.",
+      pictures: [
+        { lower: lowertravelagency0, big: travelagency0 },
+        { lower: lowertravelagency1, big: travelagency1 },
+        { lower: lowertravelagency2, big: travelagency2 },
+        { lower: lowertravelagency3, big: travelagency3 },
+        { lower: lowertravelagency4, big: travelagency4 },
+        { lower: lowertravelagency5, big: travelagency5 },
+      ],
+      secondTitle: "Users can",
+      secondText:
+        "Register and connect conveniently, choose a flight according to its date and time, country, Change the number of tickets (if available) till the “booking” (that is, after the number of tickets is chosen and payment is processed, the number of tickets cannot be changed), ability to pay with a PayPal (redirection to a PayPal site using its API) Show notification message after the payment is accepted or failed. After that, a user is redirected to the Invoice.",
+      thirdTitle: "Flight options",
+      thirdText:
+        "has a list of flights with their destination and origin country, flight date and time, price. a flight list can be ordered according to : price increase, price decrease, most popular, country, Airline company. Direct flights only.",
+      videos: ["https://www.youtube.com/embed/LKj9u3-7etk"],
+      git: "https://github.com/michaelilkanayev1997/Travel-Agency",
+    },
   },
   {
     id: 5,
-    src: gatsbyblog,
+    src: lowergatsbyblog0,
     title: "Gatsby-blog",
     techs: ["Gatsby", "React", "styled", "GraphQl"],
-    details: [],
+    details: {
+      introduction:
+        "Travel-Agency is a blog where I share my journey of learning and creating through various Udemy courses and projects. This blog is built using Gatsby, a modern framework for building fast, optimized websites.",
+      pictures: [
+        { lower: lowergatsbyblog0, big: gatsbyblog0 },
+        { lower: lowergatsbyblog1, big: gatsbyblog1 },
+        { lower: lowergatsbyblog2, big: gatsbyblog2 },
+      ],
+      secondTitle: "Technologies Used and Learnd",
+      secondText:
+        "Gatsby, a contemporary static site generator for React, facilitating swift and optimized website development. React, a JavaScript library, was employed for crafting user interfaces. Markdown aided in composing and formatting blog posts and project descriptions. Styled-Components streamlined styling through CSS-in-JS. Deployment utilized Netlify for effortless and continuous publishing. Additionally, GraphQL, a potent query language, optimized API data retrieval and manipulation.",
+      demo: "https://michael-blog.netlify.app/",
+      git: "https://github.com/michaelilkanayev1997/Gatsby-blog",
+    },
   },
   {
     id: 6,
-    src: passwordmanager,
+    src: lowerpasswordmanager2,
     title: "Password-Manager",
     techs: ["Java", "GUI", "AES encryption", "Excel"],
-    details: [],
+    details: {
+      introduction:
+        "This is a project I've developed in Java. My Password Manager offers several functionalities: It provides a user-friendly registration process for new users and enables effortless login/logout for existing users. The application stores passwords in an encrypted form using AES encryption within an Excel file. The main program window features a local date and time display on the top right corner, enhancing user convenience.",
+      pictures: [
+        { lower: lowerpasswordmanager0, big: passwordmanager0 },
+        { lower: lowerpasswordmanager1, big: passwordmanager1 },
+        { lower: lowerpasswordmanager2, big: passwordmanager2 },
+        { lower: lowerpasswordmanager3, big: passwordmanager3 },
+      ],
+      thirdTitle: "Features",
+      thirdText:
+        "Adding new passwords, including generating strong random passwords. Removing passwords by website and username. Directly accessing stored sites from the main table. Automatic login for specific sites (Facebook and Linkedin) using Google Chrome. Decrypting (revealing) stored passwords. Simulating site access directly from the table.",
+      git: "https://github.com/michaelilkanayev1997/Password-Manager-Java",
+    },
   },
 ];
 

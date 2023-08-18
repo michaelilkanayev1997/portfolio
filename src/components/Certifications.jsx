@@ -75,7 +75,7 @@ const Certifications = () => {
         </div>
 
         <p className="text-gray-400 py-4 max-w-2xl z-10 mx-auto text-center">
-          Click on the image to view the certifications.
+          Click on the image to view the certificate.
         </p>
       </div>
     </div>
