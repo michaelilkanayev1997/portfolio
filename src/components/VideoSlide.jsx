@@ -22,12 +22,12 @@ const VideoSlide = ({ videos }) => {
         "--swiper-pagination-bottom": "-7px",
       }}
     >
-      {[...videos].splice(0, 10).map((item, index) => (
+      {[...videos].splice(0, 5).map((item, index) => (
         <SwiperSlide key={index}>
           <iframe
             title="video"
             width="100%"
-            className="w-full h-auto sm:h-[315px] md:h-[420px] lg:h-[560px]   xl:h-[576px] z-10"
+            className="w-full h-[180px] sm:h-[255px] md:h-[325px] lg:h-[510px] xl:h-[505px] z-10"
             src={item}
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
