@@ -31,7 +31,7 @@ const ProjectDetails = () => {
           )}
 
           <p className="text-gray-500 py-4 max-w-2xl z-10 mx-auto text-center">
-            You can click on the images to zoom in.
+            Click on the images to view them more closely.
           </p>
 
           <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex">
