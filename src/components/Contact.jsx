@@ -99,7 +99,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 2xl:pb-unset">
+    <div className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 2xl:pb-unset select-none">
       <div className="flex flex-col p-4 justify-center max-w-screen-lg mx-auto">
         <div className="pb-8">
           <p className="text-4xl font-bold inline border-b-4 border-gray-500 z-10">
