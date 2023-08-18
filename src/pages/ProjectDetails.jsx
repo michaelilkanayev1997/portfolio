@@ -24,19 +24,19 @@ const ProjectDetails = () => {
   }, []);
 
   return (
-    <div className="w-full h-full bg-gradient-to-b  from-black  to-gray-800 text-white">
+    <div className="w-full h-full bg-gradient-to-b  from-black  to-gray-800 text-white select-none">
       <div className="w-full h-full max-w-screen-lg p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center">
         <div className="text-xl sm:mt-24 mt-0 mx-auto text-center">
           <p className="text-3xl md:text-5xl font-bold border-b-4 border-gray-500 inline-flex z-10">
             {title}
           </p>
-          <p className="text-lg sm:text-xl text-white-500 py-4  z-10 mx-auto text-center">
+          <p className="text-lg sm:text-xl text-white-500 py-4 z-10 mx-auto text-center">
             {introduction}
           </p>
 
           {pictures?.length > 0 && (
             <>
-              <h2 className="text-yellow-100 text-2xl sm:text-3xl font-bold mt-4 mb-4 border-b-4 border-gray-500 inline-flex">
+              <h2 className="text-yellow-100 text-2xl sm:text-3xl font-bold mt-4 mb-4 border-b-4 border-gray-500 inline-flex z-10">
                 Images
               </h2>
               <div className="max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-5xl mx-auto flex items-center z-10">
@@ -51,25 +51,25 @@ const ProjectDetails = () => {
 
           {secondTitle && (
             <>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex">
+              <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex z-10">
                 {secondTitle}
               </h2>
-              <p className="text-lg sm:text-xl">{secondText}</p>
+              <p className="text-lg sm:text-xl z-10">{secondText}</p>
             </>
           )}
 
           {thirdTitle && (
             <>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex">
+              <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex z-10">
                 {thirdTitle}
               </h2>
-              <p className="text-lg sm:text-xl">{thirdText}</p>
+              <p className="text-lg sm:text-xl z-10">{thirdText}</p>
             </>
           )}
 
           {videos?.length > 0 && (
             <>
-              <h2 className="text-yellow-100 text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex">
+              <h2 className="text-yellow-100 text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex z-10">
                 Videos
               </h2>
 
@@ -85,7 +85,7 @@ const ProjectDetails = () => {
                 href={download ? download : demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
+                className="z-10 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
               >
                 {download ? "Download" : "Demo"}
               </a>
@@ -95,7 +95,7 @@ const ProjectDetails = () => {
               href={git}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
+              className="z-10 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
             >
               GitHub
             </a>

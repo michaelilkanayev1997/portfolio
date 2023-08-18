@@ -1,7 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
-import "swiper/css/effect-coverflow";
 
 const certifications = [
   {
@@ -25,7 +24,7 @@ const Certifications = () => {
   const isMobile = window.innerWidth <= 768;
 
   return (
-    <div className="bg-gradient-to-b from-black to-black w-full  pb-22 pt-0">
+    <div className="bg-gradient-to-b from-black to-black w-full  pb-22 pt-0 select-none">
       <div
         name="certifications"
         className="max-w-screen-lg pt-24 mx-auto p-4  flex flex-col justify-center w-full h-full text-white md:pt-20"

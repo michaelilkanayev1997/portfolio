@@ -1,16 +1,14 @@
 import React from "react";
 import HeroImage from "../assets/heroImage.png";
 import { HiChevronDoubleRight } from "react-icons/hi";
-import ParticlesContainer from "./ParticlesContainer";
 import { Link } from "react-scroll";
 
 const Home = () => {
   return (
     <div
       name="home"
-      className="h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 "
+      className="h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none"
     >
-      <ParticlesContainer />
       <div className="max-w-screen-lg mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
           <h2 className="pt-10 text-4xl sm:text-7xl font-bold text-white z-10">
