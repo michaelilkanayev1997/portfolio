@@ -26,7 +26,7 @@ const ProjectDetails = () => {
   return (
     <div className="w-full h-full bg-gradient-to-b  from-black  to-gray-800 text-white">
       <div className="w-full h-full max-w-screen-lg p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center">
-        <div className="text-xl md:mt-24 mt-0 mx-auto text-center">
+        <div className="text-xl sm:mt-24 mt-0 mx-auto text-center">
           <p className="text-3xl md:text-5xl font-bold border-b-4 border-gray-500 inline-flex z-10">
             {title}
           </p>
@@ -73,7 +73,7 @@ const ProjectDetails = () => {
                 Videos
               </h2>
 
-              <div className="max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-5xl mx-auto flex items-center z-10">
+              <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
                 <VideoSlide videos={videos} />
               </div>
             </>
