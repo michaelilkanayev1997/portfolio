@@ -5,6 +5,7 @@ import Portfolio from "../components/Portfolio";
 import Experience from "../components/Experience";
 import Contact from "../components/Contact";
 import SocialLinks from "../components/SocialLinks";
+import Certifications from "../components/Certifications";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -15,6 +16,7 @@ const HomePage = () => {
       <div>
         <Home />
         <About />
+        <Certifications />
         <Portfolio />
         <Experience />
         <Contact />
