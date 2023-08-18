@@ -1,10 +1,6 @@
 import React from "react";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
 
 const PicturesSlide = ({ backdrops }) => {
   return (
@@ -16,7 +12,6 @@ const PicturesSlide = ({ backdrops }) => {
       spaceBetween={20}
       slidesPerView={1.25}
       centeredSlides
-      loop
       style={{
         "--swiper-pagination-color": "#FFBA08",
         "--swiper-pagination-bullet-inactive-color": "white",

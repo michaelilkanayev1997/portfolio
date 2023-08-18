@@ -42,7 +42,10 @@ const Portfolio = () => {
                   ))}
                 </div>
               </div>
-              <Link to={"projectdetails"} state={{ project: details }}>
+              <Link
+                to={"projectdetails"}
+                state={{ project: details, title: { title } }}
+              >
                 <div className="flex items-center justify-center">
                   <button className="rounded-md font-semibold tracking-wide transform w-full px-6 py-2 m-1 sm:m-4 duration-200 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-purple-500 hover:to-blue-500 text-white hover:text-white hover:scale-105 hover:shadow-md">
                     Read More

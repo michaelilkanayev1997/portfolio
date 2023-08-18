@@ -12,7 +12,19 @@ import lowergameofdeath4 from "./assets/portfolio/GameOfDeath/lowergameofdeath4.
 import lowergameofdeath5 from "./assets/portfolio/GameOfDeath/lowergameofdeath5.png";
 import lowergameofdeath6 from "./assets/portfolio/GameOfDeath/lowergameofdeath6.png";
 
-import scemoviesocial from "./assets/portfolio/SceMovieSocial.png";
+import scemoviesocial1 from "./assets/portfolio/SceMovieSocial/secmoviesocial1.png";
+import scemoviesocial2 from "./assets/portfolio/SceMovieSocial/secmoviesocial2.png";
+import scemoviesocial3 from "./assets/portfolio/SceMovieSocial/secmoviesocial3.png";
+import scemoviesocial4 from "./assets/portfolio/SceMovieSocial/secmoviesocial4.png";
+import scemoviesocial5 from "./assets/portfolio/SceMovieSocial/secmoviesocial5.png";
+import scemoviesocial6 from "./assets/portfolio/SceMovieSocial/secmoviesocial6.png";
+import lowerscemoviesocial1 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial1.png";
+import lowerscemoviesocial2 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial2.png";
+import lowerscemoviesocial3 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial3.png";
+import lowerscemoviesocial4 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial4.png";
+import lowerscemoviesocial5 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial5.png";
+import lowerscemoviesocial6 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial6.png";
+
 import crwnclothing from "./assets/portfolio/CrwnClothing.png";
 import travelagency from "./assets/portfolio/TravelAgency.png";
 import gatsbyblog from "./assets/portfolio/Gatsbyblog.png";
@@ -21,37 +33,31 @@ import passwordmanager from "./assets/portfolio/PasswordManager.png";
 const portfolios = [
   {
     id: 1,
-    src: scemoviesocial,
+    src: lowerscemoviesocial1,
     title: "SCE-MOVIE-SOCIAL",
-    techs: ["React", "Context", "styled", "Firebase", "TMDB's api"],
+    techs: ["React", "Context", "styled", "Firebase", "TMDB's api", "Jira"],
     details: {
       introduction:
-        "'Game of Death' stands not only as a personal project but also as a testament to my journey of self-improvement as a software engineer. This large and immersive third-person game, was built in Unreal Engine 5, with C++ and Blueprint scripting.",
+        "SCE-MOVIE-SOCIAL is a web application that allows students of SCE - Shamoon College of Engineering to discover and interact with movies and TV series. It is built using React and utilizes the TMDB API for fetching movie and series data. The Firebase platform is used as the backend and database solution.",
       pictures: [
-        { lower: gameofdeath0, big: gameofdeath0 },
-        { lower: lowergameofdeath1, big: gameofdeath1 },
-        { lower: lowergameofdeath2, big: gameofdeath2 },
-        { lower: lowergameofdeath3, big: gameofdeath3 },
-        { lower: lowergameofdeath4, big: gameofdeath4 },
-        { lower: lowergameofdeath5, big: gameofdeath5 },
-        { lower: lowergameofdeath6, big: gameofdeath6 },
+        { lower: lowerscemoviesocial1, big: scemoviesocial1 },
+        { lower: lowerscemoviesocial2, big: scemoviesocial2 },
+        { lower: lowerscemoviesocial3, big: scemoviesocial3 },
+        { lower: lowerscemoviesocial4, big: scemoviesocial4 },
+        { lower: lowerscemoviesocial5, big: scemoviesocial5 },
+        { lower: lowerscemoviesocial6, big: scemoviesocial6 },
       ],
-      secondTitle: "Crafting the Experience",
-      secondText:
-        "Drawing inspiration from Bruce Lee's 'Game of Death', I embarked on crafting an engaging gaming experience. The game features three progressively challenging stages, each presenting unique bosses and obstacles. Through rigorous learning and experimentation, I brought these levels to life, enhancing my problem-solving skills in the process.",
-      thirdTitle: "Unique Features",
+      thirdTitle: "Features",
       thirdText:
-        "The project boasts diverse features, including enemies with random pickups, bosses with unique attacks, and character progression through collectibles. I incorporated health, stamina systems, and coin-based upgrades, demonstrating my ability to merge creative storytelling with complex mechanics.",
-      fourthTitle: "Conclusion",
-      fourthText:
-        "'Game of Death' for me is more than a game; it's a narrative of personal evolution. Through traversing the landscapes of C++ programming, software architecture, and creative problem-solving, I've unlocked a newfound proficiency. As the project reaches its conclusion, I'm left with not just a game, but a skill set that empowers me to create innovative solutions and bring imaginative concepts to life in the realm of software development.",
+        "The app provides features such as User authentication and profile management, Search for movies and TV series, Viewing detailed information about movies/series,Create and manage a watchlist, Rate and review movies/series and more. It aims to provide a social platform for movie enthusiasts among the students of SCE to share their thoughts and discover new content.",
       videos: [
-        "https://www.youtube.com/embed/PMsAm4yWlOA",
-        "https://www.youtube.com/embed/I3zeBO-5zX0",
-        "https://www.youtube.com/embed/zsyrcr0M_a8",
+        "https://www.youtube.com/embed/87ueDmQ7244",
+        "https://www.youtube.com/embed/ZB8rvraHG8w",
+        "https://www.youtube.com/embed/roXx_AiKKOY",
+        "https://www.youtube.com/embed/wTMvYOh-ppY",
       ],
-      download:
-        "https://drive.google.com/file/d/1c6KBDMeUnWDJ3G6rZSkvV6xHV5xjscsN/view",
+      demo: "https://sce-movie-social.netlify.app/",
+      git: "https://github.com/michaelilkanayev1997/SCE-MOVIE-SOCIAL",
     },
   },
   {
@@ -68,14 +74,15 @@ const portfolios = [
     techs: ["Unreal-Engine 5", "C++", "BluePrints"],
     details: {
       introduction:
-        "'Game of Death' stands not only as a personal project but also as a testament to my journey of self-improvement as a software engineer. This large and immersive third-person game, was built in Unreal Engine 5, with C++ and Blueprint scripting.",
+        "This is a third person Desktop game that was made in UNREAL ENGINE 5 as a personal project by me. Most of the programming was made with C++ in VISUAL STUDIO and all the rest in a combination of BLUEPRINTS with C++. 'Game of Death' takes inspiration from Bruce lee's 'GAME OF DEATH' movie in 1978. The players's main purpose is to go through three stages (floors) of bosses and challenges,where each stage is more difficult that the previous one.",
       pictures: [
-        gameofdeath0,
-        gameofdeath1,
-        gameofdeath2,
-        gameofdeath3,
-        gameofdeath4,
-        gameofdeath5,
+        { lower: gameofdeath0, big: gameofdeath0 },
+        { lower: lowergameofdeath1, big: gameofdeath1 },
+        { lower: lowergameofdeath2, big: gameofdeath2 },
+        { lower: lowergameofdeath3, big: gameofdeath3 },
+        { lower: lowergameofdeath4, big: gameofdeath4 },
+        { lower: lowergameofdeath5, big: gameofdeath5 },
+        { lower: lowergameofdeath6, big: gameofdeath6 },
       ],
       secondTitle: "Crafting the Experience",
       secondText:
@@ -83,16 +90,14 @@ const portfolios = [
       thirdTitle: "Unique Features",
       thirdText:
         "The project boasts diverse features, including enemies with random pickups, bosses with unique attacks, and character progression through collectibles. I incorporated health, stamina systems, and coin-based upgrades, demonstrating my ability to merge creative storytelling with complex mechanics.",
-      fourthTitle: "Conclusion",
-      fourthText:
-        "'Game of Death' for me is more than a game; it's a narrative of personal evolution. Through traversing the landscapes of C++ programming, software architecture, and creative problem-solving, I've unlocked a newfound proficiency. As the project reaches its conclusion, I'm left with not just a game, but a skill set that empowers me to create innovative solutions and bring imaginative concepts to life in the realm of software development.",
       videos: [
-        "https://www.youtube.com/watch?v=PMsAm4yWlOA",
-        "https://www.youtube.com/watch?v=I3zeBO-5zX0",
-        "https://www.youtube.com/watch?v=zsyrcr0M_a8",
+        "https://www.youtube.com/embed/PMsAm4yWlOA",
+        "https://www.youtube.com/embed/I3zeBO-5zX0",
+        "https://www.youtube.com/embed/zsyrcr0M_a8",
       ],
       download:
         "https://drive.google.com/file/d/1c6KBDMeUnWDJ3G6rZSkvV6xHV5xjscsN/view",
+      git: "https://github.com/michaelilkanayev1997/Game-Of-Death",
     },
   },
   {
