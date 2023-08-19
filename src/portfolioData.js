@@ -32,7 +32,6 @@ import crwnclothing3 from "./assets/portfolio/CrwnClothing/crwnclothing3.png";
 import crwnclothing4 from "./assets/portfolio/CrwnClothing/crwnclothing4.png";
 import crwnclothing5 from "./assets/portfolio/CrwnClothing/crwnclothing5.png";
 import crwnclothing6 from "./assets/portfolio/CrwnClothing/crwnclothing6.png";
-import crwnclothing7 from "./assets/portfolio/CrwnClothing/crwnclothing7.png";
 import crwnclothing8 from "./assets/portfolio/CrwnClothing/crwnclothing8.png";
 import crwnclothing9 from "./assets/portfolio/CrwnClothing/crwnclothing9.png";
 import lowercrwnclothing0 from "./assets/portfolio/CrwnClothing/lowercrwnclothing0.png";
@@ -42,7 +41,6 @@ import lowercrwnclothing3 from "./assets/portfolio/CrwnClothing/lowercrwnclothin
 import lowercrwnclothing4 from "./assets/portfolio/CrwnClothing/lowercrwnclothing4.png";
 import lowercrwnclothing5 from "./assets/portfolio/CrwnClothing/lowercrwnclothing5.png";
 import lowercrwnclothing6 from "./assets/portfolio/CrwnClothing/lowercrwnclothing6.png";
-import lowercrwnclothing7 from "./assets/portfolio/CrwnClothing/lowercrwnclothing7.png";
 import lowercrwnclothing8 from "./assets/portfolio/CrwnClothing/lowercrwnclothing8.png";
 import lowercrwnclothing9 from "./assets/portfolio/CrwnClothing/lowercrwnclothing9.png";
 
@@ -121,14 +119,13 @@ const portfolios = [
         { lower: lowercrwnclothing4, big: crwnclothing4 },
         { lower: lowercrwnclothing5, big: crwnclothing5 },
         { lower: lowercrwnclothing6, big: crwnclothing6 },
-        { lower: lowercrwnclothing7, big: crwnclothing7 },
         { lower: lowercrwnclothing8, big: crwnclothing8 },
         { lower: lowercrwnclothing9, big: crwnclothing9 },
       ],
       thirdTitle: "Features",
       thirdText:
         "The app provides features such as secure user registration and login, intuitive product categorization, detailed product pages, streamlined cart management, Stripe API payments, responsive design, a Progressive Web App (PWA), and comprehensive unit and integration tests to ensure code reliability.",
-      videos: ["https://www.youtube.com/embed/87ueDmQ7244"],
+      videos: ["https://www.youtube.com/embed/zpNIu2dnckw"],
       demo: "https://michael-crwn-clothing.netlify.app/",
       git: "https://github.com/michaelilkanayev1997/Crwn-Clothing",
     },
