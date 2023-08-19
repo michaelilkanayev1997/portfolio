@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
 import ParticlesContainer from "./components/ParticlesContainer";
 import React, { lazy, Suspense } from "react";
+import LinearProgress from "@mui/material/LinearProgress";
 
 // Import Swiper styles
 import "swiper/css";
@@ -16,18 +17,8 @@ const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
 
 // Custom loading component
 const Loading = () => (
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100vh",
-      background: "black",
-      color: "white",
-      fontSize: "1.2rem",
-    }}
-  >
-    <h1>Loading...</h1>
+  <div className="pt-20 bg-black text-white h-screen">
+    <LinearProgress />
   </div>
 );
 
