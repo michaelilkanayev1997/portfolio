@@ -30,7 +30,6 @@ const PicturesSlide = ({ backdrops }) => {
               src={item.lower}
               alt={`_${index}`}
               className="w-full h-auto sm:h-[250px] md:h-[350px] lg:h-[400px] xl:h-[499px] cursor-pointer"
-              loading="lazy"
             />
           </a>
         </SwiperSlide>
