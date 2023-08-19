@@ -80,7 +80,7 @@ const ProjectDetails = () => {
           )}
 
           <div className="flex justify-center space-x-8 pt-8 pb-8">
-            {demo && (
+            {(demo || download) && (
               <a
                 href={download ? download : demo}
                 target="_blank"

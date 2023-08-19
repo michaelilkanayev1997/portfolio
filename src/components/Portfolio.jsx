@@ -10,7 +10,7 @@ const Portfolio = () => {
     >
       <div className="max-w-screen-lg p-4 pt-20 mx-auto flex flex-col justify-center w-full h-full">
         <div className="pb-0 sm:pb-2 ">
-          <p className="text-4xl font-bold inline border-b-4 border-gray-500 z-10">
+          <p className="text-4xl 2xl:text-5xl font-bold inline border-b-4 border-gray-500 z-10">
             Portfolio
           </p>
           <p className="py-6 z-10">Check out some of my work :</p>
