@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
 import NavBar from "./components/NavBar";
 import ParticlesContainer from "./components/ParticlesContainer";
 import React, { lazy, Suspense } from "react";
@@ -13,7 +12,9 @@ import "swiper/css/keyboard";
 import "swiper/css/a11y";
 import "swiper/css/effect-coverflow";
 
+// Lazy Loading
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
+const HomePage = lazy(() => import("./pages/HomePage"));
 
 // Custom loading component
 const Loading = () => (
