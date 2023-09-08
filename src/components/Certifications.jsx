@@ -1,31 +1,36 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
+import certificate1 from "../assets/certificates/certificate1.webp";
+import certificate2 from "../assets/certificates/certificate2.webp";
+import certificate3 from "../assets/certificates/certificate3.webp";
+import certificate4 from "../assets/certificates/certificate4.webp";
+import certificate5 from "../assets/certificates/certificate5.webp";
 
 const certifications = [
   {
     id: 1,
-    img: "https://udemy-certificate.s3.amazonaws.com/image/UC-631fb29d-5cbb-4ca5-a8de-6745b4b57284.jpg?v=1691858982000",
+    img: certificate1,
     src: "https://www.udemy.com/certificate/UC-631fb29d-5cbb-4ca5-a8de-6745b4b57284/",
   },
   {
     id: 2,
-    img: "https://udemy-certificate.s3.amazonaws.com/image/UC-0e33df7a-5d2f-4bc7-840d-c9411cf25042.jpg?v=1694096510000",
+    img: certificate2,
     src: "https://www.udemy.com/certificate/UC-0e33df7a-5d2f-4bc7-840d-c9411cf25042/",
   },
   {
     id: 3,
-    img: "https://udemy-certificate.s3.amazonaws.com/image/UC-2ba67ac7-fcbd-49fe-8628-8d54ff0037c1.jpg?v=1691423164000",
+    img: certificate3,
     src: "https://www.udemy.com/certificate/UC-2ba67ac7-fcbd-49fe-8628-8d54ff0037c1/",
   },
   {
     id: 4,
-    img: "https://udemy-certificate.s3.amazonaws.com/image/UC-45c1f880-d0f4-47d7-ba80-6b72780ea5c6.jpg?v=1664539516000",
+    img: certificate4,
     src: "https://www.udemy.com/certificate/UC-45c1f880-d0f4-47d7-ba80-6b72780ea5c6/",
   },
   {
     id: 5,
-    img: "https://udemy-certificate.s3.amazonaws.com/image/UC-f923fe11-2e24-4a11-bb2f-eb2499e08417.jpg?v=1692396219000",
+    img: certificate5,
     src: "https://www.udemy.com/certificate/UC-f923fe11-2e24-4a11-bb2f-eb2499e08417/",
   },
 ];
@@ -76,7 +81,7 @@ const Certifications = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img src={img} alt="" />
+                  <img src={img} alt={src} loading="lazy" />
                 </a>
               </SwiperSlide>
             ))}
