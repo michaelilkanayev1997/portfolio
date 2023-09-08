@@ -2,6 +2,10 @@ import React from "react";
 import HeroImage from "../assets/heroImage.png";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
+import whatsapp from "../assets/svg/whatsapp.svg";
+import linkedin from "../assets/svg/linkedin.svg";
+import github from "../assets/svg/github.svg";
+import phone from "../assets/svg/phone.svg";
 
 const Home = () => {
   return (
@@ -61,7 +65,7 @@ const Home = () => {
             rel="noopener noreferrer"
             className="transition duration-300 transform hover:scale-110"
           >
-            <i className="fab fa-linkedin fade fa-2x text-blue-500"></i>
+            <img src={linkedin} alt="linkedin" loading="lazy" />
           </a>
           <a
             href="https://github.com/michaelilkanayev1997"
@@ -69,13 +73,13 @@ const Home = () => {
             rel="noopener noreferrer"
             className="transition duration-300 transform hover:scale-110"
           >
-            <i className="fab fa-github fa-2x text-gray-400"></i>
+            <img src={github} alt="github" loading="lazy" />
           </a>
           <a
             href="tel:972546132140"
             className="transition duration-300 transform hover:scale-110 text-teal-500"
           >
-            <i className="fa-solid fa-phone fa-2x"></i>
+            <img src={phone} alt="phone" loading="lazy" />
           </a>
           <a
             href="https://api.whatsapp.com/send?phone=972546132140"
@@ -83,7 +87,7 @@ const Home = () => {
             rel="noopener noreferrer"
             className="transition duration-300 transform hover:scale-110"
           >
-            <i className="fab fa-whatsapp fa-2x text-green-600"></i>
+            <img src={whatsapp} alt="whatsapp" loading="lazy" />
           </a>
         </div>
 
@@ -91,7 +95,7 @@ const Home = () => {
           <img
             src={HeroImage}
             alt="my profile"
-            className="rounded-2xl mx-auto w-2/3 md:w-full translate-z-0 "
+            className="rounded-2xl mx-auto w-2/3 md:w-full translate-z-0"
           />
         </div>
       </div>
