@@ -21,7 +21,8 @@ const Home = () => {
           <p className="text-gray-500 py-4 max-w-md z-10">
             4rd-year Software Engineering student at SCE - Sami Shamoon College
             of Engineering Currently, I love to work on web applications using
-            technologies like React, tailwind, Styled-Components and Firebase.
+            technologies like React, Node.js, Express, tailwind,
+            Styled-Components and Firebase.
           </p>
           <div>
             <div className="flex flex-row space-x-6">
@@ -96,7 +97,6 @@ const Home = () => {
             src={HeroImage}
             alt="my profile"
             className="rounded-2xl md:w-full translate-z-0"
-            loading="lazy"
           />
         </div>
       </div>

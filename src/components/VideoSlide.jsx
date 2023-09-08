@@ -29,6 +29,7 @@ const VideoSlide = ({ videos }) => {
             src={item}
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            loading="lazy"
           ></iframe>
         </SwiperSlide>
       ))}
