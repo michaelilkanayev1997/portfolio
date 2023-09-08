@@ -20,7 +20,6 @@ const HomePage = () => {
         <Portfolio />
         <Experience />
         <Contact />
-
         <SocialLinks />
       </div>
     </>
