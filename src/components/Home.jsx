@@ -18,9 +18,9 @@ const Home = () => {
           <h2 className="pt-10 text-4xl sm:text-7xl font-bold text-white z-10">
             I'm a Software Developer
           </h2>
-          <p className="text-gray-500 py-4 max-w-md z-10">
+          <p className="text-gray-500 text-sm sm:text-lg py-4 max-w-md z-10">
             4rd-year Software Engineering student at SCE - Sami Shamoon College
-            of Engineering Currently, I love to work on web applications using
+            of Engineering. Currently, I love to work on web applications using
             technologies like React, Node.js, Express, tailwind,
             Styled-Components and Firebase.
           </p>
@@ -64,7 +64,7 @@ const Home = () => {
             href="https://www.linkedin.com/in/michael-ilkanayev/"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition duration-300 transform hover:scale-110"
+            className="transition duration-300 transform hover:scale-110 z-10"
           >
             <img src={linkedin} alt="linkedin" loading="lazy" />
           </a>
@@ -72,13 +72,13 @@ const Home = () => {
             href="https://github.com/michaelilkanayev1997"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition duration-300 transform hover:scale-110"
+            className="transition duration-300 transform hover:scale-110 z-10"
           >
             <img src={github} alt="github" loading="lazy" />
           </a>
           <a
             href="tel:972546132140"
-            className="transition duration-300 transform hover:scale-110 text-teal-500"
+            className="transition duration-300 transform hover:scale-110 z-10"
           >
             <img src={phone} alt="phone" loading="lazy" />
           </a>
@@ -86,7 +86,7 @@ const Home = () => {
             href="https://api.whatsapp.com/send?phone=972546132140"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition duration-300 transform hover:scale-110"
+            className="transition duration-300 transform hover:scale-110 z-10"
           >
             <img src={whatsapp} alt="whatsapp" loading="lazy" />
           </a>
