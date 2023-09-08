@@ -1,11 +1,11 @@
 import React from "react";
-import HeroImage from "../assets/heroImage.png";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
 import whatsapp from "../assets/svg/whatsapp.svg";
 import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
+import HeroImage from "../assets/heroImage.webp";
 
 const Home = () => {
   return (
@@ -91,11 +91,12 @@ const Home = () => {
           </a>
         </div>
 
-        <div className="z-10">
+        <div className="z-10 mx-auto w-2/3 sm:w-auto relative rounded-2xl">
           <img
             src={HeroImage}
             alt="my profile"
-            className="rounded-2xl mx-auto w-2/3 md:w-full translate-z-0"
+            className="rounded-2xl md:w-full translate-z-0"
+            loading="lazy"
           />
         </div>
       </div>

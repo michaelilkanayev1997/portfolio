@@ -24,8 +24,9 @@ const Portfolio = () => {
             >
               <img
                 src={src}
-                alt=""
+                alt={title}
                 className="w-full h-36 object-cover rounded-md"
+                loading="lazy"
               />
               <p className="text-lg font-bold border-b-4 border-gray-500 py-2 flex justify-center items-center">
                 {title}
