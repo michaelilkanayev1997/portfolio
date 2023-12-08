@@ -28,6 +28,7 @@ const Home = () => {
             <div className="flex flex-row space-x-6">
               <Link
                 to="portfolio"
+                href=""
                 smooth
                 duration={500}
                 className="group text-white w-fit px-6 py-3 my-2 flex items-center
