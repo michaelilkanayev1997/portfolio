@@ -6,8 +6,17 @@ import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
 import HeroImage from "../assets/heroImage.webp";
+import { useTypewriter, Cursor } from "react-simple-typewriter";
 
 const Home = () => {
+  const [typeEffect] = useTypewriter({
+    words: ["Software Developer", "Full Stack Developer", "Software Engineer"],
+    loop: {},
+    typeSpeed: 150,
+    deleteSpeed: 40,
+    delaySpeed: 2000,
+  });
+
   const isiPhone = () => {
     return /iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   };
@@ -21,14 +30,15 @@ const Home = () => {
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
-          <h2 className="pt-10 text-4xl sm:text-7xl font-bold text-white z-10">
-            I'm a Software Developer
+          <h2 className="pt-10 text-4xl sm:text-7xl font-bold text-white z-10 md:min-w-[35rem] xl:min-w-[41rem] min-h-[8rem] md:min-h-[12rem]">
+            I'm a <span className="text-blue-400"> {typeEffect}</span>
+            <Cursor />
           </h2>
-          <p className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10">
-            4th-year Software Engineering student at SCE - Sami Shamoon College
-            of Engineering. Currently, I love to work on web applications using
-            technologies like React, Node.js, Express, tailwind,
-            Styled-Components and Firebase.
+
+          <p className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10 font-bold">
+            Hello, I'm Michael ! 👋. I specialize in React, React Native,
+            Node.js, Express, MongoDB, Firebase, JavaScript, Java, C++, C,
+            Python, and more... Welcome to my portfolio website!
           </p>
           <div>
             <div className="flex flex-row space-x-6">
