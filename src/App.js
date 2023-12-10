@@ -1,10 +1,9 @@
-import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import ParticlesContainer from "./components/ParticlesContainer";
 import React, { lazy, Suspense } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 // Import Swiper styles
 import "swiper/css";
@@ -29,10 +28,12 @@ const Loading = () => (
 );
 
 function App() {
-  useEffect(() => {
-    // Track page view
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
+  // Track pageview with a custom path
+  ReactGA.send({
+    hitType: "pageview",
+    page: "/",
+    title: "app",
+  });
 
   return (
     <>
