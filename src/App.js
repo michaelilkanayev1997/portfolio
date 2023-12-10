@@ -31,8 +31,8 @@ function App() {
   // Track pageview with a custom path
   ReactGA.send({
     hitType: "pageview",
-    page: "/",
-    title: "app",
+    page: window.location.pathname,
+    title: window.location.pathname,
   });
 
   return (
