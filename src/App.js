@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import ParticlesContainer from "./components/ParticlesContainer";
 import React, { lazy, Suspense } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
+import ReactGA from "react-ga";
 
 // Import Swiper styles
 import "swiper/css";
@@ -11,6 +13,9 @@ import "swiper/css/navigation";
 import "swiper/css/keyboard";
 import "swiper/css/a11y";
 import "swiper/css/effect-coverflow";
+
+// Initialize ReactGA
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
 
 // Lazy Loading
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
@@ -24,6 +29,11 @@ const Loading = () => (
 );
 
 function App() {
+  useEffect(() => {
+    // Track page view
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+
   return (
     <>
       <ParticlesContainer />
