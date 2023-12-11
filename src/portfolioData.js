@@ -73,6 +73,12 @@ import lowerpasswordmanager1 from "./assets/portfolio/PasswordManager/lowerpassw
 import lowerpasswordmanager2 from "./assets/portfolio/PasswordManager/lowerpasswordmanager2.webp";
 import lowerpasswordmanager3 from "./assets/portfolio/PasswordManager/lowerpasswordmanager3.webp";
 
+import keylogger0 from "./assets/portfolio/Keylogger/keylogger0.png";
+import keylogger1 from "./assets/portfolio/Keylogger/keylogger1.png";
+import lowerkeylogger0 from "./assets/portfolio/Keylogger/lowerkeylogger0.webp";
+import lowerkeylogger1 from "./assets/portfolio/Keylogger/lowerkeylogger1.webp";
+import lowerkeylogger2 from "./assets/portfolio/Keylogger/lowerkeylogger2.webp";
+
 const portfolios = [
   {
     id: 1,
@@ -92,7 +98,7 @@ const portfolios = [
       ],
       thirdTitle: "Features",
       thirdText:
-        "The app provides features such as User authentication and profile management, Search for movies and TV series, Viewing detailed information about movies/series,Create and manage a watchlist, Rate and review movies/series and more. It aims to provide a social platform for movie enthusiasts among the students of SCE to share their thoughts and discover new content.",
+        "The app provides features such as User authentication and profile management, Search for movies and TV series, Viewing detailed information about movies/series, Create and manage a watchlist, Rate and review movies/series and more. It aims to provide a social platform for movie enthusiasts among the students of SCE to share their thoughts and discover new content.",
       videos: [
         "https://www.youtube.com/embed/87ueDmQ7244",
         "https://www.youtube.com/embed/ZB8rvraHG8w",
@@ -105,36 +111,34 @@ const portfolios = [
   },
   {
     id: 2,
-    src: lowercrwnclothing0,
-    title: "Crwn-Clothing",
-    techs: ["React", "Redux", "GraphQl", "Firebase", "Stripe api"],
+    src: lowerkeylogger0,
+    title: "Keylogger",
+    techs: ["Python", "pyscreenshot", "pynput", "threading", "smtplib"],
     details: {
       introduction:
-        "Crwn-Clothing is an E-commerce app was developed as part of the 'Complete React Developer in 2023' course on Udemy. Throughout the course, I acquired proficiency in the latest features and best practices of the React ecosystem.In addition, I took the initiative to add my own unique features to the E-commerce app. Leveraging the skills and knowledge gained from the course, I incorporated custom functionalities that enhance the user experience and provide added value to the application.",
+        "This is a Python-based Keylogger project I developed as part of a third-year cyber defense case study course. The project aimed to monitor keyboard and mouse events, to enhance understanding of cybersecurity threats.",
       pictures: [
-        { lower: lowercrwnclothing0, big: crwnclothing0 },
-        { lower: lowercrwnclothing1, big: crwnclothing1 },
-        { lower: lowercrwnclothing2, big: crwnclothing2 },
-        { lower: lowercrwnclothing3, big: crwnclothing3 },
-        { lower: lowercrwnclothing4, big: crwnclothing4 },
-        { lower: lowercrwnclothing5, big: crwnclothing5 },
-        { lower: lowercrwnclothing6, big: crwnclothing6 },
-        { lower: lowercrwnclothing8, big: crwnclothing8 },
-        { lower: lowercrwnclothing9, big: crwnclothing9 },
+        { lower: lowerkeylogger0, big: keylogger0 },
+        { lower: lowerkeylogger1, big: keylogger1 },
+        { lower: lowerkeylogger2, big: lowerkeylogger2 },
       ],
       thirdTitle: "Features",
-      thirdText:
-        "The app provides features such as secure user registration and login, intuitive product categorization, detailed product pages, streamlined cart management, Stripe API payments, responsive design, a Progressive Web App (PWA), and comprehensive unit and integration tests to ensure code reliability.",
-      videos: ["https://www.youtube.com/embed/zpNIu2dnckw"],
-      demo: "https://michael-crwn-clothing.netlify.app/",
-      git: "https://github.com/michaelilkanayev1997/Crwn-Clothing",
+      thirdText: `This keylogger has the following options :\n
+      1. Capture data on mouse movement, clicks and more.\n
+      2. Capturing keys on the keyboard, passwords and more. Including saving the copy-paste and the location in Windows.\n
+      3. Saving screenshots when the key Enter is pressed.\n
+      4. The Keylogger works in a way that is not visible to the user.\n
+      5. The information captured by the Keylogger will be sent to the email of the 'hacker'.\n
+      6. The Keylogger is automatically restarted during a restart or when the computer is turned on.`,
+      videos: ["https://www.youtube.com/embed/yZLG0jY99Ds"],
+      git: "https://github.com/michaelilkanayev1997/Keylogger",
     },
   },
   {
     id: 3,
     src: gameofdeath0,
     title: "Game-Of-Death",
-    techs: ["Unreal-Engine 5", "C++", "BluePrints"],
+    techs: ["Unreal-Engine 5", "C++", "BluePrints", "Polymorphism"],
     details: {
       introduction:
         "This is a third person Desktop game that was made in UNREAL ENGINE 5 as a personal project by me. Most of the programming was made with C++ in VISUAL STUDIO and all the rest in a combination of BLUEPRINTS with C++. 'Game of Death' takes inspiration from Bruce lee's 'GAME OF DEATH' movie in 1978. The players's main purpose is to go through three stages (floors) of bosses and challenges,where each stage is more difficult that the previous one.",
@@ -191,6 +195,33 @@ const portfolios = [
   },
   {
     id: 5,
+    src: lowercrwnclothing0,
+    title: "Crwn-Clothing",
+    techs: ["React", "Redux", "GraphQl", "Firebase", "Stripe api"],
+    details: {
+      introduction:
+        "Crwn-Clothing is an E-commerce app was developed as part of the 'Complete React Developer in 2023' course on Udemy. Throughout the course, I acquired proficiency in the latest features and best practices of the React ecosystem.In addition, I took the initiative to add my own unique features to the E-commerce app. Leveraging the skills and knowledge gained from the course, I incorporated custom functionalities that enhance the user experience and provide added value to the application.",
+      pictures: [
+        { lower: lowercrwnclothing0, big: crwnclothing0 },
+        { lower: lowercrwnclothing1, big: crwnclothing1 },
+        { lower: lowercrwnclothing2, big: crwnclothing2 },
+        { lower: lowercrwnclothing3, big: crwnclothing3 },
+        { lower: lowercrwnclothing4, big: crwnclothing4 },
+        { lower: lowercrwnclothing5, big: crwnclothing5 },
+        { lower: lowercrwnclothing6, big: crwnclothing6 },
+        { lower: lowercrwnclothing8, big: crwnclothing8 },
+        { lower: lowercrwnclothing9, big: crwnclothing9 },
+      ],
+      thirdTitle: "Features",
+      thirdText:
+        "The app provides features such as secure user registration and login, intuitive product categorization, detailed product pages, streamlined cart management, Stripe API payments, responsive design, a Progressive Web App (PWA), and comprehensive unit and integration tests to ensure code reliability.",
+      videos: ["https://www.youtube.com/embed/zpNIu2dnckw"],
+      demo: "https://michael-crwn-clothing.netlify.app/",
+      git: "https://github.com/michaelilkanayev1997/Crwn-Clothing",
+    },
+  },
+  {
+    id: 6,
     src: lowergatsbyblog0,
     title: "Gatsby-blog",
     techs: ["Gatsby", "React", "styled", "GraphQl"],
@@ -210,7 +241,7 @@ const portfolios = [
     },
   },
   {
-    id: 6,
+    id: 7,
     src: lowerpasswordmanager2,
     title: "Password-Manager",
     techs: ["Java", "GUI", "AES encryption", "Excel"],
