@@ -63,7 +63,9 @@ const ProjectDetails = () => {
               <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex z-10">
                 {thirdTitle}
               </h2>
-              <p className="text-lg sm:text-xl z-10">{thirdText}</p>
+              <p className="text-lg sm:text-xl z-10 whitespace-break-spaces">
+                {thirdText}
+              </p>
             </>
           )}
 
