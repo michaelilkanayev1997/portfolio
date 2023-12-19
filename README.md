@@ -24,7 +24,7 @@
     <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/94c56062-bef8-408c-b7cc-4ce79f2b4725" alt="Android Mobile View" width="15%" height="15%" >
   </figure>
   <figure style="text-align: center; display: block;">
-    <figcaption style="font-size: 14px;">GIF--------></figcaption>
+    <figcaption style="font-size: 14px;">GIF ---------></figcaption>
     <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/8f720e55-5c57-4cc1-a63d-71ac8fb1599d" alt="GIF" width="15%" height="15%" >
   </figure>
 </div>
