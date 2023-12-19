@@ -14,7 +14,7 @@
 
 <h2 align="center">Mobile Views</h2>
 
-<div align="center">
+<div style="display: flex; justify-content: center;">
   <figure style="text-align: center; display: block;">
     <figcaption style="font-size: 14px;">iPhone View-></figcaption>
     <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/5f09989f-12bf-4c12-8047-d9bd94a519f1" alt="iPhone View" width="15%" height="15%" >
