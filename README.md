@@ -15,16 +15,16 @@
 <h2 align="center">Mobile Views</h2>
 
 <div align="center">
-  <figure align="center">
-    <figcaption style="font-size: 14px;">iPhone -></figcaption>
+  <figure >
+    <figcaption style="font-size: 14px;">iPhone --></figcaption>
     <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/5f09989f-12bf-4c12-8047-d9bd94a519f1" alt="iPhone View" width="15%" height="15%">
   </figure>
-  <figure align="center">
-    <figcaption style="font-size: 14px;">Android -></figcaption>
+  <figure >
+    <figcaption style="font-size: 14px;">Android --></figcaption>
     <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/94c56062-bef8-408c-b7cc-4ce79f2b4725" alt="Android Mobile View" width="15%" height="15%">
   </figure>
-  <figure align="center">
-    <figcaption style="font-size: 14px;">GIF ---></figcaption>
+  <figure >
+    <figcaption style="font-size: 14px;">GIF -----></figcaption>
     <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/8f720e55-5c57-4cc1-a63d-71ac8fb1599d" alt="GIF" width="15%" height="15%">
   </figure>
 </div>
