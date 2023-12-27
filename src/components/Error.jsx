@@ -5,7 +5,7 @@ const Error = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-black to-gray-800 text-white select-none">
       <FaExclamationCircle className="text-7xl text-red-500 mb-4 z-10" />
-      <h1 className="text-4xl font-bold mb-2 z-10">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-2 z-10 text-center">
         Oops! Something went wrong.
       </h1>
       <p className="text-lg text-gray-400 text-center mb-6 z-10">
