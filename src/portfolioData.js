@@ -79,12 +79,24 @@ import lowerkeylogger0 from "./assets/portfolio/Keylogger/lowerkeylogger0.webp";
 import lowerkeylogger1 from "./assets/portfolio/Keylogger/lowerkeylogger1.webp";
 import lowerkeylogger2 from "./assets/portfolio/Keylogger/lowerkeylogger2.webp";
 
+import lowermealstogo1 from "./assets/portfolio/MealsToGo/lower-meals-to-go1.webp";
+import lowermealstogo2 from "./assets/portfolio/MealsToGo/lower-meals-to-go2.webp";
+import lowermealstogo3 from "./assets/portfolio/MealsToGo/lower-meals-to-go3.webp";
+import lowermealstogo4 from "./assets/portfolio/MealsToGo/lower-meals-to-go4.webp";
+import lowermealstogo5 from "./assets/portfolio/MealsToGo/lower-meals-to-go5.webp";
+import mealstogo0 from "./assets/portfolio/MealsToGo/meals-to-go0.webp";
+import mealstogo1 from "./assets/portfolio/MealsToGo/meals-to-go1.webp";
+import mealstogo2 from "./assets/portfolio/MealsToGo/meals-to-go2.webp";
+import mealstogo3 from "./assets/portfolio/MealsToGo/meals-to-go3.webp";
+import mealstogo4 from "./assets/portfolio/MealsToGo/meals-to-go4.webp";
+import mealstogo5 from "./assets/portfolio/MealsToGo/meals-to-go5.webp";
+
 const portfolios = [
   {
     id: 1,
     src: lowerscemoviesocial1,
     title: "SCE-MOVIE-SOCIAL",
-    techs: ["React", "Context", "styled", "Firebase", "TMDB's api", "Jira"],
+    techs: ["React", "Context", "Styled", "Firebase", "TMDB's api", "Jira"],
     details: {
       introduction:
         "SCE-MOVIE-SOCIAL is a web application that allows students of SCE - Shamoon College of Engineering to discover and interact with movies and TV series. It is built using React and utilizes the TMDB API for fetching movie and series data. The Firebase platform is used as the backend and database solution.",
@@ -111,27 +123,29 @@ const portfolios = [
   },
   {
     id: 2,
-    src: lowerkeylogger0,
-    title: "Keylogger",
-    techs: ["Python", "pyscreenshot", "pynput", "threading", "smtplib"],
+    src: mealstogo0,
+    title: "MealsToGo",
+    techs: ["React-Native", "Geolocation", "Firebase", "Maps-api", "Context"],
     details: {
       introduction:
-        "This is a Python-based Keylogger project I developed as part of a third-year cyber defense case study course. The project aimed to monitor keyboard and mouse events, to enhance understanding of cybersecurity threats.",
+        "MealsToGo is a mobile application developed using React-Native. It provides users with an intuitive platform to explore, save, and discover restaurants. The app simplifies the process of searching for food, ensuring a seamless experience for users.",
       pictures: [
-        { lower: lowerkeylogger0, big: keylogger0 },
-        { lower: lowerkeylogger1, big: keylogger1 },
-        { lower: lowerkeylogger2, big: lowerkeylogger2 },
+        { lower: lowermealstogo1, big: mealstogo1 },
+        { lower: lowermealstogo2, big: mealstogo2 },
+        { lower: lowermealstogo3, big: mealstogo3 },
+        { lower: lowermealstogo4, big: mealstogo4 },
+        { lower: lowermealstogo5, big: mealstogo5 },
       ],
       thirdTitle: "Features",
-      thirdText: `This keylogger has the following options :\n
-      1. Capture data on mouse movement, clicks and more.\n
-      2. Capturing keys on the keyboard, passwords and more. Including saving the copy-paste and the location in Windows.\n
-      3. Saving screenshots when the key Enter is pressed.\n
-      4. The Keylogger works in a way that is not visible to the user.\n
-      5. The information captured by the Keylogger will be sent to the email of the 'hacker'.\n
-      6. The Keylogger is automatically restarted during a restart or when the computer is turned on.`,
-      videos: ["https://www.youtube.com/embed/yZLG0jY99Ds"],
-      git: "https://github.com/michaelilkanayev1997/Keylogger",
+      thirdText: `This app has the following options :\n
+      1. Browse various restaurants and their menus.\n
+      2. Locate nearby restaurants using geolocation and google-maps features.\n
+      3. Authentication to manage user accounts and save history.\n
+      4. Simple and efficient user interface for an enhanced user experience.\n
+      5. Ensuring compatibility with various mobile devices and screen sizes.\n
+     `,
+      videos: ["https://www.youtube.com/embed/03zNfLs8VT8"],
+      git: "https://github.com/michaelilkanayev1997/MealsToGo",
     },
   },
   {
@@ -171,7 +185,7 @@ const portfolios = [
     id: 4,
     src: lowertravelagency0,
     title: "Travel-Agency",
-    techs: ["React", "styled", "Firebase", "PayPal api"],
+    techs: ["React", "Styled", "Firebase", "PayPal api"],
     details: {
       introduction:
         "Travel-Agency is a Website for managing Travel Flight bookings at a Travel Agency. This is a project I did in REACT with FIREBASE as part of an introductory computer communication course in the third year.",
@@ -224,7 +238,7 @@ const portfolios = [
     id: 6,
     src: lowergatsbyblog0,
     title: "Gatsby-blog",
-    techs: ["Gatsby", "React", "styled", "GraphQl"],
+    techs: ["Gatsby", "React", "Styled", "GraphQl"],
     details: {
       introduction:
         "Travel-Agency is a blog where I share my journey of learning and creating through various Udemy courses and projects. This blog is built using Gatsby, a modern framework for building fast, optimized websites.",
@@ -258,6 +272,31 @@ const portfolios = [
       thirdText:
         "Adding new passwords, including generating strong random passwords. Removing passwords by website and username. Directly accessing stored sites from the main table. Automatic login for specific sites (Facebook and Linkedin) using Google Chrome. Decrypting (revealing) stored passwords. Simulating site access directly from the table.",
       git: "https://github.com/michaelilkanayev1997/Password-Manager-Java",
+    },
+  },
+  {
+    id: 8,
+    src: lowerkeylogger0,
+    title: "Keylogger",
+    techs: ["Python", "Pyscreenshot", "Pynput", "Threading", "Smtplib"],
+    details: {
+      introduction:
+        "This is a Python-based Keylogger project I developed as part of a third-year cyber defense case study course. The project aimed to monitor keyboard and mouse events, to enhance understanding of cybersecurity threats.",
+      pictures: [
+        { lower: lowerkeylogger0, big: keylogger0 },
+        { lower: lowerkeylogger1, big: keylogger1 },
+        { lower: lowerkeylogger2, big: lowerkeylogger2 },
+      ],
+      thirdTitle: "Features",
+      thirdText: `This keylogger has the following options :\n
+      1. Capture data on mouse movement, clicks and more.\n
+      2. Capturing keys on the keyboard, passwords and more. Including saving the copy-paste and the location in Windows.\n
+      3. Saving screenshots when the key Enter is pressed.\n
+      4. The Keylogger works in a way that is not visible to the user.\n
+      5. The information captured by the Keylogger will be sent to the email of the 'hacker'.\n
+      6. The Keylogger is automatically restarted during a restart or when the computer is turned on.`,
+      videos: ["https://www.youtube.com/embed/yZLG0jY99Ds"],
+      git: "https://github.com/michaelilkanayev1997/Keylogger",
     },
   },
 ];
