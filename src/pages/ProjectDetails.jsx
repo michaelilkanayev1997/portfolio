@@ -2,9 +2,20 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import PicturesSlide from "../components/PicturesSlide";
 import VideoSlide from "../components/VideoSlide";
+import Error from "../components/Error";
 
 const ProjectDetails = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Check if project and title exist before rendering
+  if (!location.state?.project || !location.state?.title) {
+    return <Error />;
+  }
+
   const {
     download,
     demo,
@@ -16,12 +27,8 @@ const ProjectDetails = () => {
     thirdText,
     thirdTitle,
     videos,
-  } = location.state.project;
-  const { title } = location.state.title;
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  } = location.state?.project;
+  const { title } = location.state?.title;
 
   return (
     <div className="w-full h-full bg-gradient-to-b  from-black  to-gray-800 text-white select-none">
