@@ -7,6 +7,7 @@ import certificate3 from "../assets/certificates/certificate3.webp";
 import certificate4 from "../assets/certificates/certificate4.webp";
 import certificate5 from "../assets/certificates/certificate5.webp";
 import certificate6 from "../assets/certificates/certificate6.webp";
+import { isMobile } from "../utils";
 
 const certifications = [
   {
@@ -42,8 +43,6 @@ const certifications = [
 ];
 
 const Certifications = () => {
-  const isMobile = window.innerWidth <= 768;
-
   return (
     <div className="bg-gradient-to-b from-black to-black w-full  pb-22 pt-0 select-none">
       <div
