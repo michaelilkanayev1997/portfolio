@@ -6,7 +6,9 @@ import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
 import HeroImage from "../assets/heroImage.webp";
+import MobileHeroImage from "../assets/mobileHeroImage.webp";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
+import { isiPhone, isMobile } from "../utils";
 
 const Home = () => {
   const [typeEffect] = useTypewriter({
@@ -17,10 +19,6 @@ const Home = () => {
     delaySpeed: 2000,
   });
 
-  const isiPhone = () => {
-    return /iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  };
-
   return (
     <div
       name="home"
@@ -30,7 +28,7 @@ const Home = () => {
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
-          <h2 className="pt-10 text-4xl sm:text-7xl font-bold text-white z-10 md:min-w-[35rem] xl:min-w-[41rem] min-h-[8rem] md:min-h-[12rem]">
+          <h2 className="pt-10 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[41rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]">
             I'm a <span className="text-blue-400"> {typeEffect}</span>
             <Cursor />
           </h2>
@@ -109,9 +107,9 @@ const Home = () => {
           </a>
         </div>
 
-        <div className="z-10 mx-auto w-2/3 sm:w-auto relative rounded-2xl">
+        <div className="z-10 mx-auto w-2/3 sm:w-auto relative">
           <img
-            src={HeroImage}
+            src={isMobile ? MobileHeroImage : HeroImage}
             alt="my profile"
             className="rounded-2xl md:w-full translate-z-0"
           />
