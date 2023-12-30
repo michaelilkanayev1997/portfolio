@@ -28,6 +28,15 @@
   html {
     font-family: "Raleway", sans-serif;
   }
+
+  html,
+  body {
+    background: linear-gradient(to bottom, #000000, #1f2937);
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
   /* Style for the custom scrollbar */
   .scrollbar-dark::-webkit-scrollbar {
     width: 8px; /* Width of the scrollbar */
