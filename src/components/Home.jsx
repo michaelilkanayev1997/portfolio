@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <div
       name="home"
-      className={`overflow-auto h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none ${
+      className={`h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none ${
         isiPhone() && "pt-14"
       }`}
     >
