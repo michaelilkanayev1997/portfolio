@@ -16,29 +16,29 @@ const certifications = [
     src: "https://www.udemy.com/certificate/UC-631fb29d-5cbb-4ca5-a8de-6745b4b57284/",
   },
   {
-    id: 2,
+    id: 4,
     img: certificate2,
     src: "https://www.udemy.com/certificate/UC-0e33df7a-5d2f-4bc7-840d-c9411cf25042/",
   },
   {
-    id: 3,
+    id: 5,
     img: certificate3,
     src: "https://www.udemy.com/certificate/UC-33ff7171-63d3-4236-8028-33f09aa7a421/",
   },
   {
-    id: 4,
-    img: certificate4,
-    src: "https://www.udemy.com/certificate/UC-2ba67ac7-fcbd-49fe-8628-8d54ff0037c1/",
-  },
-  {
-    id: 5,
+    id: 6,
     img: certificate5,
     src: "https://www.udemy.com/certificate/UC-45c1f880-d0f4-47d7-ba80-6b72780ea5c6/",
   },
   {
-    id: 6,
+    id: 7,
     img: certificate6,
     src: "https://www.udemy.com/certificate/UC-f923fe11-2e24-4a11-bb2f-eb2499e08417/",
+  },
+  {
+    id: 8,
+    img: certificate4,
+    src: "https://www.udemy.com/certificate/UC-2ba67ac7-fcbd-49fe-8628-8d54ff0037c1/",
   },
 ];
 

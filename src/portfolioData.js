@@ -91,6 +91,29 @@ import mealstogo3 from "./assets/portfolio/MealsToGo/meals-to-go3.webp";
 import mealstogo4 from "./assets/portfolio/MealsToGo/meals-to-go4.webp";
 import mealstogo5 from "./assets/portfolio/MealsToGo/meals-to-go5.webp";
 
+import lowernovasound0 from "./assets/portfolio/NovaSound/lower-novasound0.webp";
+import lowernovasound1 from "./assets/portfolio/NovaSound/lower-novasound1.webp";
+import lowernovasound2 from "./assets/portfolio/NovaSound/lower-novasound2.webp";
+import lowernovasound3 from "./assets/portfolio/NovaSound/lower-novasound3.webp";
+import lowernovasound4 from "./assets/portfolio/NovaSound/lower-novasound4.webp";
+import lowernovasound5 from "./assets/portfolio/NovaSound/lower-novasound5.webp";
+import lowernovasound6 from "./assets/portfolio/NovaSound/lower-novasound6.webp";
+import lowernovasound7 from "./assets/portfolio/NovaSound/lower-novasound7.webp";
+import lowernovasound8 from "./assets/portfolio/NovaSound/lower-novasound8.webp";
+import lowernovasound9 from "./assets/portfolio/NovaSound/lower-novasound9.webp";
+import lowernovasound10 from "./assets/portfolio/NovaSound/lower-novasound10.webp";
+import novasound0 from "./assets/portfolio/NovaSound/novasound0.jpg";
+import novasound1 from "./assets/portfolio/NovaSound/novasound1.jpg";
+import novasound2 from "./assets/portfolio/NovaSound/novasound2.jpg";
+import novasound3 from "./assets/portfolio/NovaSound/novasound3.jpg";
+import novasound4 from "./assets/portfolio/NovaSound/novasound4.jpg";
+import novasound5 from "./assets/portfolio/NovaSound/novasound5.jpg";
+import novasound6 from "./assets/portfolio/NovaSound/novasound6.jpg";
+import novasound7 from "./assets/portfolio/NovaSound/novasound7.jpg";
+import novasound8 from "./assets/portfolio/NovaSound/novasound8.jpg";
+import novasound9 from "./assets/portfolio/NovaSound/novasound9.png";
+import novasound10 from "./assets/portfolio/NovaSound/novasound10.png";
+
 const portfolios = [
   {
     id: 1,
@@ -123,29 +146,32 @@ const portfolios = [
   },
   {
     id: 2,
-    src: mealstogo0,
-    title: "MealsToGo",
-    techs: ["React-Native", "Geolocation", "Firebase", "Maps-api", "Context"],
+    src: lowernovasound0,
+    title: "NovaSound",
+    techs: ["React-Native CLI", "TypeScript", "MongoDB", "Express", "Redux"],
     details: {
       introduction:
-        "MealsToGo is a mobile application developed using React-Native. It provides users with an intuitive platform to explore, save, and discover restaurants. The app simplifies the process of searching for food, ensuring a seamless experience for users.",
+        "NovaSound is a MERN (MongoDB, Express, React, Node.js) stack, Audio Sharing App developed as a personal project with React Native CLI.",
       pictures: [
-        { lower: lowermealstogo1, big: mealstogo1 },
-        { lower: lowermealstogo2, big: mealstogo2 },
-        { lower: lowermealstogo3, big: mealstogo3 },
-        { lower: lowermealstogo4, big: mealstogo4 },
-        { lower: lowermealstogo5, big: mealstogo5 },
+        { lower: lowernovasound0, big: novasound0 },
+        { lower: lowernovasound1, big: novasound1 },
+        { lower: lowernovasound2, big: novasound2 },
+        { lower: lowernovasound3, big: novasound3 },
+        { lower: lowernovasound4, big: novasound4 },
+        { lower: lowernovasound5, big: novasound5 },
+        { lower: lowernovasound6, big: novasound6 },
+        { lower: lowernovasound7, big: novasound7 },
+        { lower: lowernovasound8, big: novasound8 },
+        { lower: lowernovasound9, big: novasound9 },
+        { lower: lowernovasound10, big: novasound10 },
       ],
-      thirdTitle: "Features",
-      thirdText: `This app has the following options :\n
-      1. Browse various restaurants and their menus.\n
-      2. Locate nearby restaurants using geolocation and google-maps features.\n
-      3. Authentication to manage user accounts and save history.\n
-      4. Simple and efficient user interface for an enhanced user experience.\n
-      5. Ensuring compatibility with various mobile devices and screen sizes.\n
+
+      thirdTitle: "Overview",
+      thirdText: `NovaSound emerged from a profound intention—to honor and memorialize the memory of the Nova party on 7.10.23. This initiative seeks to commemorate the lives lost tragically during the 7.10 massacre at the Nova party in Israel.\n\n
+      Throughout this project I delved into advanced concepts, enriching my expertise while intertwining modern technology with heartfelt remembrance. Beyond its core purpose, NovaSound represents the fusion of sophisticated audio sharing within a robust application, aspiring to immortalize the spirit of the party and honor the individuals whose presence was cherished but tragically cut short.
      `,
-      videos: ["https://www.youtube.com/embed/03zNfLs8VT8"],
-      git: "https://github.com/michaelilkanayev1997/MealsToGo",
+      videos: ["https://www.youtube.com/embed/oHhNUf1BDEE"],
+      git: "https://github.com/michaelilkanayev1997/NovaSound",
     },
   },
   {
@@ -236,24 +262,32 @@ const portfolios = [
   },
   {
     id: 6,
-    src: lowergatsbyblog0,
-    title: "Gatsby-blog",
-    techs: ["Gatsby", "React", "Styled", "GraphQl"],
+    src: mealstogo0,
+    title: "MealsToGo",
+    techs: ["React-Native", "Geolocation", "Firebase", "Maps-api", "Context"],
     details: {
       introduction:
-        "Travel-Agency is a blog where I share my journey of learning and creating through various Udemy courses and projects. This blog is built using Gatsby, a modern framework for building fast, optimized websites.",
+        "MealsToGo is a mobile application developed using React-Native. It provides users with an intuitive platform to explore, save, and discover restaurants. The app simplifies the process of searching for food, ensuring a seamless experience for users.",
       pictures: [
-        { lower: lowergatsbyblog0, big: gatsbyblog0 },
-        { lower: lowergatsbyblog1, big: gatsbyblog1 },
-        { lower: lowergatsbyblog2, big: gatsbyblog2 },
+        { lower: lowermealstogo1, big: mealstogo1 },
+        { lower: lowermealstogo2, big: mealstogo2 },
+        { lower: lowermealstogo3, big: mealstogo3 },
+        { lower: lowermealstogo4, big: mealstogo4 },
+        { lower: lowermealstogo5, big: mealstogo5 },
       ],
-      secondTitle: "Technologies Used and Learnd",
-      secondText:
-        "Gatsby, a contemporary static site generator for React, facilitating swift and optimized website development. React, a JavaScript library, was employed for crafting user interfaces. Markdown aided in composing and formatting blog posts and project descriptions. Styled-Components streamlined styling through CSS-in-JS. Deployment utilized Netlify for effortless and continuous publishing. Additionally, GraphQL, a potent query language, optimized API data retrieval and manipulation.",
-      demo: "https://michael-blog.netlify.app/",
-      git: "https://github.com/michaelilkanayev1997/Gatsby-blog",
+      thirdTitle: "Features",
+      thirdText: `This app has the following options :\n
+      1. Browse various restaurants and their menus.\n
+      2. Locate nearby restaurants using geolocation and google-maps features.\n
+      3. Authentication to manage user accounts and save history.\n
+      4. Simple and efficient user interface for an enhanced user experience.\n
+      5. Ensuring compatibility with various mobile devices and screen sizes.\n
+     `,
+      videos: ["https://www.youtube.com/embed/03zNfLs8VT8"],
+      git: "https://github.com/michaelilkanayev1997/MealsToGo",
     },
   },
+
   {
     id: 7,
     src: lowerpasswordmanager2,
@@ -297,6 +331,26 @@ const portfolios = [
       6. The Keylogger is automatically restarted during a restart or when the computer is turned on.`,
       videos: ["https://www.youtube.com/embed/yZLG0jY99Ds"],
       git: "https://github.com/michaelilkanayev1997/Keylogger",
+    },
+  },
+  {
+    id: 9,
+    src: lowergatsbyblog0,
+    title: "Gatsby-blog",
+    techs: ["Gatsby", "React", "Styled", "GraphQl"],
+    details: {
+      introduction:
+        "Travel-Agency is a blog where I share my journey of learning and creating through various Udemy courses and projects. This blog is built using Gatsby, a modern framework for building fast, optimized websites.",
+      pictures: [
+        { lower: lowergatsbyblog0, big: gatsbyblog0 },
+        { lower: lowergatsbyblog1, big: gatsbyblog1 },
+        { lower: lowergatsbyblog2, big: gatsbyblog2 },
+      ],
+      secondTitle: "Technologies Used and Learnd",
+      secondText:
+        "Gatsby, a contemporary static site generator for React, facilitating swift and optimized website development. React, a JavaScript library, was employed for crafting user interfaces. Markdown aided in composing and formatting blog posts and project descriptions. Styled-Components streamlined styling through CSS-in-JS. Deployment utilized Netlify for effortless and continuous publishing. Additionally, GraphQL, a potent query language, optimized API data retrieval and manipulation.",
+      demo: "https://michael-blog.netlify.app/",
+      git: "https://github.com/michaelilkanayev1997/Gatsby-blog",
     },
   },
 ];

@@ -18,7 +18,7 @@ const PicturesSlide = ({ backdrops }) => {
         "--swiper-pagination-bottom": "-7px",
       }}
     >
-      {[...backdrops].splice(0, 10).map((item, index) => (
+      {[...backdrops].splice(0, 11).map((item, index) => (
         <SwiperSlide key={index}>
           <a
             key={index}
