@@ -102,6 +102,10 @@ import lowernovasound7 from "./assets/portfolio/NovaSound/lower-novasound7.webp"
 import lowernovasound8 from "./assets/portfolio/NovaSound/lower-novasound8.webp";
 import lowernovasound9 from "./assets/portfolio/NovaSound/lower-novasound9.webp";
 import lowernovasound10 from "./assets/portfolio/NovaSound/lower-novasound10.webp";
+import lowernovasound11 from "./assets/portfolio/NovaSound/lower-novasound11.webp";
+import lowernovasound12 from "./assets/portfolio/NovaSound/lower-novasound12.webp";
+import lowernovasound13 from "./assets/portfolio/NovaSound/lower-novasound13.webp";
+import lowernovasound14 from "./assets/portfolio/NovaSound/lower-novasound14.webp";
 import novasound0 from "./assets/portfolio/NovaSound/novasound0.jpg";
 import novasound1 from "./assets/portfolio/NovaSound/novasound1.jpg";
 import novasound2 from "./assets/portfolio/NovaSound/novasound2.jpg";
@@ -111,8 +115,13 @@ import novasound5 from "./assets/portfolio/NovaSound/novasound5.jpg";
 import novasound6 from "./assets/portfolio/NovaSound/novasound6.jpg";
 import novasound7 from "./assets/portfolio/NovaSound/novasound7.jpg";
 import novasound8 from "./assets/portfolio/NovaSound/novasound8.jpg";
-import novasound9 from "./assets/portfolio/NovaSound/novasound9.png";
-import novasound10 from "./assets/portfolio/NovaSound/novasound10.png";
+import novasound9 from "./assets/portfolio/NovaSound/novasound9.jpg";
+import novasound10 from "./assets/portfolio/NovaSound/novasound10.jpg";
+import novasound11 from "./assets/portfolio/NovaSound/novasound11.jpg";
+import novasound12 from "./assets/portfolio/NovaSound/novasound12.jpg";
+import novasound13 from "./assets/portfolio/NovaSound/novasound13.png";
+import novasound14 from "./assets/portfolio/NovaSound/novasound14.png";
+import novasound from "./assets/portfolio/NovaSound/novasound.webp";
 
 const portfolios = [
   {
@@ -146,7 +155,7 @@ const portfolios = [
   },
   {
     id: 2,
-    src: lowernovasound0,
+    src: novasound,
     title: "NovaSound",
     techs: ["React-Native CLI", "TypeScript", "MongoDB", "Express", "Redux"],
     details: {
@@ -164,6 +173,10 @@ const portfolios = [
         { lower: lowernovasound8, big: novasound8 },
         { lower: lowernovasound9, big: novasound9 },
         { lower: lowernovasound10, big: novasound10 },
+        { lower: lowernovasound11, big: novasound11 },
+        { lower: lowernovasound12, big: novasound12 },
+        { lower: lowernovasound13, big: novasound13 },
+        { lower: lowernovasound14, big: novasound14 },
       ],
 
       thirdTitle: "Overview",
