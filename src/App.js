@@ -36,7 +36,7 @@ function App() {
   });
 
   return (
-    <div className="w-full h-full bg-gradient-to-b  from-black  to-gray-800">
+    <>
       <ParticlesContainer />
       <NavBar />
       <Suspense fallback={<Loading />}>
@@ -45,7 +45,7 @@ function App() {
           <Route path="projectdetails" element={<ProjectDetails />} />
         </Routes>
       </Suspense>
-    </div>
+    </>
   );
 }
 

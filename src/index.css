@@ -24,6 +24,11 @@
   border-radius: 4px;
 }
 
+body {
+  /* fix for iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
 @layer base {
   html {
     font-family: "Raleway", sans-serif;
