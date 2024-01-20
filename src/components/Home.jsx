@@ -35,8 +35,8 @@ const Home = () => {
 
           <p className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10 font-bold">
             Hello, I'm Michael ! 👋. I specialize in React, React Native,
-            Node.js, Express, MongoDB, Firebase, JavaScript, Java, C++, C,
-            Python, and more... Welcome to my portfolio website!
+            Node.js, Express, MongoDB, Firebase, JavaScript, TypeScript, Java,
+            C++, C, Python, and more... Welcome to my portfolio website!
           </p>
           <div>
             <div className="flex flex-row space-x-6">
