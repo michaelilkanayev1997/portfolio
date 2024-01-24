@@ -28,7 +28,7 @@ const Home = () => {
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
-          <h2 className="pt-10 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[41rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]">
+          <h2 className="pt-11 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[41rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]">
             I'm a <span className="text-blue-400"> {typeEffect}</span>
             <Cursor />
           </h2>
