@@ -57,12 +57,19 @@ import lowertravelagency3 from "./assets/portfolio/TravelAgency/lowertravelagenc
 import lowertravelagency4 from "./assets/portfolio/TravelAgency/lowertravelagency4.webp";
 import lowertravelagency5 from "./assets/portfolio/TravelAgency/lowertravelagency5.webp";
 
-import gatsbyblog0 from "./assets/portfolio/GatsbyBlog/gatsbyblog0.png";
-import gatsbyblog1 from "./assets/portfolio/GatsbyBlog/gatsbyblog1.png";
-import gatsbyblog2 from "./assets/portfolio/GatsbyBlog/gatsbyblog2.png";
-import lowergatsbyblog0 from "./assets/portfolio/GatsbyBlog/lowergatsbyblog0.webp";
-import lowergatsbyblog1 from "./assets/portfolio/GatsbyBlog/lowergatsbyblog1.webp";
-import lowergatsbyblog2 from "./assets/portfolio/GatsbyBlog/lowergatsbyblog2.webp";
+import myportfolio1 from "./assets/portfolio/MyPortfolio/myportfolio1.webp";
+import myportfolio2 from "./assets/portfolio/MyPortfolio/myportfolio2.webp";
+import myportfolio3 from "./assets/portfolio/MyPortfolio/myportfolio3.webp";
+import myportfolio4 from "./assets/portfolio/MyPortfolio/myportfolio4.webp";
+import myportfolio5 from "./assets/portfolio/MyPortfolio/myportfolio5.webp";
+import myportfolio6 from "./assets/portfolio/MyPortfolio/myportfolio6.webp";
+import myportfolio7 from "./assets/portfolio/MyPortfolio/myportfolio7.webp";
+import myportfolio8 from "./assets/portfolio/MyPortfolio/myportfolio8.webp";
+import myportfolio9 from "./assets/portfolio/MyPortfolio/myportfolio9.webp";
+import myportfolio10 from "./assets/portfolio/MyPortfolio/myportfolio10.webp";
+import myportfolio11 from "./assets/portfolio/MyPortfolio/myportfolio11.webp";
+import myportfolio12 from "./assets/portfolio/MyPortfolio/myportfolio12.webp";
+import myportfolio13 from "./assets/portfolio/MyPortfolio/myportfolio13.webp";
 
 import passwordmanager0 from "./assets/portfolio/PasswordManager/passwordmanager0.png";
 import passwordmanager1 from "./assets/portfolio/PasswordManager/passwordmanager1.png";
@@ -348,22 +355,34 @@ const portfolios = [
   },
   {
     id: 9,
-    src: lowergatsbyblog0,
-    title: "Gatsby-blog",
-    techs: ["Gatsby", "React", "Styled", "GraphQl"],
+    src: myportfolio1,
+    title: "My Portfolio",
+    techs: ["React", "TailwindCSS", "TsParticles", "Netlify"],
     details: {
       introduction:
-        "Travel-Agency is a blog where I share my journey of learning and creating through various Udemy courses and projects. This blog is built using Gatsby, a modern framework for building fast, optimized websites.",
+        "My portfolio website is designed to provide an overview of my journey as a software developer. It serves as a central hub for visitors to learn about my background, skills, and the projects I've worked on. The website highlights my technical expertise, project details, and ways to get in touch with me.",
       pictures: [
-        { lower: lowergatsbyblog0, big: gatsbyblog0 },
-        { lower: lowergatsbyblog1, big: gatsbyblog1 },
-        { lower: lowergatsbyblog2, big: gatsbyblog2 },
+        { lower: myportfolio1, big: myportfolio1 },
+        { lower: myportfolio2, big: myportfolio2 },
+        { lower: myportfolio3, big: myportfolio3 },
+        { lower: myportfolio4, big: myportfolio4 },
+        { lower: myportfolio5, big: myportfolio5 },
+        { lower: myportfolio6, big: myportfolio6 },
+        { lower: myportfolio7, big: myportfolio7 },
+        { lower: myportfolio8, big: myportfolio8 },
+        { lower: myportfolio9, big: myportfolio9 },
+        { lower: myportfolio10, big: myportfolio10 },
+        { lower: myportfolio11, big: myportfolio11 },
+        { lower: myportfolio12, big: myportfolio12 },
+        { lower: myportfolio13, big: myportfolio13 },
       ],
-      secondTitle: "Technologies Used and Learnd",
+      secondTitle: "Live Website",
       secondText:
-        "Gatsby, a contemporary static site generator for React, facilitating swift and optimized website development. React, a JavaScript library, was employed for crafting user interfaces. Markdown aided in composing and formatting blog posts and project descriptions. Styled-Components streamlined styling through CSS-in-JS. Deployment utilized Netlify for effortless and continuous publishing. Additionally, GraphQL, a potent query language, optimized API data retrieval and manipulation.",
-      demo: "https://michael-blog.netlify.app/",
-      git: "https://github.com/michaelilkanayev1997/Gatsby-blog",
+        "Explore my portfolio website at: https://michaelilkanayev.com/\n\nFeel free to browse through the website to get to know me better, check out my projects, and explore the technologies I work with. If you have any questions, suggestions, or would like to collaborate, don't hesitate to reach out!",
+
+      videos: ["https://www.youtube.com/embed/VTx7-zmVHDo"],
+      demo: "https://michaelilkanayev.com/",
+      git: "https://github.com/michaelilkanayev1997/SCE-MOVIE-SOCIAL",
     },
   },
 ];
