@@ -58,13 +58,6 @@ import lowertravelagency4 from "./assets/portfolio/TravelAgency/lowertravelagenc
 import lowertravelagency5 from "./assets/portfolio/TravelAgency/lowertravelagency5.webp";
 
 import myportfolio1 from "./assets/portfolio/MyPortfolio/myportfolio1.webp";
-import myportfolio2 from "./assets/portfolio/MyPortfolio/myportfolio2.webp";
-import myportfolio3 from "./assets/portfolio/MyPortfolio/myportfolio3.webp";
-import myportfolio4 from "./assets/portfolio/MyPortfolio/myportfolio4.webp";
-import myportfolio5 from "./assets/portfolio/MyPortfolio/myportfolio5.webp";
-import myportfolio6 from "./assets/portfolio/MyPortfolio/myportfolio6.webp";
-import myportfolio7 from "./assets/portfolio/MyPortfolio/myportfolio7.webp";
-import myportfolio8 from "./assets/portfolio/MyPortfolio/myportfolio8.webp";
 import myportfolio9 from "./assets/portfolio/MyPortfolio/myportfolio9.webp";
 import myportfolio10 from "./assets/portfolio/MyPortfolio/myportfolio10.webp";
 import myportfolio11 from "./assets/portfolio/MyPortfolio/myportfolio11.webp";
@@ -362,14 +355,6 @@ const portfolios = [
       introduction:
         "My portfolio website is designed to provide an overview of my journey as a software developer. It serves as a central hub for visitors to learn about my background, skills, and the projects I've worked on. The website highlights my technical expertise, project details, and ways to get in touch with me.",
       pictures: [
-        { lower: myportfolio1, big: myportfolio1 },
-        { lower: myportfolio2, big: myportfolio2 },
-        { lower: myportfolio3, big: myportfolio3 },
-        { lower: myportfolio4, big: myportfolio4 },
-        { lower: myportfolio5, big: myportfolio5 },
-        { lower: myportfolio6, big: myportfolio6 },
-        { lower: myportfolio7, big: myportfolio7 },
-        { lower: myportfolio8, big: myportfolio8 },
         { lower: myportfolio9, big: myportfolio9 },
         { lower: myportfolio10, big: myportfolio10 },
         { lower: myportfolio11, big: myportfolio11 },
