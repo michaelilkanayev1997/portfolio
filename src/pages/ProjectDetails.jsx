@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+
 import PicturesSlide from "../components/PicturesSlide";
 import VideoSlide from "../components/VideoSlide";
 import Error from "../components/Error";
@@ -46,7 +47,7 @@ const ProjectDetails = () => {
               <h2 className="text-yellow-100 text-2xl sm:text-3xl font-bold mt-4 mb-4 border-b-4 border-gray-500 inline-flex z-10">
                 Images
               </h2>
-              <div className="max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-5xl mx-auto flex items-center z-10">
+              <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
                 <PicturesSlide backdrops={pictures} />
               </div>
             </>

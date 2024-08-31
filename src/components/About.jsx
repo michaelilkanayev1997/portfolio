@@ -6,7 +6,7 @@ const About = () => {
       text: "I'm a highly motivated and serious individual with a strong curiosity and a keen eye for detail.",
     },
     {
-      text: "Pursuing B.Sc. in Software Engineering with a GPA of 90.",
+      text: "Pursuing B.Sc. in Software Engineering with a GPA of 91.",
     },
     {
       text: "Actively seeking a student position or junior role within a dynamic and expanding technology company.",
