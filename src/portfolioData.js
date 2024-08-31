@@ -73,12 +73,6 @@ import lowerpasswordmanager1 from "./assets/portfolio/PasswordManager/lowerpassw
 import lowerpasswordmanager2 from "./assets/portfolio/PasswordManager/lowerpasswordmanager2.webp";
 import lowerpasswordmanager3 from "./assets/portfolio/PasswordManager/lowerpasswordmanager3.webp";
 
-import keylogger0 from "./assets/portfolio/Keylogger/keylogger0.png";
-import keylogger1 from "./assets/portfolio/Keylogger/keylogger1.png";
-import lowerkeylogger0 from "./assets/portfolio/Keylogger/lowerkeylogger0.webp";
-import lowerkeylogger1 from "./assets/portfolio/Keylogger/lowerkeylogger1.webp";
-import lowerkeylogger2 from "./assets/portfolio/Keylogger/lowerkeylogger2.webp";
-
 import lowermealstogo1 from "./assets/portfolio/MealsToGo/lower-meals-to-go1.webp";
 import lowermealstogo2 from "./assets/portfolio/MealsToGo/lower-meals-to-go2.webp";
 import lowermealstogo3 from "./assets/portfolio/MealsToGo/lower-meals-to-go3.webp";
@@ -123,6 +117,26 @@ import novasound13 from "./assets/portfolio/NovaSound/novasound13.png";
 import novasound14 from "./assets/portfolio/NovaSound/novasound14.png";
 import novasound from "./assets/portfolio/NovaSound/novasound.webp";
 
+import lowercancerjourney from "./assets/portfolio/CancerJourney/lowercancerjourney.webp";
+import lowercancerjourney0 from "./assets/portfolio/CancerJourney/lowercancerjourney0.webp";
+import lowercancerjourney1 from "./assets/portfolio/CancerJourney/lowercancerjourney1.webp";
+import lowercancerjourney2 from "./assets/portfolio/CancerJourney/lowercancerjourney2.webp";
+import lowercancerjourney3 from "./assets/portfolio/CancerJourney/lowercancerjourney3.webp";
+import lowercancerjourney4 from "./assets/portfolio/CancerJourney/lowercancerjourney4.webp";
+import lowercancerjourney5 from "./assets/portfolio/CancerJourney/lowercancerjourney5.webp";
+import lowercancerjourney6 from "./assets/portfolio/CancerJourney/lowercancerjourney6.webp";
+import lowercancerjourney7 from "./assets/portfolio/CancerJourney/lowercancerjourney7.webp";
+import lowercancerjourney8 from "./assets/portfolio/CancerJourney/lowercancerjourney8.webp";
+import cancerjourney0 from "./assets/portfolio/CancerJourney/cancerjourney0.png";
+import cancerjourney1 from "./assets/portfolio/CancerJourney/cancerjourney1.png";
+import cancerjourney2 from "./assets/portfolio/CancerJourney/cancerjourney2.png";
+import cancerjourney3 from "./assets/portfolio/CancerJourney/cancerjourney3.png";
+import cancerjourney4 from "./assets/portfolio/CancerJourney/cancerjourney4.png";
+import cancerjourney5 from "./assets/portfolio/CancerJourney/cancerjourney5.png";
+import cancerjourney6 from "./assets/portfolio/CancerJourney/cancerjourney6.png";
+import cancerjourney7 from "./assets/portfolio/CancerJourney/cancerjourney7.webp";
+import cancerjourney8 from "./assets/portfolio/CancerJourney/cancerjourney8.png";
+
 const portfolios = [
   {
     id: 1,
@@ -155,36 +169,37 @@ const portfolios = [
   },
   {
     id: 2,
-    src: novasound,
-    title: "NovaSound",
-    techs: ["React-Native CLI", "TypeScript", "MongoDB", "Express", "Redux"],
+    src: lowercancerjourney,
+    title: "CancerJourney - Final Project",
+    techs: ["React-Native", "TypeScript", "MongoDB", "NodeJS", "AWS S3"],
     details: {
       introduction:
-        "NovaSound is a MERN (MongoDB, Express, React, Node.js) stack, Audio Sharing App developed as a personal project with React Native CLI.",
+        "CancerJourney is a MERN (MongoDB, Express, React-Native, Node.js) stack app. CancerJourney is an application designed to assist cancer patients in managing and organizing their treatments in a more convenient and efficient manner. By providing timely alerts, helping patients stay organized with medical appointments, and offering resources for emotional support, this app aims to simplify complex treatment schedules and facilitate communication with healthcare professionals.",
       pictures: [
-        { lower: lowernovasound0, big: novasound0 },
-        { lower: lowernovasound1, big: novasound1 },
-        { lower: lowernovasound2, big: novasound2 },
-        { lower: lowernovasound3, big: novasound3 },
-        { lower: lowernovasound4, big: novasound4 },
-        { lower: lowernovasound5, big: novasound5 },
-        { lower: lowernovasound6, big: novasound6 },
-        { lower: lowernovasound7, big: novasound7 },
-        { lower: lowernovasound8, big: novasound8 },
-        { lower: lowernovasound9, big: novasound9 },
-        { lower: lowernovasound10, big: novasound10 },
-        { lower: lowernovasound11, big: novasound11 },
-        { lower: lowernovasound12, big: novasound12 },
-        { lower: lowernovasound13, big: novasound13 },
-        { lower: lowernovasound14, big: novasound14 },
+        { lower: lowercancerjourney0, big: cancerjourney0 },
+        { lower: lowercancerjourney1, big: cancerjourney1 },
+        { lower: lowercancerjourney2, big: cancerjourney2 },
+        { lower: lowercancerjourney3, big: cancerjourney3 },
+        { lower: lowercancerjourney4, big: cancerjourney4 },
+        { lower: lowercancerjourney5, big: cancerjourney5 },
+        { lower: lowercancerjourney6, big: cancerjourney6 },
+        { lower: lowercancerjourney7, big: cancerjourney7 },
+        { lower: lowercancerjourney8, big: cancerjourney8 },
       ],
 
-      thirdTitle: "Overview",
-      thirdText: `NovaSound emerged from a profound intention—to honor and memorialize the memory of the Nova party on 7.10.23. This initiative seeks to commemorate the lives lost tragically during the 7.10 massacre at the Nova party in Israel.\n\n
-      Throughout this project I delved into advanced concepts, enriching my expertise while intertwining modern technology with heartfelt remembrance. Beyond its core purpose, NovaSound represents the fusion of sophisticated audio sharing within a robust application, aspiring to immortalize the spirit of the party and honor the individuals whose presence was cherished but tragically cut short.
+      thirdTitle: "Features",
+      thirdText: `This app has the following features :\n
+      1. Timely Alerts: Never miss an appointment or medication dose with our reminder system.\n
+      2. Organize Treatments: Keep track of your treatment plans and schedules in one place.\n
+      3. Emotional Support: Access resources and support to help you cope emotionally.\n
+      4. Communication: Easily communicate with your healthcare professionals.\n
+      5. Expert Information: Get information specific to your type of cancer.\n
      `,
-      videos: ["https://www.youtube.com/embed/oHhNUf1BDEE"],
-      git: "https://github.com/michaelilkanayev1997/NovaSound",
+      videos: [
+        "https://www.youtube.com/embed/8gUwShozOik",
+        "https://www.youtube.com/embed/SWhNYa7NlIo",
+      ],
+      git: "https://github.com/michaelilkanayev1997/CancerJourney",
     },
   },
   {
@@ -323,27 +338,36 @@ const portfolios = [
   },
   {
     id: 8,
-    src: lowerkeylogger0,
-    title: "Keylogger",
-    techs: ["Python", "Pyscreenshot", "Pynput", "Threading", "Smtplib"],
+    src: novasound,
+    title: "NovaSound",
+    techs: ["React-Native CLI", "TypeScript", "MongoDB", "Express", "Redux"],
     details: {
       introduction:
-        "This is a Python-based Keylogger project I developed as part of a third-year cyber defense case study course. The project aimed to monitor keyboard and mouse events, to enhance understanding of cybersecurity threats.",
+        "NovaSound is a MERN (MongoDB, Express, React-Native, Node.js) stack, Audio Sharing App developed as a personal project with React Native CLI.",
       pictures: [
-        { lower: lowerkeylogger0, big: keylogger0 },
-        { lower: lowerkeylogger1, big: keylogger1 },
-        { lower: lowerkeylogger2, big: lowerkeylogger2 },
+        { lower: lowernovasound0, big: novasound0 },
+        { lower: lowernovasound1, big: novasound1 },
+        { lower: lowernovasound2, big: novasound2 },
+        { lower: lowernovasound3, big: novasound3 },
+        { lower: lowernovasound4, big: novasound4 },
+        { lower: lowernovasound5, big: novasound5 },
+        { lower: lowernovasound6, big: novasound6 },
+        { lower: lowernovasound7, big: novasound7 },
+        { lower: lowernovasound8, big: novasound8 },
+        { lower: lowernovasound9, big: novasound9 },
+        { lower: lowernovasound10, big: novasound10 },
+        { lower: lowernovasound11, big: novasound11 },
+        { lower: lowernovasound12, big: novasound12 },
+        { lower: lowernovasound13, big: novasound13 },
+        { lower: lowernovasound14, big: novasound14 },
       ],
-      thirdTitle: "Features",
-      thirdText: `This keylogger has the following options :\n
-      1. Capture data on mouse movement, clicks and more.\n
-      2. Capturing keys on the keyboard, passwords and more. Including saving the copy-paste and the location in Windows.\n
-      3. Saving screenshots when the key Enter is pressed.\n
-      4. The Keylogger works in a way that is not visible to the user.\n
-      5. The information captured by the Keylogger will be sent to the email of the 'hacker'.\n
-      6. The Keylogger is automatically restarted during a restart or when the computer is turned on.`,
-      videos: ["https://www.youtube.com/embed/yZLG0jY99Ds"],
-      git: "https://github.com/michaelilkanayev1997/Keylogger",
+
+      thirdTitle: "Overview",
+      thirdText: `NovaSound emerged from a profound intention—to honor and memorialize the memory of the Nova party on 7.10.23. This initiative seeks to commemorate the lives lost tragically during the 7.10 massacre at the Nova party in Israel.\n\n
+      Throughout this project I delved into advanced concepts, enriching my expertise while intertwining modern technology with heartfelt remembrance. Beyond its core purpose, NovaSound represents the fusion of sophisticated audio sharing within a robust application, aspiring to immortalize the spirit of the party and honor the individuals whose presence was cherished but tragically cut short.
+     `,
+      videos: ["https://www.youtube.com/embed/oHhNUf1BDEE"],
+      git: "https://github.com/michaelilkanayev1997/NovaSound",
     },
   },
   {
