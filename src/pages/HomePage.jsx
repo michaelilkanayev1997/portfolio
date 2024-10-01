@@ -1,4 +1,6 @@
-import React from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Home from "../components/Home";
 import About from "../components/About";
 import Portfolio from "../components/Portfolio";
@@ -6,8 +8,7 @@ import Experience from "../components/Experience";
 import Contact from "../components/Contact";
 import SocialLinks from "../components/SocialLinks";
 import Certifications from "../components/Certifications";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import portfolios from "../portfolioData";
 
 const HomePage = () => {
   return (
@@ -17,7 +18,7 @@ const HomePage = () => {
         <Home />
         <About />
         <Certifications />
-        <Portfolio />
+        <Portfolio portfolios={portfolios} />
         <Experience />
         <Contact />
         <SocialLinks />
