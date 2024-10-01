@@ -1,8 +1,7 @@
-import React, { Fragment } from "react";
+import { Fragment, memo } from "react";
 import { Link } from "react-router-dom";
-import portfolios from "../portfolioData";
 
-const Portfolio = () => {
+const Portfolio = memo(({ portfolios }) => {
   return (
     <div
       name="portfolio"
@@ -20,7 +19,7 @@ const Portfolio = () => {
           {portfolios.map(({ id, src, title, techs, details }) => (
             <div
               key={id}
-              className="shadow-md shadow-gray-600 rounded-lg duration-200 hover:scale-105 z-10"
+              className="shadow-md shadow-gray-600 rounded-lg duration-150 hover:scale-105 z-10"
             >
               <img
                 src={src}
@@ -62,6 +61,6 @@ const Portfolio = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Portfolio;

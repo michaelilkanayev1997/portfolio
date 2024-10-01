@@ -1,7 +1,8 @@
-import React from "react";
+import { memo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 
+import { isMobile } from "../utils";
 import certificate1 from "../assets/certificates/certificate1.webp";
 import certificate2 from "../assets/certificates/certificate2.webp";
 import certificate3 from "../assets/certificates/certificate3.webp";
@@ -10,8 +11,6 @@ import certificate5 from "../assets/certificates/certificate5.webp";
 import certificate6 from "../assets/certificates/certificate6.webp";
 import certificate7 from "../assets/certificates/certificate7.webp";
 import certificate8 from "../assets/certificates/certificate8.webp";
-
-import { isMobile } from "../utils";
 
 const certifications = [
   {
@@ -56,7 +55,7 @@ const certifications = [
   },
 ];
 
-const Certifications = () => {
+const Certifications = memo(() => {
   return (
     <div className="bg-gradient-to-b from-black to-black w-full  pb-22 pt-0 select-none">
       <div
@@ -90,7 +89,6 @@ const Certifications = () => {
               modifier: 1,
             }}
             modules={[EffectCoverflow, Pagination]}
-            className="mySwiper"
           >
             {certifications?.map(({ id, img, src }) => (
               <SwiperSlide key={id}>
@@ -113,6 +111,6 @@ const Certifications = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Certifications;

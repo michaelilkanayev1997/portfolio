@@ -1,10 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import ParticlesContainer from "./components/ParticlesContainer";
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import ReactGA from "react-ga4";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -13,12 +10,15 @@ import "swiper/css/keyboard";
 import "swiper/css/a11y";
 import "swiper/css/effect-coverflow";
 
+import ParticlesContainer from "./components/ParticlesContainer";
+import NavBar from "./components/NavBar";
+
 // Initialize ReactGA
 ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
 
 // Lazy Loading
-const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
 const HomePage = lazy(() => import("./pages/HomePage"));
+const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
 
 // Custom loading component
 const Loading = () => (
