@@ -1,22 +1,27 @@
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import PicturesSlide from "../components/PicturesSlide";
 import VideoSlide from "../components/VideoSlide";
 import Error from "../components/Error";
+import portfolios from "../projectDetailsData";
 
 const ProjectDetails = () => {
-  const location = useLocation();
+  const { id } = useParams();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Check if project and title exist before rendering
-  if (!location.state?.project || !location.state?.title) {
+  // Find the project by id
+  const project = portfolios.find((p) => p.id === parseInt(id));
+
+  // Check if project exists
+  if (!project) {
     return <Error />;
   }
 
+  const { title } = project;
   const {
     download,
     demo,
@@ -28,8 +33,7 @@ const ProjectDetails = () => {
     thirdText,
     thirdTitle,
     videos,
-  } = location.state?.project;
-  const { title } = location.state?.title;
+  } = project.details;
 
   return (
     <div className="w-full h-full bg-gradient-to-b  from-black  to-gray-800 text-white select-none">

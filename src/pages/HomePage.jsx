@@ -8,7 +8,6 @@ import Experience from "../components/Experience";
 import Contact from "../components/Contact";
 import SocialLinks from "../components/SocialLinks";
 import Certifications from "../components/Certifications";
-import portfolios from "../portfolioData";
 
 const HomePage = () => {
   return (
@@ -18,7 +17,7 @@ const HomePage = () => {
         <Home />
         <About />
         <Certifications />
-        <Portfolio portfolios={portfolios} />
+        <Portfolio />
         <Experience />
         <Contact />
         <SocialLinks />

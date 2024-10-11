@@ -42,7 +42,7 @@ function App() {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route index element={<HomePage />} />
-          <Route path="projectdetails" element={<ProjectDetails />} />
+          <Route path="projectdetails/:id" element={<ProjectDetails />} />
         </Routes>
       </Suspense>
     </>

@@ -1,13 +1,12 @@
-import React from "react";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
+import { useTypewriter, Cursor } from "react-simple-typewriter";
+
 import whatsapp from "../assets/svg/whatsapp.svg";
 import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
-import HeroImage from "../assets/heroImage.webp";
-import MobileHeroImage from "../assets/mobileHeroImage.webp";
-import { useTypewriter, Cursor } from "react-simple-typewriter";
+
 import { isiPhone, isMobile } from "../utils";
 
 const Home = () => {
@@ -28,7 +27,7 @@ const Home = () => {
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
-          <h2 className="pt-11 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[41rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]">
+          <h2 className="pt-11 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[35rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]">
             I'm a <span className="text-blue-400"> {typeEffect}</span>
             <Cursor />
           </h2>
@@ -108,12 +107,13 @@ const Home = () => {
           </a>
         </div>
 
-        <div className="z-10 mx-auto w-2/3 sm:w-auto relative">
+        <div className="relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3">
           <img
-            src={isMobile ? MobileHeroImage : HeroImage}
+            src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
             alt="my profile"
-            className="rounded-2xl md:w-full translate-z-0"
+            className="w-full h-full object-cover"
           />
+          <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md"></div>
         </div>
       </div>
     </div>
