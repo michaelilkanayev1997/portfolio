@@ -113,7 +113,7 @@ const Home = () => {
             alt="my profile"
             className="w-full h-full object-cover"
           />
-          <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md"></div>
+          <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md" />
         </div>
       </div>
     </div>
