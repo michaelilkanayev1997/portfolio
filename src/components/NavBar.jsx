@@ -35,6 +35,9 @@ const NavBar = () => {
     },
   ];
 
+  // Check if the location starts with /projectdetails
+  const isProjectDetails = location.pathname.startsWith("/projectdetails");
+
   return (
     <div className="flex justify-between z-20 items-center w-full h-20 px-4 text-white bg-black fixed select-none">
       <div>
@@ -43,7 +46,7 @@ const NavBar = () => {
         </h1>
       </div>
 
-      {location.pathname === "/projectdetails" ? (
+      {isProjectDetails ? (
         <ul className="flex">
           <li className="text-xl px-4 cursor-pointer capitalize font-medium text-gray-500 hover:text-gray-300 hover:scale-105 duration-200">
             <RouterLink to={"/"}>Home</RouterLink>
@@ -64,7 +67,7 @@ const NavBar = () => {
         </ul>
       )}
 
-      {location.pathname !== "/projectdetails" && (
+      {!isProjectDetails && (
         <div
           onClick={() => setNav(!nav)}
           className="cursor-pointer pr-4 z-10 text-gray-500 md:hidden"
