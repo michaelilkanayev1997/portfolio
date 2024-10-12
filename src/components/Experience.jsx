@@ -28,7 +28,7 @@ const Experience = memo(() => {
                 src={src}
                 alt={title}
                 className="w-20 mx-auto"
-                // loading="lazy"
+                loading="lazy"
               />
               <p className="mt-4">{title}</p>
             </div>
