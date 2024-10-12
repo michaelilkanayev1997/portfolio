@@ -32,8 +32,8 @@ const About = () => {
         </div>
         <div className="text-xl md:mt-5 mt-0">
           <p>
-            Hello there! My name is Michael, a 4th-year Software Engineering
-            student at SCE - Sami Shamoon College of Engineering.
+            Hello there! My name is Michael, a Software Engineering graduate
+            from SCE - Sami Shamoon College of Engineering.
           </p>
         </div>
 
