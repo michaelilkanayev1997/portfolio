@@ -1,41 +1,41 @@
-import gameofdeath0 from "./assets/portfolio/GameOfDeath/gameofdeath0.webp";
-import lowerscemoviesocial1 from "./assets/portfolio/SceMovieSocial/lowerscemoviesocial1.webp";
-import lowercrwnclothing0 from "./assets/portfolio/CrwnClothing/lowercrwnclothing0.webp";
-import lowertravelagency0 from "./assets/portfolio/TravelAgency/lowertravelagency0.webp";
+import gameofdeathhero from "./assets/portfolio/GameOfDeath/gameofdeathhero.webp";
+import scemoviesocialhero from "./assets/portfolio/SceMovieSocial/scemoviesocialhero.webp";
+import crwnclothinghero from "./assets/portfolio/CrwnClothing/crwnclothinghero.webp";
+import travelagencyhero from "./assets/portfolio/TravelAgency/travelagencyhero.webp";
 import myportfolio1 from "./assets/portfolio/MyPortfolio/myportfolio1.webp";
 import mealstogo0 from "./assets/portfolio/MealsToGo/meals-to-go0.webp";
 import novasound from "./assets/portfolio/NovaSound/novasound.webp";
-import lowercancerjourney from "./assets/portfolio/CancerJourney/lowercancerjourney.webp";
-import lowerpasswordmanager2 from "./assets/portfolio/PasswordManager/lowerpasswordmanager2.webp";
+import cancerjourneyhero from "./assets/portfolio/CancerJourney/cancerjourneyhero.webp";
+import passwordmanagerhero from "./assets/portfolio/PasswordManager/passwordmanagerhero.webp";
 
 const portfolios = [
   {
     id: 1,
-    src: lowerscemoviesocial1,
+    src: scemoviesocialhero,
     title: "SCE-MOVIE-SOCIAL",
     techs: ["React", "Context", "Styled", "Firebase", "TMDB's api", "Jira"],
   },
   {
     id: 2,
-    src: lowercancerjourney,
+    src: cancerjourneyhero,
     title: "Cancer-Journey",
     techs: ["React-Native", "TypeScript", "MongoDB", "NodeJS", "AWS S3"],
   },
   {
     id: 3,
-    src: gameofdeath0,
+    src: gameofdeathhero,
     title: "Game-Of-Death",
     techs: ["Unreal-Engine 5", "C++", "BluePrints", "Polymorphism"],
   },
   {
     id: 4,
-    src: lowertravelagency0,
+    src: travelagencyhero,
     title: "Travel-Agency",
     techs: ["React", "Styled", "Firebase", "PayPal api"],
   },
   {
     id: 5,
-    src: lowercrwnclothing0,
+    src: crwnclothinghero,
     title: "Crwn-Clothing",
     techs: ["React", "Redux", "GraphQl", "Firebase", "Stripe api"],
   },
@@ -47,7 +47,7 @@ const portfolios = [
   },
   {
     id: 7,
-    src: lowerpasswordmanager2,
+    src: passwordmanagerhero,
     title: "Password-Manager",
     techs: ["Java", "GUI", "AES encryption", "Excel"],
   },
