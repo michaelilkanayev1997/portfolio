@@ -15,27 +15,11 @@
 <h2 align="center">Mobile Views</h2>
 
 <div align="center">
-  <figure >
-    <figcaption style="font-size: 14px;">iPhone --></figcaption>
-    <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/5f09989f-12bf-4c12-8047-d9bd94a519f1" alt="iPhone View" width="15%" height="15%">
-  </figure>
-  <figure >
-    <figcaption style="font-size: 14px;">Android --></figcaption>
-    <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/94c56062-bef8-408c-b7cc-4ce79f2b4725" alt="Android Mobile View" width="15%" height="15%">
-  </figure>
-  <figure >
-    <figcaption style="font-size: 14px;">GIF -----></figcaption>
-    <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/8f720e55-5c57-4cc1-a63d-71ac8fb1599d" alt="GIF" width="15%" height="15%">
-  </figure>
-</div>
-
-
-<h2 align="center">Web Views</h2>
-
-<div align="center">
-  <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/76218524-0826-4d9f-ada9-5424b2c710e2" width="300" height="150">
-  <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/fe4a1863-896e-4f16-b505-3ab61a2f98c7" width="300" height="150">
-  <img src="https://github.com/michaelilkanayev1997/portfolio/assets/93651794/8d8b8c02-84a1-4113-af77-ce616ad954a4" width="300" height="150">
+  <img src="src/assets/portfolio/MyPortfolio/myportfolio9.webp" width="15%" height="15%" alt="Screenshot 1">
+  <img src="src/assets/portfolio/MyPortfolio/myportfolio10.webp" width="15%" height="15%" alt="Screenshot 2">
+  <img src="src/assets/portfolio/MyPortfolio/myportfolio11.webp" width="15%" height="15%" alt="Screenshot 3">
+  <img src="src/assets/portfolio/MyPortfolio/myportfolio12.webp" width="15%" height="15%" alt="Screenshot 4">
+  <img src="src/assets/portfolio/MyPortfolio/myportfolio13.webp" width="15%" height="15%" alt="Screenshot 5">
 </div>
 
 <h2 align="center">Lighthouse Report</h2>
