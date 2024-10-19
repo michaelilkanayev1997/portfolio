@@ -6,6 +6,7 @@ import certificate5 from "./assets/certificates/certificate5.webp";
 import certificate6 from "./assets/certificates/certificate6.webp";
 import certificate7 from "./assets/certificates/certificate7.webp";
 import certificate8 from "./assets/certificates/certificate8.webp";
+import certificate9 from "./assets/certificates/certificate9.webp";
 
 const certifications = [
   {
@@ -47,6 +48,11 @@ const certifications = [
     id: 8,
     img: certificate8,
     src: "https://www.udemy.com/certificate/UC-2ba67ac7-fcbd-49fe-8628-8d54ff0037c1/",
+  },
+  {
+    id: 9,
+    img: certificate9,
+    src: "https://www.udemy.com/certificate/UC-7561e569-034c-4d9a-bc76-9e80d3622684/",
   },
 ];
 
