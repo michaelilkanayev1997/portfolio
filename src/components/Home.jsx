@@ -58,10 +58,10 @@ const Home = () => {
 
     gsap.fromTo(
       buttonGroupRef.current,
-      { opacity: 0, x: 100 },
+      { opacity: 0, y: 50 },
       {
         opacity: 1,
-        x: 0,
+        y: 0,
         duration: 1,
         delay: 1.3,
         scrollTrigger: {
