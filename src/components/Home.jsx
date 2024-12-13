@@ -1,6 +1,9 @@
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
 
 import whatsapp from "../assets/svg/whatsapp.svg";
 import linkedin from "../assets/svg/linkedin.svg";
@@ -8,6 +11,8 @@ import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
 
 import { isiPhone, isMobile } from "../utils";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
   const [typeEffect] = useTypewriter({
@@ -18,6 +23,78 @@ const Home = () => {
     delaySpeed: 2000,
   });
 
+  const textRef = useRef();
+  const imageRef = useRef();
+  const buttonGroupRef = useRef();
+  const typeEffectRef = useRef();
+
+  useEffect(() => {
+    gsap.fromTo(
+      imageRef.current,
+      { opacity: 0, scale: 0.5, y: 50 },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1.5,
+      }
+    );
+
+    gsap.fromTo(
+      textRef.current,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.6,
+        scrollTrigger: {
+          trigger: textRef.current,
+          toggleActions: "restart reverse restart reverse",
+          start: "top 85%",
+        },
+      }
+    );
+
+    gsap.fromTo(
+      buttonGroupRef.current,
+      { opacity: 0, x: 100 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        delay: 1.3,
+        scrollTrigger: {
+          trigger: buttonGroupRef.current,
+          toggleActions: "restart reverse restart reverse",
+          start: "top 85%",
+        },
+      }
+    );
+
+    gsap.fromTo(
+      typeEffectRef.current,
+      { opacity: 0, scale: 0.5, y: -100 },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 1.2,
+      }
+    );
+    gsap.to(".g_grow", {
+      scale: 1.05,
+      opacity: 1,
+      ease: "power1",
+      scrollTrigger: {
+        trigger: ".g_grow",
+        toggleActions: "restart reverse restart reverse",
+        start: "top 100%",
+        scrub: 2, // Smooth animation with slower progress
+      },
+    });
+  }, []);
+
   return (
     <div
       name="home"
@@ -27,19 +104,26 @@ const Home = () => {
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
-          <h2 className="pt-11 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[35rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]">
+          <h2
+            ref={typeEffectRef}
+            className="pt-11 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[35rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]"
+          >
             I'm a <span className="text-blue-400"> {typeEffect}</span>
             <Cursor />
           </h2>
 
-          <p className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10 font-bold">
-            Hello, I'm Michael ! 👋. I specialize in React, React Native,
-            Angular, Node.js, Express, MongoDB, Firebase, JavaScript,
-            TypeScript, Java, C++, Python, and more... Welcome to my portfolio
-            website!
+          <p
+            className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10 font-bold"
+            ref={textRef}
+          >
+            Hello, <span className="text-white"> I'm Michael ! 👋. </span> I
+            specialize in React, React Native, Angular, Node.js, Express,
+            MongoDB, Firebase, JavaScript, TypeScript, Java, C++, Python, and
+            more...{" "}
+            <span className="text-white">Welcome to my portfolio website!</span>
           </p>
           <div>
-            <div className="flex flex-row space-x-6">
+            <div className="flex flex-row space-x-6" ref={buttonGroupRef}>
               <Link
                 to="portfolio"
                 href=""
@@ -107,11 +191,14 @@ const Home = () => {
           </a>
         </div>
 
-        <div className="relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3">
+        <div
+          className="relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3"
+          ref={imageRef}
+        >
           <img
             src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
             alt="my profile"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover scale-75 g_grow"
           />
           <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md" />
         </div>
