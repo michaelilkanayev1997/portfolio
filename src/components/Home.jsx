@@ -3,7 +3,6 @@ import { Link } from "react-scroll";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
 
 import whatsapp from "../assets/svg/whatsapp.svg";
 import linkedin from "../assets/svg/linkedin.svg";
@@ -11,8 +10,6 @@ import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
 
 import { isiPhone, isMobile } from "../utils";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
   const [typeEffect] = useTypewriter({
@@ -26,6 +23,7 @@ const Home = () => {
   const textRef = useRef();
   const imageRef = useRef();
   const buttonGroupRef = useRef();
+  const linkGroupRef = useRef();
   const typeEffectRef = useRef();
 
   useEffect(() => {
@@ -71,7 +69,20 @@ const Home = () => {
         },
       }
     );
-
+    gsap.fromTo(
+      linkGroupRef.current,
+      { opacity: 0, scale: 0.1 },
+      {
+        ease: "power2.in",
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+        delay: 1.3,
+        scrollTrigger: {
+          trigger: linkGroupRef.current,
+        },
+      }
+    );
     gsap.fromTo(
       typeEffectRef.current,
       { opacity: 0, scale: 0.5, y: -100 },
@@ -158,7 +169,10 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="flex flex-row gap-10 items-center justify-center mb-4 sm:hidden">
+        <div
+          className="flex flex-row gap-10 items-center justify-center mb-4 sm:hidden"
+          ref={linkGroupRef}
+        >
           <a
             href="https://www.linkedin.com/in/michael-ilkanayev/"
             target="_blank"

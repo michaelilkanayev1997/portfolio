@@ -1,4 +1,5 @@
-import React from "react";
+import gsap from "gsap";
+import React, { useEffect, useRef } from "react";
 import { FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 
@@ -43,8 +44,24 @@ const SocialLinks = () => {
       style: "rounded-br-md",
     },
   ];
+  const linksRef = useRef([]);
+  useEffect(() => {
+    gsap.fromTo(
+      linksRef.current,
+      { x: "-200px", opacity: 0 }, // Starting position
+      {
+        x: "0",
+        opacity: 1,
+        duration: 1,
+        ease: "back.out",
+      }
+    );
+  }, []);
   return (
-    <div className="hidden xl:flex flex-col top-[35%] left-0 fixed select-none">
+    <div
+      className="hidden xl:flex flex-col top-[35%] left-0 fixed select-none"
+      ref={linksRef}
+    >
       <ul>
         {links.map(({ id, child, href, style }) => (
           <li
