@@ -1,5 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ScrollTrigger } from "gsap/all";
+import gsap from "gsap";
 
 import Home from "../components/Home";
 import About from "../components/About";
@@ -9,6 +11,7 @@ import Contact from "../components/Contact";
 import SocialLinks from "../components/SocialLinks";
 import Certifications from "../components/Certifications";
 
+gsap.registerPlugin(ScrollTrigger);
 const HomePage = () => {
   return (
     <>
