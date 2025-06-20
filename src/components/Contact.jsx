@@ -68,6 +68,7 @@ const Contact = () => {
           },
           async (error) => {
             console.log(error.text);
+            setIsLoading(false); // Stop loading
             await Swal.fire({
               title: "Error in Email sending",
               text: error.text,
