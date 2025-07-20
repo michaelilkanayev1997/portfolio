@@ -22,15 +22,18 @@ const Experience = memo(() => {
           {techs.map(({ id, src, title, style }) => (
             <div
               key={id}
-              className={`shadow-md hover:scale-105 duration-500 py-1 sm:py-2 rounded-lg z-10 ${style}`}
+              className={`group relative bg-black/30 backdrop-blur-md border border-white/10 shadow-lg rounded-xl p-4 flex flex-col items-center justify-center transform transition duration-300 hover:scale-105 hover:shadow-xl hover:z-20 ${style}`}
             >
+              <div className="absolute -inset-[1px] rounded-xl bg-gradient-to-br from-white/10 to-transparent blur-sm opacity-50 group-hover:opacity-100 transition-all duration-300 pointer-events-none" />
+
               <img
                 src={src}
                 alt={title}
-                className="w-20 mx-auto"
+                className="w-16 sm:w-20 mx-auto"
                 loading="lazy"
               />
-              <p className="mt-4">{title}</p>
+
+              <p className="mt-4 text-sm sm:text-base font-medium">{title}</p>
             </div>
           ))}
         </div>
