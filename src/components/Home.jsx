@@ -127,12 +127,19 @@ const Home = () => {
             className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10 font-bold"
             ref={textRef}
           >
-            Hello, <span className="text-white"> I'm Michael ! 👋. </span> I
-            specialize in React, React Native, Angular, Node.js, Express,
-            MongoDB, Firebase, JavaScript, TypeScript, Java, C++, Python, and
-            more...{" "}
-            <span className="text-white">Welcome to my portfolio website!</span>
+            Hey, <span className="text-white font-semibold">I'm Michael!</span>{" "}
+            👋
+            <br />I specialize in&nbsp;
+            <span className="text-white font-bold">
+              React, React Native, Angular, Node.js, Express, MongoDB, Firebase,
+              JavaScript, TypeScript, Python
+            </span>
+            .<br />
+            <span className="text-white font-semibold">
+              Dive in & check out my work!
+            </span>
           </p>
+
           <div>
             <div className="flex flex-row space-x-6" ref={buttonGroupRef}>
               <Link
