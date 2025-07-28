@@ -155,7 +155,22 @@ const Home = () => {
                   <HiChevronDoubleRight size={25} className="ml-1" />
                 </span>
               </Link>
-              <a
+
+              <Link
+                to="about"
+                href=""
+                smooth
+                duration={500}
+                className="group text-white w-fit px-6 py-3 my-2 flex items-center
+             rounded-md bg-gradient-to-r from-indigo-600 to-blue-400 cursor-pointer z-10"
+              >
+                About Me
+                <span className="group-hover:rotate-90 duration-300">
+                  <HiChevronDoubleRight size={25} className="ml-1" />
+                </span>
+              </Link>
+
+              {/* <a
                 href={"/Michael Ilkanayev CV.pdf"}
                 download={false}
                 target="_blank"
@@ -166,12 +181,12 @@ const Home = () => {
                   className="group text-white w-fit px-6 py-3 my-2 flex items-center
              rounded-md bg-gradient-to-r from-indigo-600 to-blue-400 cursor-pointer"
                 >
-                  Resume
+                  About Me
                   <span className="group-hover:rotate-90 duration-300">
                     <HiChevronDoubleRight size={25} className="ml-1" />
                   </span>
                 </button>
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
