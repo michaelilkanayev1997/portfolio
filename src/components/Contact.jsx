@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState, useCallback, memo } from "react";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
@@ -12,20 +12,77 @@ const Contact = () => {
 
   const isValid = name !== "" && email !== "" && message !== "";
 
-  const RestetFields = () => {
+  const RestetFields = useCallback(() => {
     setName("");
     setEmail("");
     setMessage("");
-  };
+  }, []);
 
-  const sendEmail = (e) => {
-    e.preventDefault();
+  const sendEmail = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    if (isValid) {
-      // Validate email format using regular expression
-      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!email.match(emailPattern)) {
-        toast.error("Please enter a valid email address", {
+      if (isValid) {
+        // Validate email format using regular expression
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!email.match(emailPattern)) {
+          toast.error("Please enter a valid email address", {
+            position: "bottom-left",
+            autoClose: 3900,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            style: {
+              fontFamily: "Arial",
+              fontSize: "15px",
+              fontWeight: "bold",
+              color: "red",
+              borderRadius: "5px",
+              padding: "10px",
+            },
+          });
+          return;
+        }
+        setIsLoading(true); // Start loading
+        emailjs
+          .sendForm(
+            process.env.REACT_APP_SERVICE,
+            process.env.REACT_APP_TEMPLATE,
+            form.current,
+            process.env.REACT_APP_KEY
+          )
+          .then(
+            async (result) => {
+              RestetFields();
+              e.target.reset();
+              setIsLoading(false); // Stop loading
+              //Your message have been sent !
+              await Swal.fire({
+                title: "Your message have been sent !",
+                text: "Thanks!",
+                icon: "success",
+                showCloseButton: true,
+                showCancelButton: false,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "OK",
+              });
+            },
+            async (error) => {
+              console.log(error.text);
+              setIsLoading(false); // Stop loading
+              await Swal.fire({
+                title: "Error in Email sending",
+                text: error.text,
+                icon: "error",
+                showCloseButton: true,
+                showCancelButton: false,
+                confirmButtonColor: "#f44336",
+                confirmButtonText: "OK",
+              });
+            }
+          );
+      } else {
+        toast.error("Please enter all fields", {
           position: "bottom-left",
           autoClose: 3900,
           closeOnClick: true,
@@ -40,65 +97,10 @@ const Contact = () => {
             padding: "10px",
           },
         });
-        return;
       }
-      setIsLoading(true); // Start loading
-      emailjs
-        .sendForm(
-          process.env.REACT_APP_SERVICE,
-          process.env.REACT_APP_TEMPLATE,
-          form.current,
-          process.env.REACT_APP_KEY
-        )
-        .then(
-          async (result) => {
-            RestetFields();
-            e.target.reset();
-            setIsLoading(false); // Stop loading
-            //Your message have been sent !
-            await Swal.fire({
-              title: "Your message have been sent !",
-              text: "Thanks!",
-              icon: "success",
-              showCloseButton: true,
-              showCancelButton: false,
-              confirmButtonColor: "#3085d6",
-              confirmButtonText: "OK",
-            });
-          },
-          async (error) => {
-            console.log(error.text);
-            setIsLoading(false); // Stop loading
-            await Swal.fire({
-              title: "Error in Email sending",
-              text: error.text,
-              icon: "error",
-              showCloseButton: true,
-              showCancelButton: false,
-              confirmButtonColor: "#f44336",
-              confirmButtonText: "OK",
-            });
-          }
-        );
-    } else {
-      toast.error("Please enter all fields", {
-        position: "bottom-left",
-        autoClose: 3900,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        style: {
-          fontFamily: "Arial",
-          fontSize: "15px",
-          fontWeight: "bold",
-          color: "red",
-          borderRadius: "5px",
-          padding: "10px",
-        },
-      });
-    }
-  };
-
+    },
+    [email, isValid, RestetFields]
+  );
   return (
     <div className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 2xl:pb-unset select-none">
       <div className="flex flex-col p-4 justify-center max-w-screen-lg mx-auto">
@@ -159,4 +161,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default memo(Contact);
