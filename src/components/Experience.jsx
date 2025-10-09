@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import techs from "./../experienceData";
+import techs from "../data/experienceData";
 
 const Experience = memo(() => {
   return (

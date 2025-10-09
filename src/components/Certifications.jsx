@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 
 import { is3XLorLarger, isMobile } from "../utils";
-import certifications from "../certificatesData";
+import certifications from "../data/certificatesData";
 
 const Certifications = memo(() => {
   return (

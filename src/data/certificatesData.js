@@ -1,14 +1,14 @@
-import certificate1 from "./assets/certificates/certificate1.webp";
-import certificate2 from "./assets/certificates/certificate2.webp";
-import certificate3 from "./assets/certificates/certificate3.webp";
-import certificate4 from "./assets/certificates/certificate4.webp";
-import certificate5 from "./assets/certificates/certificate5.webp";
-import certificate6 from "./assets/certificates/certificate6.webp";
-import certificate7 from "./assets/certificates/certificate7.webp";
-import certificate8 from "./assets/certificates/certificate8.webp";
-import certificate9 from "./assets/certificates/certificate9.webp";
-import certificate10 from "./assets/certificates/certificate10.webp";
-import certificate11 from "./assets/certificates/certificate11.webp";
+import certificate1 from "../assets/certificates/certificate1.webp";
+import certificate2 from "../assets/certificates/certificate2.webp";
+import certificate3 from "../assets/certificates/certificate3.webp";
+import certificate4 from "../assets/certificates/certificate4.webp";
+import certificate5 from "../assets/certificates/certificate5.webp";
+import certificate6 from "../assets/certificates/certificate6.webp";
+import certificate7 from "../assets/certificates/certificate7.webp";
+import certificate8 from "../assets/certificates/certificate8.webp";
+import certificate9 from "../assets/certificates/certificate9.webp";
+import certificate10 from "../assets/certificates/certificate10.webp";
+import certificate11 from "../assets/certificates/certificate11.webp";
 
 const certifications = [
   {

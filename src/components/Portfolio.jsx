@@ -1,7 +1,7 @@
 import { memo } from "react";
 
-import portfolios from "../portfolioData";
 import PortfolioItem from "./PortfolioItem";
+import portfolios from "./../data/portfolioData";
 
 const Portfolio = memo(() => {
   return (

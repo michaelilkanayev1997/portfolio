@@ -1,5 +1,6 @@
-import gsap from "gsap";
 import { useEffect, useRef } from "react";
+import gsap from "gsap";
+
 import { links } from "../data/socialLinksData";
 
 const SocialLinks = () => {
