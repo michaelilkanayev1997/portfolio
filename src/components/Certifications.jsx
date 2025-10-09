@@ -2,14 +2,10 @@ import { memo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 
-import { isMobile } from "../utils";
+import { is3XLorLarger, isMobile } from "../utils";
 import certifications from "../certificatesData";
 
 const Certifications = memo(() => {
-  const is3XLorLarger = () => {
-    return window.innerWidth >= 1920;
-  };
-
   return (
     <div className="bg-gradient-to-b from-black to-black w-full  pb-22 pt-0 select-none">
       <div
