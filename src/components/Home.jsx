@@ -1,14 +1,13 @@
+import { useEffect, useRef, memo } from "react";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
-import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 import whatsapp from "../assets/svg/whatsapp.svg";
 import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
-
 import { isiPhone, isMobile } from "../utils";
 
 const Home = () => {
@@ -243,4 +242,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default memo(Home);
