@@ -1,12 +1,12 @@
-import gameofdeathhero from "./assets/portfolio/GameOfDeath/gameofdeathhero.webp";
-import scemoviesocialhero from "./assets/portfolio/SceMovieSocial/scemoviesocialhero.webp";
-import crwnclothinghero from "./assets/portfolio/CrwnClothing/crwnclothinghero.webp";
-import travelagencyhero from "./assets/portfolio/TravelAgency/travelagencyhero.webp";
-import myportfolio1 from "./assets/portfolio/MyPortfolio/myportfolio1.webp";
-import mealstogo0 from "./assets/portfolio/MealsToGo/meals-to-go0.webp";
-import novasound from "./assets/portfolio/NovaSound/novasound.webp";
-import cancerjourneyhero from "./assets/portfolio/CancerJourney/cancerjourneyhero.webp";
-import passwordmanagerhero from "./assets/portfolio/PasswordManager/passwordmanagerhero.webp";
+import gameofdeathhero from "../assets/portfolio/GameOfDeath/gameofdeathhero.webp";
+import scemoviesocialhero from "../assets/portfolio/SceMovieSocial/scemoviesocialhero.webp";
+import crwnclothinghero from "../assets/portfolio/CrwnClothing/crwnclothinghero.webp";
+import travelagencyhero from "../assets/portfolio/TravelAgency/travelagencyhero.webp";
+import myportfolio1 from "../assets/portfolio/MyPortfolio/myportfolio1.webp";
+import mealstogo0 from "../assets/portfolio/MealsToGo/meals-to-go0.webp";
+import novasound from "../assets/portfolio/NovaSound/novasound.webp";
+import cancerjourneyhero from "../assets/portfolio/CancerJourney/cancerjourneyhero.webp";
+import passwordmanagerhero from "../assets/portfolio/PasswordManager/passwordmanagerhero.webp";
 
 const portfolios = [
   {

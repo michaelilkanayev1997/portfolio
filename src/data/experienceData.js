@@ -1,15 +1,15 @@
-import html from "./assets/html.webp";
-import css from "./assets/css.webp";
-import javascript from "./assets/javascript.webp";
-import typescript from "./assets/typescript.webp";
-import react from "./assets/react.webp";
-import reactnative from "./assets/react_native.webp";
-import angular from "./assets/angular.webp";
-import github from "./assets/github.webp";
-import tailwind from "./assets/tailwind.webp";
-import mongodb from "./assets/mongodb.webp";
-import node from "./assets/node.webp";
-import python from "./assets/python.webp";
+import html from "../assets/html.webp";
+import css from "../assets/css.webp";
+import javascript from "../assets/javascript.webp";
+import typescript from "../assets/typescript.webp";
+import react from "../assets/react.webp";
+import reactnative from "../assets/react_native.webp";
+import angular from "../assets/angular.webp";
+import github from "../assets/github.webp";
+import tailwind from "../assets/tailwind.webp";
+import mongodb from "../assets/mongodb.webp";
+import node from "../assets/node.webp";
+import python from "../assets/python.webp";
 
 const techs = [
   { id: 1, src: react, title: "React", style: "shadow-cyan-500" },

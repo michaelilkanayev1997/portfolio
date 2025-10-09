@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import PicturesSlide from "../components/PicturesSlide";
 import VideoSlide from "../components/VideoSlide";
 import Error from "../components/Error";
-import portfolios from "../projectDetailsData";
+import portfolios from "../data/portfolioData";
 
 const ProjectDetails = () => {
   const { id } = useParams();
