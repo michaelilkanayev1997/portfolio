@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { A11y, Keyboard, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -36,4 +37,4 @@ const VideoSlide = ({ videos }) => {
   );
 };
 
-export default VideoSlide;
+export default memo(VideoSlide);

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -38,4 +39,4 @@ const PicturesSlide = ({ backdrops }) => {
   );
 };
 
-export default PicturesSlide;
+export default memo(PicturesSlide);

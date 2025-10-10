@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, memo } from "react";
 import gsap from "gsap";
 
 import { links } from "../data/socialLinksData";
@@ -48,4 +48,4 @@ const SocialLinks = () => {
   );
 };
 
-export default SocialLinks;
+export default memo(SocialLinks);
