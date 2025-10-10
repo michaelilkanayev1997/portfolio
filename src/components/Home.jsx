@@ -240,6 +240,7 @@ const Home = () => {
             src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
             alt="my profile"
             className="w-full h-full object-cover scale-75 g_grow"
+            fetchpriority="high"
           />
           <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md" />
         </div>
