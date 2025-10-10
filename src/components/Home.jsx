@@ -19,6 +19,7 @@ const Home = () => {
     delaySpeed: 2000,
   });
 
+  const main = useRef();
   const textRef = useRef();
   const imageRef = useRef();
   const buttonGroupRef = useRef();
@@ -26,88 +27,93 @@ const Home = () => {
   const typeEffectRef = useRef();
 
   useEffect(() => {
-    gsap.fromTo(
-      imageRef.current,
-      { opacity: 0, scale: 0.5, y: 50 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 1.5,
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        imageRef.current,
+        { opacity: 0, scale: 0.5, y: 50 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 1.5,
+        }
+      );
 
-    gsap.fromTo(
-      textRef.current,
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 0.6,
-        scrollTrigger: {
-          trigger: textRef.current,
-          toggleActions: "restart reverse restart reverse",
-          start: "top 85%",
-        },
-      }
-    );
+      gsap.fromTo(
+        textRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          delay: 0.6,
+          scrollTrigger: {
+            trigger: textRef.current,
+            toggleActions: "restart reverse restart reverse",
+            start: "top 85%",
+          },
+        }
+      );
 
-    gsap.fromTo(
-      buttonGroupRef.current,
-      { opacity: 0, y: 50 },
-      {
+      gsap.fromTo(
+        buttonGroupRef.current,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          delay: 1.3,
+          scrollTrigger: {
+            trigger: buttonGroupRef.current,
+            toggleActions: "restart reverse restart reverse",
+            start: "top 85%",
+          },
+        }
+      );
+      gsap.fromTo(
+        linkGroupRef.current,
+        { opacity: 0, scale: 0.1 },
+        {
+          ease: "power2.in",
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          delay: 1.3,
+          scrollTrigger: {
+            trigger: linkGroupRef.current,
+          },
+        }
+      );
+      gsap.fromTo(
+        typeEffectRef.current,
+        { opacity: 0, scale: 0.5, y: -100 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 1.2,
+        }
+      );
+      gsap.to(".g_grow", {
+        scale: 1.05,
         opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 1.3,
+        ease: "power1",
         scrollTrigger: {
-          trigger: buttonGroupRef.current,
+          trigger: ".g_grow",
           toggleActions: "restart reverse restart reverse",
-          start: "top 85%",
+          start: "top 100%",
+          scrub: 2, // Smooth animation with slower progress
         },
-      }
-    );
-    gsap.fromTo(
-      linkGroupRef.current,
-      { opacity: 0, scale: 0.1 },
-      {
-        ease: "power2.in",
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        delay: 1.3,
-        scrollTrigger: {
-          trigger: linkGroupRef.current,
-        },
-      }
-    );
-    gsap.fromTo(
-      typeEffectRef.current,
-      { opacity: 0, scale: 0.5, y: -100 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 1.2,
-      }
-    );
-    gsap.to(".g_grow", {
-      scale: 1.05,
-      opacity: 1,
-      ease: "power1",
-      scrollTrigger: {
-        trigger: ".g_grow",
-        toggleActions: "restart reverse restart reverse",
-        start: "top 100%",
-        scrub: 2, // Smooth animation with slower progress
-      },
-    });
+      });
+    }, main);
+
+    return () => ctx.revert();
   }, []);
 
   return (
     <div
       name="home"
+      ref={main}
       className={`h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none ${
         isiPhone() && "pt-14"
       }`}
