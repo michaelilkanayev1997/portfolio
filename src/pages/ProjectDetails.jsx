@@ -4,20 +4,19 @@ import { useParams } from "react-router-dom";
 import PicturesSlide from "../components/PicturesSlide";
 import VideoSlide from "../components/VideoSlide";
 import Error from "../components/Error";
-import portfolios from "../data/portfolioData";
+import ProjectSection from "../components/ProjectSection";
+import portfolios from "../data/projectDetailsData";
 
 const ProjectDetails = () => {
   const { id } = useParams();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [id]); // Keep id in dependency array to scroll to top on project change
 
-  // Find the project by id
   const project = portfolios.find((p) => p.id === parseInt(id));
 
-  // Check if project exists
-  if (!project) {
+  if (!project || !project.details) {
     return <Error />;
   }
 
@@ -36,61 +35,57 @@ const ProjectDetails = () => {
   } = project.details;
 
   return (
-    <div className="w-full h-full bg-gradient-to-b  from-black  to-gray-800 text-white select-none">
-      <div className="w-full h-full max-w-screen-lg p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center">
+    <div className="w-full min-h-screen bg-gradient-to-b from-black to-gray-800 text-white select-none">
+      <div className="w-full max-w-screen-lg p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center">
         <div className="text-xl sm:mt-24 mt-0 mx-auto text-center">
-          <p className="text-3xl md:text-5xl font-bold border-b-4 border-gray-500 inline-flex z-10">
-            {title}
-          </p>
-          <p className="text-lg sm:text-xl text-white-500 py-4 z-10 mx-auto text-center">
-            {introduction}
-          </p>
+          <div>
+            <p className="text-3xl md:text-5xl font-bold border-b-4 border-gray-500 inline-flex z-10">
+              {title}
+            </p>
+            <p className="text-lg sm:text-xl text-white-500 py-4 z-10 mx-auto text-center">
+              {introduction}
+            </p>
+          </div>
 
           {pictures?.length > 0 && (
-            <>
-              <h2 className="text-yellow-100 text-2xl sm:text-3xl font-bold mt-4 mb-4 border-b-4 border-gray-500 inline-flex z-10">
-                Images
-              </h2>
-              <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
-                <PicturesSlide backdrops={pictures} />
-              </div>
-            </>
+            <div>
+              <ProjectSection title="Images">
+                <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
+                  <PicturesSlide backdrops={pictures} />
+                </div>
+                <p className="text-gray-500 py-4 max-w-2xl z-10 mx-auto text-center">
+                  Click on the images to view them more closely.
+                </p>
+              </ProjectSection>
+            </div>
           )}
 
-          <p className="text-gray-500 py-4 max-w-2xl z-10 mx-auto text-center">
-            Click on the images to view them more closely.
-          </p>
-
           {secondTitle && (
-            <>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex z-10">
-                {secondTitle}
-              </h2>
-              <p className="text-lg sm:text-xl z-10">{secondText}</p>
-            </>
+            <div>
+              <ProjectSection title={secondTitle}>
+                <p className="text-lg sm:text-xl z-10 text-left">{secondText}</p>
+              </ProjectSection>
+            </div>
           )}
 
           {thirdTitle && (
-            <>
-              <h2 className="text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex z-10">
-                {thirdTitle}
-              </h2>
-              <p className="text-lg sm:text-xl z-10 whitespace-break-spaces">
-                {thirdText}
-              </p>
-            </>
+            <div>
+              <ProjectSection title={thirdTitle}>
+                <p className="text-lg sm:text-xl z-10 whitespace-pre-wrap text-left">
+                  {thirdText}
+                </p>
+              </ProjectSection>
+            </div>
           )}
 
           {videos?.length > 0 && (
-            <>
-              <h2 className="text-yellow-100 text-2xl sm:text-3xl font-bold mt-8 mb-4 border-b-4 border-gray-500 inline-flex z-10">
-                Videos
-              </h2>
-
-              <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
-                <VideoSlide videos={videos} />
-              </div>
-            </>
+            <div>
+              <ProjectSection title="Videos">
+                <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
+                  <VideoSlide videos={videos} />
+                </div>
+              </ProjectSection>
+            </div>
           )}
 
           <div className="flex justify-center space-x-8 pt-8 pb-8">
@@ -105,14 +100,16 @@ const ProjectDetails = () => {
               </a>
             )}
 
-            <a
-              href={git}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="z-10 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
-            >
-              GitHub
-            </a>
+            {git && (
+              <a
+                href={git}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="z-10 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
+              >
+                GitHub
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -121,3 +118,4 @@ const ProjectDetails = () => {
 };
 
 export default ProjectDetails;
+
