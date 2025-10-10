@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-scroll";
 import { useLocation } from "react-router-dom";
@@ -77,4 +77,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default memo(NavBar);
