@@ -10,7 +10,6 @@ import "swiper/css/keyboard";
 import "swiper/css/a11y";
 import "swiper/css/effect-coverflow";
 
-import ParticlesContainer from "./components/ParticlesContainer";
 import NavBar from "./components/NavBar";
 
 // Initialize ReactGA
@@ -19,6 +18,9 @@ ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
 // Lazy Loading
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
+const ParticlesContainer = lazy(() =>
+  import("./components/ParticlesContainer")
+);
 
 // Custom loading component
 const Loading = () => (
@@ -37,7 +39,9 @@ function App() {
 
   return (
     <>
-      <ParticlesContainer />
+      <Suspense>
+        <ParticlesContainer />
+      </Suspense>
       <NavBar />
       <Suspense fallback={<Loading />}>
         <Routes>

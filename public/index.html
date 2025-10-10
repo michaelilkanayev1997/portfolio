@@ -24,7 +24,8 @@
       rel="stylesheet"
     />
 
-    <link rel="preload" href="/heroImage.webp" as="image" type="image/webp" />
+    <link rel="preload" fetchpriority="high" as="image" href="/heroImage.webp" media="(min-width: 501px)" type="image/webp" />
+    <link rel="preload" fetchpriority="high" as="image" href="/mobileHeroImage.webp" media="(max-width: 500px)" type="image/webp" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
