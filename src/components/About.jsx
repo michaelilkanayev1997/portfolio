@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ulText } from "../data/aboutData";
 
 const About = () => {
@@ -52,4 +53,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default memo(About);

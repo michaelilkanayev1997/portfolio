@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Link } from "react-router-dom";
 import { FaExclamationCircle } from "react-icons/fa";
 
@@ -21,4 +22,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default memo(Error);
