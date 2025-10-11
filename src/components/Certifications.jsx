@@ -40,7 +40,7 @@ const Certifications = memo(() => {
             }}
             modules={[EffectCoverflow, Pagination]}
           >
-            {certifications?.map(({ id, img, src }) => (
+            {certifications?.map(({ id, img, src, title }) => (
               <SwiperSlide key={id}>
                 <a
                   key={id}
@@ -48,7 +48,7 @@ const Certifications = memo(() => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <img src={img} alt={src} loading="lazy" />
+                  <img src={img} alt={title} loading="lazy" />
                 </a>
               </SwiperSlide>
             ))}

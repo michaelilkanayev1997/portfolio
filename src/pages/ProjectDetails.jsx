@@ -51,7 +51,7 @@ const ProjectDetails = () => {
             <div>
               <ProjectSection title="Images">
                 <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
-                  <PicturesSlide backdrops={pictures} />
+                  <PicturesSlide backdrops={pictures} title={title} />
                 </div>
                 <p className="text-gray-500 py-4 max-w-2xl z-10 mx-auto text-center">
                   Click on the images to view them more closely.
