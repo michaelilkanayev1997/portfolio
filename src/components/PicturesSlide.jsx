@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const PicturesSlide = ({ backdrops }) => {
+const PicturesSlide = ({ backdrops, title }) => {
   return (
     <Swiper
       modules={[Pagination, Navigation]}
@@ -29,7 +29,7 @@ const PicturesSlide = ({ backdrops }) => {
           >
             <img
               src={item.lower}
-              alt={`_${index}`}
+              alt={`${title} screenshot ${index + 1}`}
               className="h-auto sm:h-[250px] md:h-[350px] lg:h-[400px] xl:h-[499px] cursor-pointer"
             />
           </a>
