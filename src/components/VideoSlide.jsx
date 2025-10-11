@@ -1,3 +1,6 @@
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import { memo } from "react";
 import { A11y, Keyboard, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";

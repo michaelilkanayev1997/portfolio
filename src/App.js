@@ -2,13 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import ReactGA from "react-ga4";
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import "swiper/css/keyboard";
-import "swiper/css/a11y";
-import "swiper/css/effect-coverflow";
 
 import NavBar from "./components/NavBar";
 
