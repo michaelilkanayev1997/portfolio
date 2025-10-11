@@ -16,14 +16,24 @@ const NavBar = () => {
   return (
     <div className="flex justify-between z-20 items-center w-full h-20 px-4 text-white bg-black fixed select-none">
       <div>
-        <h1 className="lg:text-5xl text-3xl font-signature ml-2">
-          Michael Ilkanayev
-        </h1>
+        {isProjectDetails ? (
+          <RouterLink to="/">
+            <h1 className="lg:text-5xl text-3xl font-signature ml-2 cursor-pointer">
+              Michael Ilkanayev
+            </h1>
+          </RouterLink>
+        ) : (
+          <Link to="home" smooth duration={500} className="cursor-pointer">
+            <h1 className="lg:text-5xl text-3xl font-signature ml-2">
+              Michael Ilkanayev
+            </h1>
+          </Link>
+        )}
       </div>
 
       {isProjectDetails ? (
         <ul className="flex">
-          <li className="text-xl px-4 cursor-pointer capitalize font-medium text-gray-500 hover:text-gray-300 hover:scale-105 duration-200">
+          <li className="text-xl px-4 cursor-pointer capitalize font-medium text-gray-400 hover:text-gray-300 hover:scale-105 duration-200">
             <RouterLink to={"/"}>Home</RouterLink>
           </li>
         </ul>
@@ -32,7 +42,7 @@ const NavBar = () => {
           {links.map(({ id, link }) => (
             <li
               key={id}
-              className="px-4 cursor-pointer capitalize font-medium text-gray-500 hover:text-gray-300 hover:scale-105 duration-200"
+              className="px-4 cursor-pointer capitalize font-medium text-gray-400 hover:text-gray-300 hover:scale-105 duration-200"
             >
               <Link to={link} href="" smooth duration={500}>
                 {link}
@@ -46,7 +56,7 @@ const NavBar = () => {
         <button
           type="button"
           onClick={() => setNav(!nav)}
-          className="cursor-pointer p-3 pr-4 z-10 text-gray-500 md:hidden"
+          className="cursor-pointer p-3 pr-4 z-10 text-gray-400 md:hidden"
           aria-label={nav ? "Close navigation" : "Open navigation"}
         >
           {nav ? <FaTimes size={30} /> : <FaBars size={30} />}
@@ -56,7 +66,7 @@ const NavBar = () => {
       {nav && (
         <ul
           className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen 
-      bg-gradient-to-b from-black to-gray-800 text-gray-500"
+      bg-gradient-to-b from-black to-gray-800 text-gray-400"
         >
           {links.map(({ id, link }) => (
             <li
