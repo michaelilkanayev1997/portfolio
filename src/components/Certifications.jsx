@@ -43,10 +43,11 @@ const Certifications = memo(() => {
             {certifications?.map(({ id, img, src, title }) => (
               <SwiperSlide key={id}>
                 <a
-                  key={id}
                   href={src}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`View certificate for ${title}`}
+                  className="block p-4"
                 >
                   <img src={img} alt={title} loading="lazy" />
                 </a>

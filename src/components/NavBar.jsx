@@ -43,12 +43,14 @@ const NavBar = () => {
       )}
 
       {!isProjectDetails && (
-        <div
+        <button
+          type="button"
           onClick={() => setNav(!nav)}
-          className="cursor-pointer pr-4 z-10 text-gray-500 md:hidden"
+          className="cursor-pointer p-3 pr-4 z-10 text-gray-500 md:hidden"
+          aria-label={nav ? "Close navigation" : "Open navigation"}
         >
           {nav ? <FaTimes size={30} /> : <FaBars size={30} />}
-        </div>
+        </button>
       )}
 
       {nav && (
