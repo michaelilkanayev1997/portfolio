@@ -36,24 +36,23 @@ const Certifications = memo(() => {
             }}
             slidesPerView={isMobile || is3XLorLarger() ? 1.15 : 2}
             coverflowEffect={{
-              rotate: 50,
-              stretch: 0,
+              rotate: 30,
+              stretch: 100,
               depth: 500,
               modifier: 1,
             }}
             modules={[EffectCoverflow, Pagination]}
           >
             {certifications?.map(({ id, img, src, title }) => (
-              <SwiperSlide key={id}>
-                <a
-                  href={src}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`View certificate for ${title}`}
-                  className="block p-4"
-                >
-                  <img src={img} alt={title} loading="lazy" />
-                </a>
+              <SwiperSlide
+                key={id}
+                onClick={() => window.open(src, "_blank")}
+                className="p-4 flex justify-center items-center"
+                style={{ cursor: "pointer" }}
+                role="link"
+                aria-label={`View certificate for ${title}`}
+              >
+                <img src={img} alt={title} loading="lazy" />
               </SwiperSlide>
             ))}
           </Swiper>
