@@ -51,19 +51,19 @@ const Experience = memo(() => {
         <div ref={containerRef} className="space-y-12">
           {Object.entries(skills).map(([category, skillList]) => (
             <div key={category}>
-              <h3 className="text-2xl font-bold mb-6 text-center">
+              <h3 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
                 {category}
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="grid grid-cols-2 gap-4 sm:gap-8">
                 {skillList.map(({ id, src, title, style, level }) => (
-                  <div key={id} className={`p-4 rounded-lg shadow-md ${style}`}>
+                  <div key={id} className={`p-2 sm:p-4 rounded-lg shadow-md ${style}`}>
                     <div className="flex items-center mb-2">
-                      <img src={src} alt={title} className="w-10 h-10 mr-4" />
-                      <p className="font-semibold">{title}</p>
+                      <img src={src} alt={title} className="w-6 h-6 sm:w-10 sm:h-10 mr-2 sm:mr-4" />
+                      <p className="font-semibold text-sm sm:text-lg">{title}</p>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-4">
+                    <div className="w-full bg-gray-700 rounded-full h-3 sm:h-4">
                       <div
-                        className="skill-level bg-gradient-to-r from-cyan-500 to-blue-500 h-4 rounded-full"
+                        className="skill-level bg-gradient-to-r from-cyan-500 to-blue-500 h-3 sm:h-4 rounded-full"
                         data-level={level}
                       ></div>
                     </div>
