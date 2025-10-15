@@ -56,10 +56,20 @@ const Experience = memo(() => {
               </h3>
               <div className="grid grid-cols-2 gap-4 sm:gap-8">
                 {skillList.map(({ id, src, title, style, level }) => (
-                  <div key={id} className={`p-2 sm:p-4 rounded-lg shadow-md ${style}`}>
+                  <div
+                    key={id}
+                    className={`p-2 sm:p-4 rounded-lg shadow-md ${style}`}
+                  >
                     <div className="flex items-center mb-2">
-                      <img src={src} alt={title} className="w-6 h-6 sm:w-10 sm:h-10 mr-2 sm:mr-4" />
-                      <p className="font-semibold text-sm sm:text-lg">{title}</p>
+                      <img
+                        src={src}
+                        alt={title}
+                        className="w-6 h-6 sm:w-10 sm:h-10 mr-2 sm:mr-4"
+                        loading="lazy"
+                      />
+                      <p className="font-semibold text-sm sm:text-lg">
+                        {title}
+                      </p>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-3 sm:h-4">
                       <div

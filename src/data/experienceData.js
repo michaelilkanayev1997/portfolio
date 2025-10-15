@@ -31,7 +31,7 @@ const skills = {
       src: reactnative,
       title: "React Native",
       style: "shadow-indigo-500",
-      level: "90%",
+      level: "95%",
     },
     {
       id: 3,
@@ -52,7 +52,7 @@ const skills = {
       src: angular,
       title: "Angular",
       style: "shadow-pink-400",
-      level: "70%",
+      level: "60%",
     },
     {
       id: 9,
@@ -83,14 +83,14 @@ const skills = {
       src: python,
       title: "Python",
       style: "half-blue-half-yellow-shadow",
-      level: "75%",
+      level: "55%",
     },
     {
       id: 13,
       src: dotnet,
       title: ".NET",
       style: "shadow-purple-500",
-      level: "80%",
+      level: "70%",
     },
   ],
   Databases: [
@@ -99,21 +99,21 @@ const skills = {
       src: mongodb,
       title: "MongoDB",
       style: "shadow-green-700",
-      level: "80%",
+      level: "90%",
     },
     {
       id: 14,
       src: postgres,
       title: "PostgreSQL",
       style: "shadow-blue-700",
-      level: "80%",
+      level: "70%",
     },
     {
       id: 15,
       src: mysql,
       title: "MySQL",
       style: "shadow-orange-700",
-      level: "80%",
+      level: "85%",
     },
   ],
   Tools: [
@@ -122,7 +122,7 @@ const skills = {
       src: github,
       title: "GitHub",
       style: "shadow-gray-400",
-      level: "90%",
+      level: "95%",
     },
     {
       id: 16,
