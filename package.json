@@ -28,6 +28,9 @@
     "build": "vite build",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=22"
+  },
   "browserslist": {
     "production": [
       ">0.2%",
