@@ -13,18 +13,18 @@ import { isiPhone, isMobile } from "../utils";
 const Home = () => {
   const [typeEffect] = useTypewriter({
     words: ["Software Developer", "Full Stack Developer", "Software Engineer"],
-    loop: {},
+    loop: 0,
     typeSpeed: 150,
     deleteSpeed: 40,
     delaySpeed: 2000,
   });
 
-  const main = useRef();
-  const textRef = useRef();
-  const imageRef = useRef();
-  const buttonGroupRef = useRef();
-  const linkGroupRef = useRef();
-  const typeEffectRef = useRef();
+  const main = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const buttonGroupRef = useRef<HTMLDivElement>(null);
+  const linkGroupRef = useRef<HTMLDivElement>(null);
+  const typeEffectRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -102,7 +102,7 @@ const Home = () => {
           trigger: ".g_grow",
           toggleActions: "restart reverse restart reverse",
           start: "top 100%",
-          scrub: 2, // Smooth animation with slower progress
+          scrub: 2,
         },
       });
     }, main);
@@ -112,10 +112,10 @@ const Home = () => {
 
   return (
     <div
-      name="home"
+      id="home"
       ref={main}
       className={`h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none ${
-        isiPhone() && "pt-14"
+        isiPhone() ? "pt-14" : ""
       }`}
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
@@ -226,7 +226,7 @@ const Home = () => {
             src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
             alt="my profile"
             className="w-full h-full object-cover scale-75 g_grow"
-            fetchpriority="high"
+            fetchPriority="high"
           />
           <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md" />
         </div>

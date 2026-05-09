@@ -10,7 +10,9 @@ import certificate9 from "../assets/certificates/certificate9.webp";
 import certificate10 from "../assets/certificates/certificate10.webp";
 import certificate11 from "../assets/certificates/certificate11.webp";
 
-const certifications = [
+import type { Certification } from "../types";
+
+const certifications: Certification[] = [
   {
     id: 1,
     img: certificate1,

@@ -11,6 +11,10 @@
 # production
 /build
 
+# typescript
+*.tsbuildinfo
+vite.config.d.ts
+
 # misc
 .env
 .DS_Store

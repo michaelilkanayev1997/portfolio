@@ -1,16 +1,17 @@
 import { memo, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import skills from "../data/experienceData";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Experience = memo(() => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const skillLevels = gsap.utils.toArray(".skill-level");
+      const skillLevels = gsap.utils.toArray<HTMLDivElement>(".skill-level");
 
       skillLevels.forEach((level) => {
         const width = level.dataset.level;
@@ -18,7 +19,7 @@ const Experience = memo(() => {
           level,
           { width: 0 },
           {
-            width: width,
+            width,
             duration: 1.5,
             ease: "power3.out",
             scrollTrigger: {
@@ -35,7 +36,7 @@ const Experience = memo(() => {
 
   return (
     <div
-      name="experience"
+      id="experience"
       className="bg-gradient-to-b from-gray-800 to-black w-full min-h-screen py-20 select-none"
     >
       <div className="max-w-screen-lg mx-auto p-4 flex flex-col justify-center w-full h-full text-white">

@@ -5,17 +5,12 @@ import ReactGA from "react-ga4";
 
 import NavBar from "./components/NavBar";
 
-// Initialize ReactGA
 ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS);
 
-// Lazy Loading
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
-const ParticlesContainer = lazy(() =>
-  import("./components/ParticlesContainer")
-);
+const ParticlesContainer = lazy(() => import("./components/ParticlesContainer"));
 
-// Custom loading component
 const Loading = () => (
   <div className="pt-20 bg-black text-white h-screen">
     <LinearProgress />
@@ -23,7 +18,6 @@ const Loading = () => (
 );
 
 function App() {
-  // Track pageview with a custom path
   ReactGA.send({
     hitType: "pageview",
     page: window.location.pathname,

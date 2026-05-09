@@ -1,18 +1,23 @@
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-coverflow";
-import { memo } from "react";
+import { memo, type CSSProperties } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 
 import { is3XLorLarger, isMobile } from "../utils";
 import certifications from "../data/certificatesData";
 
+const swiperStyle = {
+  "--swiper-pagination-bullet-size": "10px",
+  "--swiper-pagination-bullet-horizontal-gap": "15px",
+} as CSSProperties;
+
 const Certifications = memo(() => {
   return (
     <div className="bg-gradient-to-b from-black to-black w-full  pb-22 pt-0 select-none">
       <div
-        name="certifications"
+        id="certifications"
         className="max-w-screen-lg pt-24 mx-auto p-4  flex flex-col justify-center w-full h-full text-white md:pt-20"
       >
         <div>
@@ -30,10 +35,7 @@ const Certifications = memo(() => {
             pagination={{ clickable: true }}
             grabCursor={true}
             centeredSlides
-            style={{
-              "--swiper-pagination-bullet-size": "10px",
-              "--swiper-pagination-bullet-horizontal-gap": "15px",
-            }}
+            style={swiperStyle}
             slidesPerView={isMobile || is3XLorLarger() ? 1.15 : 2}
             coverflowEffect={{
               rotate: 30,

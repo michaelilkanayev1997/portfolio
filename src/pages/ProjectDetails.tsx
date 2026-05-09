@@ -8,13 +8,13 @@ import ProjectSection from "../components/ProjectSection";
 import portfolios from "../data/projectDetailsData";
 
 const ProjectDetails = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [id]); // Keep id in dependency array to scroll to top on project change
+  }, [id]);
 
-  const project = portfolios.find((p) => p.id === parseInt(id));
+  const project = portfolios.find((p) => p.id === Number(id));
 
   if (!project || !project.details) {
     return <Error />;
@@ -78,7 +78,7 @@ const ProjectDetails = () => {
             </div>
           )}
 
-          {videos?.length > 0 && (
+          {videos && videos.length > 0 && (
             <div>
               <ProjectSection title="Videos">
                 <div className="max-w-xs sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto z-10">
@@ -91,7 +91,7 @@ const ProjectDetails = () => {
           <div className="flex justify-center space-x-8 pt-8 pb-8">
             {(demo || download) && (
               <a
-                href={download ? download : demo}
+                href={download ?? demo}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="z-10 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 ease-in-out w-1/2 sm:w-1/5"
@@ -118,4 +118,3 @@ const ProjectDetails = () => {
 };
 
 export default ProjectDetails;
-

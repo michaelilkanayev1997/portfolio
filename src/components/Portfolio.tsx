@@ -1,12 +1,12 @@
 import { memo } from "react";
 
 import PortfolioItem from "./PortfolioItem";
-import portfolios from "./../data/portfolioData";
+import portfolios from "../data/portfolioData";
 
 const Portfolio = memo(() => {
   return (
     <div
-      name="portfolio"
+      id="portfolio"
       className="bg-gradient-to-b from-black to-gray-800 w-full text-white ms:h-screen pb-20 select-none"
     >
       <div className="max-w-screen-lg p-4 pt-20 mx-auto flex flex-col justify-center w-full h-full">

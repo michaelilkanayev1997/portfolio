@@ -4,7 +4,7 @@ import { ulText } from "../data/aboutData";
 const About = () => {
   return (
     <div
-      name="about"
+      id="about"
       className="w-full h-screen bg-gradient-to-b from-gray-800 to-black text-white select-none"
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center w-full h-full">

@@ -1,4 +1,6 @@
-export const ulText = [
+import type { AboutItem } from "../types";
+
+export const ulText: AboutItem[] = [
   {
     text: "I'm a highly motivated and serious individual with a strong curiosity and a keen eye for detail.",
   },
