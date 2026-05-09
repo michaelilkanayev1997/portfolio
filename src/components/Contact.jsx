@@ -46,10 +46,10 @@ const Contact = () => {
         setIsLoading(true); // Start loading
         emailjs
           .sendForm(
-            process.env.REACT_APP_SERVICE,
-            process.env.REACT_APP_TEMPLATE,
+            import.meta.env.VITE_SERVICE,
+            import.meta.env.VITE_TEMPLATE,
             form.current,
-            process.env.REACT_APP_KEY
+            import.meta.env.VITE_KEY
           )
           .then(
             async (result) => {

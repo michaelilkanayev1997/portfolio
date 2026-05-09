@@ -6,7 +6,7 @@ import ReactGA from "react-ga4";
 import NavBar from "./components/NavBar";
 
 // Initialize ReactGA
-ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
+ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS);
 
 // Lazy Loading
 const HomePage = lazy(() => import("./pages/HomePage"));
