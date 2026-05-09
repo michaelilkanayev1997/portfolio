@@ -8,7 +8,9 @@ import novasound from "../assets/portfolio/NovaSound/novasound.webp";
 import cancerjourneyhero from "../assets/portfolio/CancerJourney/cancerjourneyhero.webp";
 import passwordmanagerhero from "../assets/portfolio/PasswordManager/passwordmanagerhero.webp";
 
-const portfolios = [
+import type { PortfolioSummary } from "../types";
+
+const portfolios: PortfolioSummary[] = [
   {
     id: 1,
     src: scemoviesocialhero,

@@ -4,11 +4,13 @@ import gsap from "gsap";
 import { links } from "../data/socialLinksData";
 
 const SocialLinks = () => {
-  const linksRef = useRef([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
+    if (!containerRef.current) return;
     gsap.fromTo(
-      linksRef.current,
-      { x: "-200px", opacity: 0 }, // Starting position
+      containerRef.current,
+      { x: "-200px", opacity: 0 },
       {
         x: "0",
         opacity: 1,
@@ -17,10 +19,11 @@ const SocialLinks = () => {
       }
     );
   }, []);
+
   return (
     <div
       className="hidden xl:flex flex-col top-[35%] left-0 fixed select-none"
-      ref={linksRef}
+      ref={containerRef}
     >
       <ul>
         {links.map(({ id, child, href, style }) => (
@@ -29,7 +32,7 @@ const SocialLinks = () => {
             className={
               "flex justify-between items-center w-40 h-14 px-4 ml-[-100px] hover:ml-[-10px] hover:rounded-md duration-300 bg-gray-500" +
               " " +
-              style
+              (style ?? "")
             }
           >
             <a

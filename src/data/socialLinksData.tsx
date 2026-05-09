@@ -1,7 +1,9 @@
 import { FaGithub, FaLinkedin, FaYoutube } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 
-export const links = [
+import type { SocialLink } from "../types";
+
+export const links: SocialLink[] = [
   {
     id: 1,
     child: (

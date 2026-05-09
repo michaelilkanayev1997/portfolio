@@ -1,11 +1,24 @@
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { memo } from "react";
+import { memo, type CSSProperties } from "react";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const PicturesSlide = ({ backdrops, title }) => {
+import type { ProjectPicture } from "../types";
+
+interface PicturesSlideProps {
+  backdrops: ProjectPicture[];
+  title: string;
+}
+
+const swiperStyle = {
+  "--swiper-pagination-bullet-size": "10px",
+  "--swiper-pagination-bullet-horizontal-gap": "15px",
+  "--swiper-pagination-bottom": "-7px",
+} as CSSProperties;
+
+const PicturesSlide = ({ backdrops, title }: PicturesSlideProps) => {
   return (
     <Swiper
       modules={[Pagination, Navigation]}
@@ -15,11 +28,7 @@ const PicturesSlide = ({ backdrops, title }) => {
       spaceBetween={20}
       slidesPerView={1.25}
       centeredSlides
-      style={{
-        "--swiper-pagination-bullet-size": "10px",
-        "--swiper-pagination-bullet-horizontal-gap": "15px",
-        "--swiper-pagination-bottom": "-7px",
-      }}
+      style={swiperStyle}
     >
       {[...backdrops].splice(0, 20).map((item, index) => (
         <SwiperSlide key={index}>

@@ -1,4 +1,11 @@
-import { useRef, useState, useCallback, memo } from "react";
+import {
+  useRef,
+  useState,
+  useCallback,
+  memo,
+  type FormEvent,
+  type ChangeEvent,
+} from "react";
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
@@ -8,7 +15,7 @@ const Contact = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const form = useRef();
+  const form = useRef<HTMLFormElement>(null);
 
   const isValid = name !== "" && email !== "" && message !== "";
 
@@ -19,11 +26,12 @@ const Contact = () => {
   }, []);
 
   const sendEmail = useCallback(
-    (e) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
+      if (!form.current) return;
+
       if (isValid) {
-        // Validate email format using regular expression
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!email.match(emailPattern)) {
           toast.error("Please enter a valid email address", {
@@ -43,7 +51,7 @@ const Contact = () => {
           });
           return;
         }
-        setIsLoading(true); // Start loading
+        setIsLoading(true);
         emailjs
           .sendForm(
             import.meta.env.VITE_SERVICE,
@@ -52,11 +60,10 @@ const Contact = () => {
             import.meta.env.VITE_KEY
           )
           .then(
-            async (result) => {
+            async () => {
               RestetFields();
-              e.target.reset();
-              setIsLoading(false); // Stop loading
-              //Your message have been sent !
+              form.current?.reset();
+              setIsLoading(false);
               await Swal.fire({
                 title: "Your message have been sent !",
                 text: "Thanks!",
@@ -67,9 +74,9 @@ const Contact = () => {
                 confirmButtonText: "OK",
               });
             },
-            async (error) => {
+            async (error: { text: string }) => {
               console.log(error.text);
-              setIsLoading(false); // Stop loading
+              setIsLoading(false);
               await Swal.fire({
                 title: "Error in Email sending",
                 text: error.text,
@@ -101,6 +108,7 @@ const Contact = () => {
     },
     [email, isValid, RestetFields]
   );
+
   return (
     <div className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 2xl:pb-unset select-none">
       <div className="flex flex-col p-4 justify-center max-w-screen-lg mx-auto">
@@ -113,7 +121,7 @@ const Contact = () => {
           </p>
         </div>
 
-        <div name="contact" className="flex justify-center items-center">
+        <div id="contact" className="flex justify-center items-center">
           <form
             ref={form}
             onSubmit={sendEmail}
@@ -123,28 +131,28 @@ const Contact = () => {
               type="text"
               name="user_name"
               placeholder="Enter your name"
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
               className="p-2 bg-transparent border-2 rounded-md text-white focus:outline-none z-10"
             />
             <input
               type="text"
               name="user_email"
               placeholder="Enter your email"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
               className="my-4 p-2 bg-transparent border-2 rounded-md text-white focus:outline-none z-10"
             />
             <textarea
               name="message"
               placeholder="Enter your message"
-              rows="6"
-              onChange={(e) => setMessage(e.target.value)}
+              rows={6}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
               className="2xl:h-60 p-2 bg-transparent border-2 rounded-md text-white focus:outline-none z-10 resize-none overflow-auto scrollbar-dark"
             ></textarea>
 
             <button
               type="submit"
               value="Send"
-              className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 
+              className="text-white bg-gradient-to-r from-cyan-500 to-blue-500
             px-6 py-3 my-8 md:mb-0 2xl:mb-10 mx-auto flex items-center rounded-md hover:scale-110 duration-300 z-10 relative"
             >
               Let's talk

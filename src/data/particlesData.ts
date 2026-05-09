@@ -1,3 +1,6 @@
+import type { ISourceOptions } from "tsparticles-engine";
+
+// Legacy v1-style option keys are still accepted at runtime by react-tsparticles v2.
 export const particleOptions = {
   fpsLimit: 60,
   particles: {
@@ -66,4 +69,4 @@ export const particleOptions = {
     },
   },
   retina_detect: true,
-};
+} as unknown as ISourceOptions;

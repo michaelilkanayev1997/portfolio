@@ -1,7 +1,9 @@
 import { Fragment, memo } from "react";
 import { Link } from "react-router-dom";
 
-const PortfolioItem = memo(({ id, src, title, techs }) => (
+import type { PortfolioSummary } from "../types";
+
+const PortfolioItem = memo(({ id, src, title, techs }: PortfolioSummary) => (
   <div className="shadow-md shadow-gray-600 rounded-lg duration-150 hover:scale-105 z-10">
     <img
       src={src}

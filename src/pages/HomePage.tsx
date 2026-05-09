@@ -12,6 +12,7 @@ import SocialLinks from "../components/SocialLinks";
 import Certifications from "../components/Certifications";
 
 gsap.registerPlugin(ScrollTrigger);
+
 const HomePage = () => {
   return (
     <>

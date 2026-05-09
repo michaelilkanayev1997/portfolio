@@ -1,8 +1,7 @@
 import { useState, memo } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link } from "react-scroll";
-import { useLocation } from "react-router-dom";
-import { Link as RouterLink } from "react-router-dom";
+import { useLocation, Link as RouterLink } from "react-router-dom";
 
 import { links } from "../data/navBarData";
 
@@ -10,7 +9,6 @@ const NavBar = () => {
   const location = useLocation();
   const [nav, setNav] = useState(false);
 
-  // Check if the location starts with /projectdetails
   const isProjectDetails = location.pathname.startsWith("/projectdetails");
 
   return (
@@ -65,7 +63,7 @@ const NavBar = () => {
 
       {nav && (
         <ul
-          className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen 
+          className="flex flex-col justify-center items-center absolute top-0 left-0 w-full h-screen
       bg-gradient-to-b from-black to-gray-800 text-gray-400"
         >
           {links.map(({ id, link }) => (

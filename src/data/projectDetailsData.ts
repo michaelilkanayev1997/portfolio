@@ -134,7 +134,9 @@ import cancerjourney6 from "../assets/portfolio/CancerJourney/cancerjourney6.png
 import cancerjourney7 from "../assets/portfolio/CancerJourney/cancerjourney7.webp";
 import cancerjourney8 from "../assets/portfolio/CancerJourney/cancerjourney8.png";
 
-const portfolioDetails = [
+import type { ProjectDetails } from "../types";
+
+const portfolioDetails: ProjectDetails[] = [
   {
     id: 1,
     title: "SCE-MOVIE-SOCIAL",
@@ -179,7 +181,6 @@ const portfolioDetails = [
         { lower: lowercancerjourney7, big: cancerjourney7 },
         { lower: lowercancerjourney8, big: cancerjourney8 },
       ],
-
       thirdTitle: "Features",
       thirdText: `This app has the following features :\n
       1. Timely Alerts: Never miss an appointment or medication dose with our reminder system.\n
@@ -341,7 +342,6 @@ const portfolioDetails = [
         { lower: lowernovasound13, big: novasound13 },
         { lower: lowernovasound14, big: novasound14 },
       ],
-
       thirdTitle: "Overview",
       thirdText: `NovaSound emerged from a profound intention—to honor and memorialize the memory of the Nova party on 7.10.23. This initiative seeks to commemorate the lives lost tragically during the 7.10 massacre at the Nova party in Israel.\n\n
       Throughout this project I delved into advanced concepts, enriching my expertise while intertwining modern technology with heartfelt remembrance. Beyond its core purpose, NovaSound represents the fusion of sophisticated audio sharing within a robust application, aspiring to immortalize the spirit of the party and honor the individuals whose presence was cherished but tragically cut short.
@@ -366,7 +366,6 @@ const portfolioDetails = [
       secondTitle: "Live Website",
       secondText:
         "Explore my portfolio website at: https://michaelilkanayev.com/\n\nFeel free to browse through the website to get to know me better, check out my projects, and explore the technologies I work with. If you have any questions, suggestions, or would like to collaborate, don't hesitate to reach out!",
-
       videos: ["https://www.youtube.com/embed/VTx7-zmVHDo"],
       demo: "https://michaelilkanayev.com/",
       git: "https://github.com/michaelilkanayev1997/SCE-MOVIE-SOCIAL",

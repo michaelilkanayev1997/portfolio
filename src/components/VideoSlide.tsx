@@ -1,11 +1,21 @@
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { memo } from "react";
+import { memo, type CSSProperties } from "react";
 import { A11y, Keyboard, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-const VideoSlide = ({ videos }) => {
+interface VideoSlideProps {
+  videos: string[];
+}
+
+const swiperStyle = {
+  "--swiper-pagination-bullet-size": "10px",
+  "--swiper-pagination-bullet-horizontal-gap": "15px",
+  "--swiper-pagination-bottom": "-7px",
+} as CSSProperties;
+
+const VideoSlide = ({ videos }: VideoSlideProps) => {
   return (
     <Swiper
       modules={[Keyboard, Pagination, Navigation, A11y]}
@@ -17,11 +27,7 @@ const VideoSlide = ({ videos }) => {
       keyboard={{
         enabled: true,
       }}
-      style={{
-        "--swiper-pagination-bullet-size": "10px",
-        "--swiper-pagination-bullet-horizontal-gap": "15px",
-        "--swiper-pagination-bottom": "-7px",
-      }}
+      style={swiperStyle}
     >
       {[...videos].splice(0, 5).map((item, index) => (
         <SwiperSlide key={index}>
