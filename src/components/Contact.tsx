@@ -2,6 +2,7 @@ import {
   useRef,
   useState,
   useCallback,
+  useLayoutEffect,
   memo,
   type FormEvent,
   type ChangeEvent,
@@ -9,8 +10,51 @@ import {
 import emailjs from "@emailjs/browser";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import { prefersReducedMotion } from "../utils/motion";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none reverse",
+        },
+        defaults: { ease: "power3.out", force3D: true },
+      });
+      tl.from(".contact-heading", { y: 30, opacity: 0, duration: 0.6 })
+        .fromTo(
+          ".contact-heading-underline",
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
+          "-=0.3"
+        )
+        .from(".contact-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4")
+        .from(
+          ".contact-field",
+          { y: 24, opacity: 0, duration: 0.5, stagger: 0.12 },
+          "-=0.2"
+        )
+        .from(
+          ".contact-submit",
+          { scale: 0.85, opacity: 0, duration: 0.5, ease: "back.out(1.6)" },
+          "-=0.2"
+        );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -110,13 +154,23 @@ const Contact = () => {
   );
 
   return (
-    <div className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 2xl:pb-unset select-none">
+    <div
+      ref={sectionRef}
+      className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 2xl:pb-unset select-none"
+    >
       <div className="flex flex-col p-4 justify-center max-w-screen-lg mx-auto">
         <div className="pb-8">
-          <p className="text-4xl 2xl:text-5xl font-bold inline border-b-4 border-gray-500 z-10">
-            Contact
-          </p>
-          <p className="py-6  z-10">
+          <span className="relative inline-block contact-heading">
+            <p className="text-4xl 2xl:text-5xl font-bold inline z-10">
+              Contact
+            </p>
+            <span
+              aria-hidden
+              className="contact-heading-underline absolute left-0 -bottom-1 h-1 w-full origin-left bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded"
+              style={{ transform: "scaleX(0)" }}
+            />
+          </span>
+          <p className="py-6  z-10 contact-sub">
             Submit the form below to get in touch with me
           </p>
         </div>
@@ -132,28 +186,28 @@ const Contact = () => {
               name="user_name"
               placeholder="Enter your name"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
-              className="p-2 bg-transparent border-2 rounded-md text-white focus:outline-none z-10"
+              className="contact-field p-2 bg-transparent border-2 border-gray-600 focus:border-cyan-400 transition-colors rounded-md text-white focus:outline-none z-10"
             />
             <input
               type="text"
               name="user_email"
               placeholder="Enter your email"
               onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-              className="my-4 p-2 bg-transparent border-2 rounded-md text-white focus:outline-none z-10"
+              className="contact-field my-4 p-2 bg-transparent border-2 border-gray-600 focus:border-cyan-400 transition-colors rounded-md text-white focus:outline-none z-10"
             />
             <textarea
               name="message"
               placeholder="Enter your message"
               rows={6}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
-              className="2xl:h-60 p-2 bg-transparent border-2 rounded-md text-white focus:outline-none z-10 resize-none overflow-auto scrollbar-dark"
+              className="contact-field 2xl:h-60 p-2 bg-transparent border-2 border-gray-600 focus:border-cyan-400 transition-colors rounded-md text-white focus:outline-none z-10 resize-none overflow-auto scrollbar-dark"
             ></textarea>
 
             <button
               type="submit"
               value="Send"
-              className="text-white bg-gradient-to-r from-cyan-500 to-blue-500
-            px-6 py-3 my-8 md:mb-0 2xl:mb-10 mx-auto flex items-center rounded-md hover:scale-110 duration-300 z-10 relative"
+              className="contact-submit text-white bg-gradient-to-r from-cyan-500 to-blue-500
+            px-6 py-3 my-8 md:mb-0 2xl:mb-10 mx-auto flex items-center rounded-md hover:scale-110 hover:shadow-[0_8px_30px_rgba(56,189,248,0.45)] duration-300 z-10 relative"
             >
               Let's talk
               {isLoading && (

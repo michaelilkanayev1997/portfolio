@@ -1,23 +1,25 @@
-import { useCallback, memo } from "react";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
-import type { Engine } from "tsparticles-engine";
+import { useEffect, useState, memo } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import type { Engine } from "@tsparticles/engine";
 
 import { particleOptions } from "../data/particlesData";
 
 const ParticlesContainer = () => {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadFull(engine);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine: Engine) => {
+      await loadSlim(engine);
+    }).then(() => setReady(true));
   }, []);
 
-  const particlesLoaded = useCallback(async () => {}, []);
+  if (!ready) return null;
 
   return (
     <Particles
       className="w-full h-full absolute translate-z-0"
       id="tsparticles"
-      init={particlesInit}
-      loaded={particlesLoaded}
       options={particleOptions}
     />
   );

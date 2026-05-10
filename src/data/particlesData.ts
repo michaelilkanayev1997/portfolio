@@ -1,16 +1,14 @@
-import type { ISourceOptions } from "tsparticles-engine";
+import type { ISourceOptions } from "@tsparticles/engine";
 
-// Legacy v1-style option keys are still accepted at runtime by react-tsparticles v2.
-export const particleOptions = {
+export const particleOptions: ISourceOptions = {
   fpsLimit: 60,
   particles: {
     number: {
       value: 40,
       density: {
-        enable: true,
-        value_area: 800,
+        enable: false,
       },
-      limit: 100,
+      limit: { mode: "delete", value: 60 },
     },
     color: {
       value: "#ffffff",
@@ -19,14 +17,12 @@ export const particleOptions = {
       type: "circle",
     },
     opacity: {
-      value: 0.5,
-      random: true,
+      value: { min: 0.1, max: 0.5 },
     },
     size: {
-      value: 3,
-      random: true,
+      value: { min: 1, max: 3 },
     },
-    line_linked: {
+    links: {
       enable: true,
       distance: 150,
       color: "#ffffff",
@@ -39,34 +35,33 @@ export const particleOptions = {
       direction: "none",
       random: true,
       straight: false,
-      out_mode: "out",
-      bounce: false,
+      outModes: { default: "out" },
     },
   },
   interactivity: {
-    detect_on: "canvas",
+    detectsOn: "canvas",
     events: {
-      onhover: {
+      onHover: {
         enable: true,
         mode: "grab",
       },
-      onclick: {
+      onClick: {
         enable: true,
         mode: "push",
       },
-      resize: true,
+      resize: { enable: true, delay: 0.5 },
     },
     modes: {
       grab: {
         distance: 200,
-        line_linked: {
+        links: {
           opacity: 1,
         },
       },
       push: {
-        particles_nb: 4,
+        quantity: 4,
       },
     },
   },
-  retina_detect: true,
-} as unknown as ISourceOptions;
+  detectRetina: true,
+};
