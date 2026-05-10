@@ -20,11 +20,73 @@
   border-radius: 4px;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   /* fix for iOS */
   background-color: #06080b;
   margin: 0;
   padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.reveal-init {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.heading-underline {
+  position: relative;
+  display: inline-block;
+}
+.heading-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg, #22d3ee, #3b82f6, #a855f7);
+  transform: scaleX(0);
+  transform-origin: left center;
+  border-radius: 2px;
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 200ms ease-out;
+  will-change: transform;
+}
+.tilt-card .tilt-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+  background: radial-gradient(
+    600px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.12),
+    transparent 40%
+  );
+  border-radius: inherit;
+  mix-blend-mode: screen;
+}
+.tilt-card:hover .tilt-shine {
+  opacity: 1;
 }
 
 @layer base {
