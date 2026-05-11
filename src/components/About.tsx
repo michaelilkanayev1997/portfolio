@@ -28,7 +28,7 @@ const About = () => {
           ".about-heading-underline",
           { scaleX: 0 },
           { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
-          "-=0.4"
+          "-=0.4",
         )
         .from(".about-intro", { y: 30, opacity: 0, duration: 0.6 }, "-=0.4")
         .from(".about-lead", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
@@ -40,20 +40,8 @@ const About = () => {
             duration: 0.5,
             stagger: 0.1,
           },
-          "-=0.2"
+          "-=0.2",
         );
-
-      // Glow orb that drifts with scroll
-      gsap.to(".about-orb", {
-        yPercent: 30,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.6,
-        },
-      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -63,13 +51,9 @@ const About = () => {
     <div
       id="about"
       ref={containerRef}
-      className="relative w-full h-screen bg-gradient-to-b from-gray-800 to-black text-white select-none overflow-hidden"
+      className="w-full h-screen bg-gradient-to-b from-gray-800 to-black text-white select-none"
     >
-      <div
-        aria-hidden
-        className="about-orb pointer-events-none absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full bg-cyan-500/10 blur-3xl"
-      />
-      <div className="max-w-screen-lg 3xl:max-w-screen-xl p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center w-full h-full relative z-10">
+      <div className="max-w-screen-lg 3xl:max-w-screen-xl p-4 pt-24 sm:pt-0 mx-auto flex flex-col justify-center w-full h-full">
         <div className="md:pb-6 sm:pb-6 pb-2 about-heading">
           <span className="relative inline-block">
             <p className="text-4xl 2xl:text-5xl font-bold inline">About Me</p>
