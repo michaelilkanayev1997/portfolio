@@ -33,7 +33,7 @@ const Experience = memo(() => {
           ".skills-heading-underline",
           { scaleX: 0 },
           { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
-          "-=0.3"
+          "-=0.3",
         )
         .from(".skills-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4");
 
@@ -90,7 +90,7 @@ const Experience = memo(() => {
               start: "top 92%",
               toggleActions: "play none none reverse",
             },
-          }
+          },
         );
       });
     }, sectionRef); // <-- scoped to full section, not just the grid

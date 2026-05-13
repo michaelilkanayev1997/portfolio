@@ -37,18 +37,25 @@ const Contact = () => {
           ".contact-heading-underline",
           { scaleX: 0 },
           { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
-          "-=0.3"
+          "-=0.3",
         )
         .from(".contact-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4")
         .from(
           ".contact-field",
           { y: 24, opacity: 0, duration: 0.5, stagger: 0.12 },
-          "-=0.2"
+          "-=0.2",
         )
-        .from(
+        .fromTo(
           ".contact-submit",
-          { scale: 0.85, opacity: 0, duration: 0.5, ease: "back.out(1.6)" },
-          "-=0.2"
+          { scale: 0.85, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.5,
+            ease: "back.out(1.6)",
+            clearProps: "transform,opacity",
+          },
+          "-=0.2",
         );
     }, sectionRef);
 
@@ -101,7 +108,7 @@ const Contact = () => {
             import.meta.env.VITE_SERVICE,
             import.meta.env.VITE_TEMPLATE,
             form.current,
-            import.meta.env.VITE_KEY
+            import.meta.env.VITE_KEY,
           )
           .then(
             async () => {
@@ -130,7 +137,7 @@ const Contact = () => {
                 confirmButtonColor: "#f44336",
                 confirmButtonText: "OK",
               });
-            }
+            },
           );
       } else {
         toast.error("Please enter all fields", {
@@ -150,7 +157,7 @@ const Contact = () => {
         });
       }
     },
-    [email, isValid, RestetFields]
+    [email, isValid, RestetFields],
   );
 
   return (
@@ -185,29 +192,37 @@ const Contact = () => {
               type="text"
               name="user_name"
               placeholder="Enter your name"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setName(e.target.value)
+              }
               className="contact-field p-2 bg-transparent border-2 border-gray-600 focus:border-cyan-400 transition-colors rounded-md text-white focus:outline-none z-10"
             />
             <input
               type="text"
               name="user_email"
               placeholder="Enter your email"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setEmail(e.target.value)
+              }
               className="contact-field my-4 p-2 bg-transparent border-2 border-gray-600 focus:border-cyan-400 transition-colors rounded-md text-white focus:outline-none z-10"
             />
             <textarea
               name="message"
               placeholder="Enter your message"
               rows={6}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setMessage(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                setMessage(e.target.value)
+              }
               className="contact-field 2xl:h-60 p-2 bg-transparent border-2 border-gray-600 focus:border-cyan-400 transition-colors rounded-md text-white focus:outline-none z-10 resize-none overflow-auto scrollbar-dark"
             ></textarea>
 
             <button
               type="submit"
               value="Send"
-              className="contact-submit text-white bg-gradient-to-r from-cyan-500 to-blue-500
-            px-6 py-3 my-8 md:mb-0 2xl:mb-10 mx-auto flex items-center rounded-md hover:scale-110 hover:shadow-[0_8px_30px_rgba(56,189,248,0.45)] duration-300 z-10 relative"
+              className="contact-submit text-white font-semibold tracking-wide bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500
+px-7 py-3 my-8 md:mb-0 2xl:mb-10 mx-auto flex items-center justify-center rounded-full
+hover:scale-105 hover:shadow-[0_10px_35px_rgba(56,189,248,0.45)]
+active:scale-95 transition-transform duration-300 z-10 relative overflow-hidden"
             >
               Let's talk
               {isLoading && (
