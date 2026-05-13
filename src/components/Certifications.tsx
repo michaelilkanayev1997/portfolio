@@ -1,12 +1,7 @@
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-coverflow";
-import {
-  memo,
-  useLayoutEffect,
-  useRef,
-  type CSSProperties,
-} from "react";
+import { memo, useLayoutEffect, useRef, type CSSProperties } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 import gsap from "gsap";
@@ -44,13 +39,13 @@ const Certifications = memo(() => {
           ".cert-heading-underline",
           { scaleX: 0 },
           { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
-          "-=0.3"
+          "-=0.3",
         )
         .from(".cert-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4")
         .from(
           ".cert-swiper",
           { y: 60, opacity: 0, scale: 0.95, duration: 0.9 },
-          "-=0.3"
+          "-=0.3",
         )
         .from(".cert-caption", { y: 16, opacity: 0, duration: 0.4 }, "-=0.4");
     }, sectionRef);
