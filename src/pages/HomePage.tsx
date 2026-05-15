@@ -1,5 +1,4 @@
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { ScrollTrigger } from "gsap/all";
 import gsap from "gsap";
 
@@ -13,11 +12,29 @@ import Certifications from "../components/Certifications";
 
 gsap.registerPlugin(ScrollTrigger);
 
+const ToastContainer = lazy(() =>
+  import("react-toastify").then((m) => ({ default: m.ToastContainer })),
+);
+
 const HomePage = () => {
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+    };
+    if (w.requestIdleCallback) w.requestIdleCallback(() => setHydrated(true), { timeout: 3000 });
+    else setTimeout(() => setHydrated(true), 1500);
+  }, []);
+
   return (
     <>
-      <ToastContainer />
-      <div>
+      {hydrated && (
+        <Suspense fallback={null}>
+          <ToastContainer />
+        </Suspense>
+      )}
+      <main>
         <Home />
         <About />
         <Certifications />
@@ -25,7 +42,7 @@ const HomePage = () => {
         <Experience />
         <Contact />
         <SocialLinks />
-      </div>
+      </main>
     </>
   );
 };
