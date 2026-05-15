@@ -1,29 +1,31 @@
 import type { ISourceOptions } from "@tsparticles/engine";
 
+const isMobile =
+  typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
+const isLowPower =
+  typeof navigator !== "undefined" &&
+  ((navigator as Navigator & { deviceMemory?: number }).deviceMemory !== undefined &&
+    (navigator as Navigator & { deviceMemory?: number }).deviceMemory! <= 4);
+
+const particleCount = isMobile || isLowPower ? 18 : 36;
+const enableLinks = !isMobile && !isLowPower;
+
 export const particleOptions: ISourceOptions = {
   fpsLimit: 60,
+  pauseOnBlur: true,
+  pauseOnOutsideViewport: true,
   particles: {
     number: {
-      value: 40,
-      density: {
-        enable: false,
-      },
-      limit: { mode: "delete", value: 60 },
+      value: particleCount,
+      density: { enable: false },
+      limit: { mode: "delete", value: particleCount },
     },
-    color: {
-      value: "#ffffff",
-    },
-    shape: {
-      type: "circle",
-    },
-    opacity: {
-      value: { min: 0.1, max: 0.5 },
-    },
-    size: {
-      value: { min: 1, max: 3 },
-    },
+    color: { value: "#ffffff" },
+    shape: { type: "circle" },
+    opacity: { value: { min: 0.1, max: 0.5 } },
+    size: { value: { min: 1, max: 3 } },
     links: {
-      enable: true,
+      enable: enableLinks,
       distance: 150,
       color: "#ffffff",
       opacity: 0.4,
@@ -39,28 +41,15 @@ export const particleOptions: ISourceOptions = {
     },
   },
   interactivity: {
-    detectsOn: "canvas",
+    detectsOn: "window",
     events: {
-      onHover: {
-        enable: true,
-        mode: "grab",
-      },
-      onClick: {
-        enable: true,
-        mode: "push",
-      },
+      onHover: { enable: !isMobile, mode: "grab" },
+      onClick: { enable: !isMobile, mode: "push" },
       resize: { enable: true, delay: 0.5 },
     },
     modes: {
-      grab: {
-        distance: 200,
-        links: {
-          opacity: 1,
-        },
-      },
-      push: {
-        quantity: 4,
-      },
+      grab: { distance: 200, links: { opacity: 1 } },
+      push: { quantity: 3 },
     },
   },
   detectRetina: true,
