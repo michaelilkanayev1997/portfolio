@@ -9,16 +9,22 @@ const ParticlesContainer = () => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
     initParticlesEngine(async (engine: Engine) => {
       await loadSlim(engine);
-    }).then(() => setReady(true));
+    }).then(() => {
+      if (!cancelled) setReady(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (!ready) return null;
 
   return (
     <Particles
-      className="w-full h-full absolute translate-z-0"
+      className="w-full h-full absolute translate-z-0 pointer-events-none"
       id="tsparticles"
       options={particleOptions}
     />
