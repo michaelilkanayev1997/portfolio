@@ -2,34 +2,86 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Michael Ilkanayev Portfolio" />
+    <meta name="color-scheme" content="dark" />
+
+    <title>Michael Ilkanayev — Software Engineer & Full Stack Developer</title>
+    <meta
+      name="description"
+      content="Portfolio of Michael Ilkanayev — Software Engineer specialising in React, React Native, Node.js, TypeScript and Python. Explore projects, skills and certifications."
+    />
+    <meta name="author" content="Michael Ilkanayev" />
+    <link rel="canonical" href="https://michaelilkanayev.netlify.app/" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <script>
-      (function () {
-        var raleway = document.createElement('link');
-        raleway.href = 'https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap';
-        raleway.rel = 'stylesheet';
-        raleway.type = 'text/css';
-        document.head.appendChild(raleway);
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://michaelilkanayev.netlify.app/" />
+    <meta property="og:title" content="Michael Ilkanayev — Software Engineer" />
+    <meta property="og:description" content="Portfolio of a Full Stack Developer specialising in React, React Native, Node.js, TypeScript." />
+    <meta property="og:image" content="https://michaelilkanayev.netlify.app/heroImage.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Michael Ilkanayev — Software Engineer" />
+    <meta name="twitter:description" content="Portfolio of a Full Stack Developer specialising in React, React Native, Node.js, TypeScript." />
+    <meta name="twitter:image" content="https://michaelilkanayev.netlify.app/heroImage.webp" />
 
-        var greatVibes = document.createElement('link');
-        greatVibes.href = 'https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap';
-        greatVibes.rel = 'stylesheet';
-        greatVibes.type = 'text/css';
-        document.head.appendChild(greatVibes);
-      })();
+    <!-- Font connection (DNS + TLS warm) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Async, non-blocking font loading with display=swap -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Great+Vibes&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&family=Great+Vibes&display=swap"
+      />
+    </noscript>
+
+    <!-- LCP image preload (responsive) -->
+    <link
+      rel="preload"
+      fetchpriority="high"
+      as="image"
+      href="/heroImage.webp"
+      media="(min-width: 501px)"
+      type="image/webp"
+    />
+    <link
+      rel="preload"
+      fetchpriority="high"
+      as="image"
+      href="/mobileHeroImage.webp"
+      media="(max-width: 500px)"
+      type="image/webp"
+    />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Michael Ilkanayev",
+        "jobTitle": "Software Engineer",
+        "url": "https://michaelilkanayev.netlify.app/",
+        "sameAs": [
+          "https://github.com/michaelilkanayev1997",
+          "https://www.linkedin.com/in/michael-ilkanayev/"
+        ],
+        "knowsAbout": ["React", "React Native", "Node.js", "TypeScript", "Python", "MongoDB", "Firebase"]
+      }
     </script>
-
-    <link rel="preload" fetchpriority="high" as="image" href="/heroImage.webp" media="(min-width: 501px)" type="image/webp" />
-    <link rel="preload" fetchpriority="high" as="image" href="/mobileHeroImage.webp" media="(max-width: 500px)" type="image/webp" />
-    <title>Michael Ilkanayev</title>
   </head>
-  <body style="background-color: #000000;">
+  <body style="background-color: #06080b; margin: 0;">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>

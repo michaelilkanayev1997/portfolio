@@ -1,13 +1,15 @@
 import type { ISourceOptions } from "@tsparticles/engine";
 
 const isMobile =
-  typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width: 768px)").matches;
 const isLowPower =
   typeof navigator !== "undefined" &&
-  ((navigator as Navigator & { deviceMemory?: number }).deviceMemory !== undefined &&
-    (navigator as Navigator & { deviceMemory?: number }).deviceMemory! <= 4);
+  (navigator as Navigator & { deviceMemory?: number }).deviceMemory !==
+    undefined &&
+  (navigator as Navigator & { deviceMemory?: number }).deviceMemory! <= 4;
 
-const particleCount = isMobile || isLowPower ? 18 : 36;
+const particleCount = isMobile || isLowPower ? 18 : 40;
 const enableLinks = !isMobile && !isLowPower;
 
 export const particleOptions: ISourceOptions = {
