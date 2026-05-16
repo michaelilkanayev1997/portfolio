@@ -1,16 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
     open: true,
-  },
-  esbuild: {
-    legalComments: "none",
-    drop: ["console", "debugger"],
   },
   build: {
     outDir: "build",
@@ -24,10 +19,13 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (!id.includes("node_modules")) return;
+
           if (id.includes("react-router") || id.includes("@remix-run"))
             return "router";
+
           if (id.includes("/react/") || id.includes("/react-dom/"))
             return "react";
+
           if (id.includes("/gsap/")) return "gsap";
           if (id.includes("@tsparticles")) return "particles";
           if (id.includes("/swiper/")) return "swiper";
