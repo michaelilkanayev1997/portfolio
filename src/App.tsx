@@ -5,8 +5,6 @@ import ReactGA from "react-ga4";
 
 import NavBar from "./components/NavBar";
 import ScrollProgress from "./components/ScrollProgress";
-import IlonaEgg from "./components/IlonaEgg";
-import DragonGuide from "./components/DragonGuide";
 
 const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS;
 if (GA_ID) ReactGA.initialize(GA_ID);
