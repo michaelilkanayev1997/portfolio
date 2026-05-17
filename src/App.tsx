@@ -1,12 +1,15 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import ReactGA from "react-ga4";
 
 import NavBar from "./components/NavBar";
 import ScrollProgress from "./components/ScrollProgress";
+import IlonaEgg from "./components/IlonaEgg";
+import DragonGuide from "./components/DragonGuide";
 
-ReactGA.initialize(import.meta.env.VITE_GOOGLE_ANALYTICS);
+const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS;
+if (GA_ID) ReactGA.initialize(GA_ID);
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
@@ -20,24 +23,47 @@ const Loading = () => (
   </div>
 );
 
+const scheduleIdle = (cb: () => void) => {
+  const w = window as Window & {
+    requestIdleCallback?: (
+      cb: () => void,
+      opts?: { timeout: number },
+    ) => number;
+  };
+  if (w.requestIdleCallback) w.requestIdleCallback(cb, { timeout: 2000 });
+  else setTimeout(cb, 1200);
+};
+
 function App() {
   const { pathname } = useLocation();
+  const [particlesReady, setParticlesReady] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
 
-  ReactGA.send({
-    hitType: "pageview",
-    page: window.location.pathname,
-    title: window.location.pathname,
-  });
+  useEffect(() => {
+    if (!GA_ID) return;
+    ReactGA.send({
+      hitType: "pageview",
+      page: pathname,
+      title: document.title,
+    });
+  }, [pathname]);
+
+  useEffect(() => {
+    if (import.meta.env.DEV) return;
+    // Defer particle mount until browser is idle so it never competes with LCP.
+    scheduleIdle(() => setParticlesReady(true));
+  }, []);
 
   return (
     <>
-      <Suspense>
-        <ParticlesContainer />
-      </Suspense>
+      {(particlesReady || import.meta.env.DEV) && (
+        <Suspense fallback={null}>
+          <ParticlesContainer />
+        </Suspense>
+      )}
       <ScrollProgress />
       <NavBar />
       <Suspense fallback={<Loading />}>
