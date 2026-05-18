@@ -49,6 +49,20 @@ body {
   will-change: opacity, transform;
 }
 
+.dragon-enter {
+  opacity: 0;
+  animation: dragonFadeIn 600ms ease-out forwards;
+  will-change: opacity;
+}
+@keyframes dragonFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+
 .heading-underline {
   position: relative;
   display: inline-block;
