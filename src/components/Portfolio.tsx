@@ -28,7 +28,7 @@ const Portfolio = memo(() => {
           ".portfolio-heading-underline",
           { scaleX: 0 },
           { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
-          "-=0.3"
+          "-=0.3",
         )
         .from(".portfolio-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4");
 
