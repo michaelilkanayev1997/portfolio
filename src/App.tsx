@@ -5,6 +5,7 @@ import ReactGA from "react-ga4";
 
 import NavBar from "./components/NavBar";
 import ScrollProgress from "./components/ScrollProgress";
+import DragonGuide from "./components/DragonGuide";
 
 const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS;
 if (GA_ID) ReactGA.initialize(GA_ID);
@@ -63,6 +64,7 @@ function App() {
         </Suspense>
       )}
       <ScrollProgress />
+      <DragonGuide />
       <NavBar />
       <Suspense fallback={<Loading />}>
         <Routes>
