@@ -1,102 +1,123 @@
-import { memo, useLayoutEffect, useRef } from "react";
+import { memo, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import skills from "../data/experienceData";
-import { prefersReducedMotion } from "../utils/motion";
+import { useDeferredGsap } from "../hooks/useDeferredGsap";
+import { getRevealMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Experience = memo(() => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (prefersReducedMotion()) {
-      gsap.utils
-        .toArray<HTMLDivElement>(".skill-level")
-        .forEach((el) => (el.style.width = el.dataset.level ?? ""));
-      return;
-    }
-
-    // Scope to the whole section so the heading is included
-    const ctx = gsap.context(() => {
+  useDeferredGsap(
+    sectionRef,
+    () => {
+      const motion = getRevealMotion();
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".skills-heading",
-          start: "top 80%",
+          start: motion.headingStart,
           toggleActions: "play none none reverse",
         },
-        defaults: { ease: "power3.out", force3D: true },
+        defaults: { ease: motion.ease, force3D: true },
       });
-      tl.from(".skills-heading", { y: 30, opacity: 0, duration: 0.6 })
+      tl.from(".skills-heading", {
+        y: motion.distance,
+        opacity: 0,
+        duration: motion.duration,
+      })
         .fromTo(
           ".skills-heading-underline",
           { scaleX: 0 },
-          { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
+          {
+            scaleX: 1,
+            duration: motion.underlineDuration,
+            ease: "power2.inOut",
+          },
           "-=0.3",
         )
-        .from(".skills-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4");
+        .from(
+          ".skills-sub",
+          {
+            y: motion.isMobile ? 14 : 20,
+            opacity: 0,
+            duration: motion.shortDuration,
+          },
+          "-=0.4",
+        );
 
       gsap.utils.toArray<HTMLElement>(".skill-category").forEach((cat) => {
         gsap.from(cat.querySelector(".skill-category-title"), {
-          y: 24,
+          y: motion.isMobile ? 16 : 24,
           opacity: 0,
-          duration: 0.6,
-          ease: "power3.out",
+          duration: motion.duration,
+          ease: motion.ease,
           scrollTrigger: {
             trigger: cat,
-            start: "top 85%",
+            start: motion.start,
             toggleActions: "play none none reverse",
           },
         });
       });
 
-      gsap.set(".skill-card", { opacity: 0, y: 30, scale: 0.96 });
+      gsap.set(".skill-card", {
+        opacity: 0,
+        y: motion.distance,
+        scale: motion.scale,
+      });
       ScrollTrigger.batch(".skill-card", {
-        start: "top 90%",
-        onEnter: (els) =>
+        start: motion.isMobile ? "top 94%" : "top 90%",
+        batchMax: motion.isMobile ? 4 : 6,
+        interval: 0.08,
+        onEnter: (els) => {
+          gsap.set(els, { willChange: "transform,opacity" });
           gsap.to(els, {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.55,
-            stagger: 0.08,
-            ease: "power3.out",
+            duration: motion.duration,
+            stagger: motion.cardStagger,
+            ease: motion.ease,
             overwrite: true,
-          }),
-        onLeaveBack: (els) =>
+            onComplete: () => gsap.set(els, { clearProps: "willChange" }),
+          });
+        },
+        onLeaveBack: (els) => {
+          gsap.set(els, { willChange: "transform,opacity" });
           gsap.to(els, {
             opacity: 0,
-            y: 30,
-            scale: 0.96,
-            duration: 0.4,
-            stagger: 0.04,
+            y: motion.distance,
+            scale: motion.scale,
+            duration: motion.isMobile ? 0.28 : 0.4,
+            stagger: motion.cardStagger,
             ease: "power2.in",
             overwrite: true,
-          }),
+            onComplete: () => gsap.set(els, { clearProps: "willChange" }),
+          });
+        },
       });
 
       gsap.utils.toArray<HTMLDivElement>(".skill-level").forEach((level) => {
-        const width = level.dataset.level;
         gsap.fromTo(
           level,
-          { width: 0 },
+          { scaleX: 0 },
           {
-            width,
-            duration: 1.4,
-            ease: "power3.out",
+            scaleX: 1,
+            duration: motion.isMobile ? 0.65 : 1.1,
+            ease: motion.ease,
             scrollTrigger: {
               trigger: level,
-              start: "top 92%",
+              start: motion.isMobile ? "top 95%" : "top 92%",
               toggleActions: "play none none reverse",
             },
           },
         );
       });
-    }, sectionRef); // <-- scoped to full section, not just the grid
-
-    return () => ctx.revert();
-  }, []);
+    },
+    [],
+  );
 
   return (
     <div
@@ -144,8 +165,9 @@ const Experience = memo(() => {
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-3 sm:h-4 overflow-hidden">
                       <div
-                        className="skill-level bg-gradient-to-r from-cyan-500 to-blue-500 h-3 sm:h-4 rounded-full"
+                        className="skill-level bg-gradient-to-r from-cyan-500 to-blue-500 h-3 sm:h-4 rounded-full origin-left"
                         data-level={level}
+                        style={{ width: level }}
                       ></div>
                     </div>
                   </div>

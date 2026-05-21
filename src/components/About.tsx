@@ -1,51 +1,71 @@
-import { memo, useLayoutEffect, useRef } from "react";
+import { memo, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { ulText } from "../data/aboutData";
-import { prefersReducedMotion } from "../utils/motion";
+import { useDeferredGsap } from "../hooks/useDeferredGsap";
+import { getRevealMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
+  useDeferredGsap(
+    containerRef,
+    () => {
+      const motion = getRevealMotion();
       const tl = gsap.timeline({
-        defaults: { ease: "power3.out", force3D: true },
+        defaults: { ease: motion.ease, force3D: true },
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top 75%",
+          start: motion.isMobile ? "top 86%" : "top 75%",
           toggleActions: "play none none reverse",
         },
       });
 
-      tl.from(".about-heading", { y: 30, opacity: 0, duration: 0.7 })
+      tl.from(".about-heading", {
+        y: motion.distance,
+        opacity: 0,
+        duration: motion.duration,
+      })
         .fromTo(
           ".about-heading-underline",
           { scaleX: 0 },
-          { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
+          {
+            scaleX: 1,
+            duration: motion.underlineDuration,
+            ease: "power2.inOut",
+          },
           "-=0.4",
         )
-        .from(".about-intro", { y: 30, opacity: 0, duration: 0.6 }, "-=0.4")
-        .from(".about-lead", { y: 20, opacity: 0, duration: 0.5 }, "-=0.3")
+        .from(
+          ".about-intro",
+          { y: motion.distance, opacity: 0, duration: motion.duration },
+          "-=0.4",
+        )
+        .from(
+          ".about-lead",
+          {
+            y: motion.isMobile ? 14 : 20,
+            opacity: 0,
+            duration: motion.shortDuration,
+          },
+          "-=0.3",
+        )
         .from(
           ".about-item",
           {
-            y: 24,
+            y: motion.isMobile ? 16 : 24,
             opacity: 0,
-            duration: 0.5,
-            stagger: 0.1,
+            duration: motion.shortDuration,
+            stagger: motion.stagger,
           },
           "-=0.2",
         );
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    [],
+  );
 
   return (
     <div

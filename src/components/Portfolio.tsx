@@ -1,64 +1,91 @@
-import { memo, useLayoutEffect, useRef } from "react";
+import { memo, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import PortfolioItem from "./PortfolioItem";
 import portfolios from "../data/portfolioData";
-import { prefersReducedMotion } from "../utils/motion";
+import { useDeferredGsap } from "../hooks/useDeferredGsap";
+import { getRevealMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Portfolio = memo(() => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
+  useDeferredGsap(
+    sectionRef,
+    () => {
+      const motion = getRevealMotion();
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ".portfolio-heading",
-          start: "top 80%",
+          start: motion.headingStart,
           toggleActions: "play none none reverse",
         },
-        defaults: { ease: "power3.out", force3D: true },
+        defaults: { ease: motion.ease, force3D: true },
       });
-      tl.from(".portfolio-heading", { y: 30, opacity: 0, duration: 0.6 })
+      tl.from(".portfolio-heading", {
+        y: motion.distance,
+        opacity: 0,
+        duration: motion.duration,
+      })
         .fromTo(
           ".portfolio-heading-underline",
           { scaleX: 0 },
-          { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
+          {
+            scaleX: 1,
+            duration: motion.underlineDuration,
+            ease: "power2.inOut",
+          },
           "-=0.3",
         )
-        .from(".portfolio-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4");
+        .from(
+          ".portfolio-sub",
+          {
+            y: motion.isMobile ? 14 : 20,
+            opacity: 0,
+            duration: motion.shortDuration,
+          },
+          "-=0.4",
+        );
 
-      gsap.set(".portfolio-card", { opacity: 0, y: 50 });
+      gsap.set(".portfolio-card", {
+        opacity: 0,
+        y: motion.isMobile ? 28 : 50,
+      });
 
       ScrollTrigger.batch(".portfolio-card", {
-        start: "top 88%",
-        onEnter: (els) =>
+        start: motion.isMobile ? "top 94%" : "top 88%",
+        batchMax: motion.isMobile ? 4 : 6,
+        interval: 0.08,
+        onEnter: (els) => {
+          gsap.set(els, { willChange: "transform,opacity" });
           gsap.to(els, {
             opacity: 1,
             y: 0,
-            duration: 0.7,
-            stagger: 0.12,
-            ease: "power3.out",
+            duration: motion.isMobile ? 0.42 : 0.7,
+            stagger: motion.stagger,
+            ease: motion.ease,
             overwrite: true,
-          }),
-        onLeaveBack: (els) =>
+            onComplete: () => gsap.set(els, { clearProps: "willChange" }),
+          });
+        },
+        onLeaveBack: (els) => {
+          gsap.set(els, { willChange: "transform,opacity" });
           gsap.to(els, {
             opacity: 0,
-            y: 50,
-            duration: 0.4,
-            stagger: 0.06,
+            y: motion.isMobile ? 28 : 50,
+            duration: motion.isMobile ? 0.28 : 0.4,
+            stagger: motion.cardStagger,
             ease: "power2.in",
             overwrite: true,
-          }),
+            onComplete: () => gsap.set(els, { clearProps: "willChange" }),
+          });
+        },
       });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+    },
+    [],
+  );
 
   return (
     <div

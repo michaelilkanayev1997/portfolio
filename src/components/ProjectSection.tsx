@@ -1,8 +1,9 @@
-import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-import { prefersReducedMotion } from "../utils/motion";
+import { useDeferredGsap } from "../hooks/useDeferredGsap";
+import { getRevealMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,31 +22,43 @@ const ProjectSection = ({
 }: ProjectSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (!children || prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
+  useDeferredGsap(
+    sectionRef,
+    () => {
+      if (!children) return;
+      const motion = getRevealMotion();
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 85%",
+          start: motion.start,
           toggleActions: "play none none reverse",
         },
-        defaults: { ease: "power3.out", force3D: true },
+        defaults: { ease: motion.ease, force3D: true },
       });
 
-      tl.from(".ps-title", { y: 24, opacity: 0, duration: 0.55 })
+      tl.from(".ps-title", {
+        y: motion.isMobile ? 16 : 24,
+        opacity: 0,
+        duration: motion.duration,
+      })
         .fromTo(
           ".ps-underline",
           { scaleX: 0 },
-          { scaleX: 1, duration: 0.6, ease: "power2.inOut" },
+          {
+            scaleX: 1,
+            duration: motion.underlineDuration,
+            ease: "power2.inOut",
+          },
           "-=0.25",
         )
-        .from(".ps-content", { y: 30, opacity: 0, duration: 0.6 }, "-=0.35");
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, [children]);
+        .from(
+          ".ps-content",
+          { y: motion.distance, opacity: 0, duration: motion.duration },
+          "-=0.35",
+        );
+    },
+    [children],
+  );
 
   if (!children) return null;
 

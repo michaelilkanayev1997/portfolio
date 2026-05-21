@@ -9,6 +9,7 @@ import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
 import { isiPhone, isMobile } from "../utils";
+import { getRevealMotion, prefersReducedMotion } from "../utils/motion";
 
 const Home = () => {
   const [typeEffect] = useTypewriter({
@@ -27,72 +28,83 @@ const Home = () => {
   const typeEffectRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     const ctx = gsap.context(() => {
+      const motion = getRevealMotion();
       gsap.fromTo(
         imageRef.current,
-        { opacity: 0, scale: 0.5, y: 50 },
+        { opacity: 0, scale: motion.isMobile ? 0.82 : 0.5, y: motion.largeDistance },
         {
           opacity: 1,
           scale: 1,
           y: 0,
-          duration: 1.5,
-        }
+          duration: motion.isMobile ? 0.65 : 1.5,
+          ease: motion.ease,
+        },
       );
 
       gsap.fromTo(
         textRef.current,
-        { opacity: 0, y: 50 },
+        { opacity: 0, y: motion.largeDistance },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
-          delay: 0.6,
+          duration: motion.isMobile ? 0.45 : 1,
+          delay: motion.isMobile ? 0.2 : 0.6,
+          ease: motion.ease,
           scrollTrigger: {
             trigger: textRef.current,
             toggleActions: "restart reverse restart reverse",
-            start: "top 85%",
+            start: motion.start,
           },
-        }
+        },
       );
 
       gsap.fromTo(
         buttonGroupRef.current,
-        { opacity: 0, y: 50 },
+        { opacity: 0, y: motion.largeDistance },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
-          delay: 1.3,
+          duration: motion.isMobile ? 0.45 : 1,
+          delay: motion.isMobile ? 0.35 : 1.3,
+          ease: motion.ease,
           scrollTrigger: {
             trigger: buttonGroupRef.current,
             toggleActions: "restart reverse restart reverse",
-            start: "top 85%",
+            start: motion.start,
           },
-        }
+        },
       );
       gsap.fromTo(
         linkGroupRef.current,
-        { opacity: 0, scale: 0.1 },
+        { opacity: 0, scale: motion.isMobile ? 0.82 : 0.1 },
         {
-          ease: "power2.in",
+          ease: motion.ease,
           opacity: 1,
           scale: 1,
-          duration: 0.8,
-          delay: 1.3,
+          duration: motion.isMobile ? 0.38 : 0.8,
+          delay: motion.isMobile ? 0.35 : 1.3,
           scrollTrigger: {
             trigger: linkGroupRef.current,
           },
-        }
+        },
       );
       gsap.fromTo(
         typeEffectRef.current,
-        { opacity: 0, scale: 0.5, y: -100 },
+        {
+          opacity: 0,
+          scale: motion.isMobile ? 0.9 : 0.5,
+          y: motion.isMobile ? -40 : -100,
+        },
         {
           opacity: 1,
           scale: 1,
           y: 0,
-          duration: 1.2,
-        }
+          duration: motion.isMobile ? 0.55 : 1.2,
+          ease: motion.ease,
+        },
       );
       gsap.to(".g_grow", {
         scale: 1.05,
@@ -102,7 +114,7 @@ const Home = () => {
           trigger: ".g_grow",
           toggleActions: "restart reverse restart reverse",
           start: "top 100%",
-          scrub: 2,
+          scrub: motion.isMobile ? 0.4 : 2,
         },
       });
     }, main);

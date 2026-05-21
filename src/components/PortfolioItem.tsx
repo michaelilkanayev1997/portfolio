@@ -1,13 +1,15 @@
-import { Fragment, memo, useCallback, useRef } from "react";
+import { Fragment, memo, useCallback, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import type { PortfolioSummary } from "../types";
+import { canHover } from "../utils/motion";
 
 const TILT_MAX = 8;
 
 const PortfolioItem = memo(({ id, src, title, techs }: PortfolioSummary) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
+  const supportsHover = useMemo(() => canHover(), []);
 
   const onMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const el = cardRef.current;
@@ -40,17 +42,18 @@ const PortfolioItem = memo(({ id, src, title, techs }: PortfolioSummary) => {
   return (
     <div
       ref={cardRef}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
+      onMouseMove={supportsHover ? onMouseMove : undefined}
+      onMouseLeave={supportsHover ? onMouseLeave : undefined}
       className="portfolio-card tilt-card relative shadow-md shadow-gray-600 rounded-lg z-10 bg-gray-900/30"
     >
       <div className="overflow-hidden rounded-t-md">
-        <img
-          src={src}
-          alt={title}
-          className="w-full h-36 object-cover transition-transform duration-500 ease-out hover:scale-110"
-          loading="lazy"
-        />
+          <img
+            src={src}
+            alt={title}
+            className="w-full h-36 object-cover transition-transform duration-500 ease-out hover:scale-110"
+            loading="lazy"
+            decoding="async"
+          />
       </div>
       <p className="text-lg font-bold border-b-4 border-gray-500 py-2 flex justify-center items-center">
         {title}
