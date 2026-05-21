@@ -70,7 +70,7 @@ const Contact = () => {
 
   const isValid = name !== "" && email !== "" && message !== "";
 
-  const RestetFields = useCallback(() => {
+  const resetFields = useCallback(() => {
     setName("");
     setEmail("");
     setMessage("");
@@ -112,7 +112,7 @@ const Contact = () => {
           )
           .then(
             async () => {
-              RestetFields();
+              resetFields();
               form.current?.reset();
               setIsLoading(false);
               await Swal.fire({
@@ -126,7 +126,6 @@ const Contact = () => {
               });
             },
             async (error: { text: string }) => {
-              console.log(error.text);
               setIsLoading(false);
               await Swal.fire({
                 title: "Error in Email sending",
@@ -157,7 +156,7 @@ const Contact = () => {
         });
       }
     },
-    [email, isValid, RestetFields],
+    [email, isValid, resetFields],
   );
 
   return (
