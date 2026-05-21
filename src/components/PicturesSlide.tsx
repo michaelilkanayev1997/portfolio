@@ -43,6 +43,9 @@ const PicturesSlide = ({ backdrops, title }: PicturesSlideProps) => {
               src={item.lower}
               alt={`${title} screenshot ${index + 1}`}
               className="h-auto sm:h-[250px] md:h-[350px] lg:h-[400px] xl:h-[499px] cursor-pointer"
+              loading={index < 2 ? "eager" : "lazy"}
+              decoding="async"
+              fetchPriority={index === 0 ? "high" : "low"}
             />
           </a>
         </SwiperSlide>

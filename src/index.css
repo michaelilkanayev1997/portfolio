@@ -83,7 +83,6 @@ body {
 .tilt-card {
   transform-style: preserve-3d;
   transition: transform 200ms ease-out;
-  will-change: transform;
 }
 .tilt-card .tilt-shine {
   position: absolute;
@@ -101,6 +100,25 @@ body {
 }
 .tilt-card:hover .tilt-shine {
   opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tilt-card:hover {
+    will-change: transform;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .tilt-card,
+  .tilt-card img,
+  .tilt-card button,
+  .tilt-card span {
+    transition-duration: 0ms !important;
+  }
+
+  .tilt-card .tilt-shine {
+    display: none;
+  }
 }
 
 @layer base {

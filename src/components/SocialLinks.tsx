@@ -2,12 +2,13 @@ import { useEffect, useRef, memo } from "react";
 import gsap from "gsap";
 
 import { links } from "../data/socialLinksData";
+import { prefersReducedMotion } from "../utils/motion";
 
 const SocialLinks = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || prefersReducedMotion()) return;
     gsap.fromTo(
       containerRef.current,
       { x: "-200px", opacity: 0 },

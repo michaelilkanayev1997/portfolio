@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,7 +8,8 @@ import VideoSlide from "../components/VideoSlide";
 import Error from "../components/Error";
 import ProjectSection from "../components/ProjectSection";
 import portfolios from "../data/projectDetailsData";
-import { prefersReducedMotion } from "../utils/motion";
+import { useDeferredGsap } from "../hooks/useDeferredGsap";
+import { getRevealMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,41 +17,56 @@ const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
   const pageRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
+  useDeferredGsap(
+    pageRef,
+    () => {
+      const motion = getRevealMotion();
       const tl = gsap.timeline({
-        defaults: { ease: "power3.out", force3D: true },
+        defaults: { ease: motion.ease, force3D: true },
       });
 
       // Hero block: title drops in, underline draws, intro fades up
-      tl.from(".pd-title", { y: -50, opacity: 0, duration: 0.75 })
+      tl.from(".pd-title", {
+        y: -motion.largeDistance,
+        opacity: 0,
+        duration: motion.isMobile ? 0.5 : 0.75,
+      })
         .fromTo(
           ".pd-title-underline",
           { scaleX: 0 },
-          { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
+          {
+            scaleX: 1,
+            duration: motion.underlineDuration,
+            ease: "power2.inOut",
+          },
           "-=0.3",
         )
-        .from(".pd-intro", { y: 30, opacity: 0, duration: 0.65 }, "-=0.4");
+        .from(
+          ".pd-intro",
+          {
+            y: motion.distance,
+            opacity: 0,
+            duration: motion.isMobile ? 0.42 : 0.65,
+          },
+          "-=0.4",
+        );
 
       // Action buttons at the bottom of the page
       gsap.from(".pd-action-btn", {
-        y: 30,
+        y: motion.distance,
         opacity: 0,
-        duration: 0.5,
-        stagger: 0.14,
-        ease: "back.out(1.5)",
+        duration: motion.shortDuration,
+        stagger: motion.stagger,
+        ease: "back.out(1.35)",
         scrollTrigger: {
           trigger: ".pd-actions",
-          start: "top 90%",
+          start: motion.isMobile ? "top 94%" : "top 90%",
           toggleActions: "play none none reverse",
         },
       });
-    }, pageRef);
-
-    return () => ctx.revert();
-  }, [id]);
+    },
+    [id],
+  );
 
   const project = portfolios.find((p) => p.id === Number(id));
 

@@ -1,14 +1,15 @@
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-coverflow";
-import { memo, useLayoutEffect, useRef, type CSSProperties } from "react";
+import { memo, useRef, type CSSProperties } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { is3XLorLarger, isMobile } from "../utils";
-import { prefersReducedMotion } from "../utils/motion";
+import { useDeferredGsap } from "../hooks/useDeferredGsap";
+import { getRevealMotion } from "../utils/motion";
 import certifications from "../data/certificatesData";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,37 +22,65 @@ const swiperStyle = {
 const Certifications = memo(() => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
-    if (prefersReducedMotion()) return;
-
-    const ctx = gsap.context(() => {
+  useDeferredGsap(
+    sectionRef,
+    () => {
+      const motion = getRevealMotion();
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 80%",
+          start: motion.headingStart,
           toggleActions: "play none none reverse",
         },
-        defaults: { ease: "power3.out", force3D: true },
+        defaults: { ease: motion.ease, force3D: true },
       });
 
-      tl.from(".cert-heading", { y: 30, opacity: 0, duration: 0.6 })
+      tl.from(".cert-heading", {
+        y: motion.distance,
+        opacity: 0,
+        duration: motion.duration,
+      })
         .fromTo(
           ".cert-heading-underline",
           { scaleX: 0 },
-          { scaleX: 1, duration: 0.7, ease: "power2.inOut" },
+          {
+            scaleX: 1,
+            duration: motion.underlineDuration,
+            ease: "power2.inOut",
+          },
           "-=0.3",
         )
-        .from(".cert-sub", { y: 20, opacity: 0, duration: 0.5 }, "-=0.4")
+        .from(
+          ".cert-sub",
+          {
+            y: motion.isMobile ? 14 : 20,
+            opacity: 0,
+            duration: motion.shortDuration,
+          },
+          "-=0.4",
+        )
         .from(
           ".cert-swiper",
-          { y: 60, opacity: 0, scale: 0.95, duration: 0.9 },
+          {
+            y: motion.isMobile ? 36 : 60,
+            opacity: 0,
+            scale: motion.isMobile ? 0.98 : 0.95,
+            duration: motion.isMobile ? 0.48 : 0.9,
+          },
           "-=0.3",
         )
-        .from(".cert-caption", { y: 16, opacity: 0, duration: 0.4 }, "-=0.4");
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+        .from(
+          ".cert-caption",
+          {
+            y: motion.isMobile ? 10 : 16,
+            opacity: 0,
+            duration: motion.shortDuration,
+          },
+          "-=0.4",
+        );
+    },
+    [],
+  );
 
   return (
     <div
