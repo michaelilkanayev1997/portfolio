@@ -31,6 +31,11 @@ body {
   padding: 0;
 }
 
+body.ilona-game-open .Cursor,
+body.ilona-game-open .Cursor--blinking {
+  display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
