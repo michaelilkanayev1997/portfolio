@@ -6,6 +6,7 @@ import ReactGA from "react-ga4";
 import NavBar from "./components/NavBar";
 import ScrollProgress from "./components/ScrollProgress";
 import DragonGuide from "./components/DragonGuide";
+import Ilona from "./components/Ilona";
 
 const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS;
 if (GA_ID) ReactGA.initialize(GA_ID);
@@ -36,8 +37,10 @@ const scheduleIdle = (cb: () => void) => {
 function App() {
   const { pathname } = useLocation();
   const [particlesReady, setParticlesReady] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    setMobileMenuOpen(false);
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
 
@@ -63,9 +66,10 @@ function App() {
           <ParticlesContainer />
         </Suspense>
       )}
-      <ScrollProgress />
+      <ScrollProgress forceFull={mobileMenuOpen} />
       <DragonGuide />
-      <NavBar />
+      <Ilona />
+      <NavBar nav={mobileMenuOpen} setNav={setMobileMenuOpen} />
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route index element={<HomePage />} />
