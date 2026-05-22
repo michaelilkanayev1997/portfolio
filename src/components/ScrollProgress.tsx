@@ -1,6 +1,10 @@
 import { memo, useEffect, useRef } from "react";
 
-const ScrollProgress = () => {
+interface ScrollProgressProps {
+  forceFull?: boolean;
+}
+
+const ScrollProgress = ({ forceFull = false }: ScrollProgressProps) => {
   const barRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number | null>(null);
 
@@ -9,6 +13,12 @@ const ScrollProgress = () => {
       rafRef.current = null;
       const el = barRef.current;
       if (!el) return;
+
+      if (forceFull) {
+        el.style.transform = "scaleX(1)";
+        return;
+      }
+
       const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
       const max = scrollHeight - clientHeight;
       const progress = max > 0 ? scrollTop / max : 0;
@@ -29,7 +39,7 @@ const ScrollProgress = () => {
       window.removeEventListener("resize", onScroll);
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [forceFull]);
 
   return (
     <div
