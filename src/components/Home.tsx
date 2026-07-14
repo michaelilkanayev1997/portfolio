@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo } from "react";
+import { useEffect, useRef, memo, useState } from "react";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
 import { useTypewriter, Cursor } from "react-simple-typewriter";
@@ -8,11 +8,16 @@ import whatsapp from "../assets/svg/whatsapp.svg";
 import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
-import { isiPhone, isMobile } from "../utils";
+import { isiPhone } from "../utils";
 import { getRevealMotion, prefersReducedMotion } from "../utils/motion";
 import PhysicsPortrait from "./PhysicsPortrait";
 
 const Home = () => {
+  const [portraitSource, setPortraitSource] = useState(() =>
+    window.matchMedia("(max-width: 640px)").matches
+      ? "/mobileHeroImage.webp"
+      : "/heroImage.webp",
+  );
   const [typeEffect] = useTypewriter({
     words: ["Software Developer", "Full Stack Developer", "Software Engineer"],
     loop: 0,
@@ -27,6 +32,16 @@ const Home = () => {
   const buttonGroupRef = useRef<HTMLDivElement>(null);
   const linkGroupRef = useRef<HTMLDivElement>(null);
   const typeEffectRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)");
+    const updateSource = () =>
+      setPortraitSource(
+        query.matches ? "/mobileHeroImage.webp" : "/heroImage.webp",
+      );
+    query.addEventListener("change", updateSource);
+    return () => query.removeEventListener("change", updateSource);
+  }, []);
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -107,17 +122,6 @@ const Home = () => {
           ease: motion.ease,
         },
       );
-      gsap.to(".g_grow", {
-        scale: 1.05,
-        opacity: 1,
-        ease: "power1",
-        scrollTrigger: {
-          trigger: ".g_grow",
-          toggleActions: "restart reverse restart reverse",
-          start: "top 100%",
-          scrub: motion.isMobile ? 0.4 : 2,
-        },
-      });
     }, main);
 
     return () => ctx.revert();
@@ -236,16 +240,12 @@ const Home = () => {
         </div>
 
         <div
-          className="relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3"
+          className="hero-portrait-stage relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3"
           ref={imageRef}
         >
-          <div className="g_grow scale-75">
-            <PhysicsPortrait
-              src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
-              alt="Michael Ilkanayev"
-            />
-          </div>
-          <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md" />
+          <span className="hero-portrait-stage__halo" aria-hidden />
+          <PhysicsPortrait src={portraitSource} alt="Michael Ilkanayev" />
+          <div className="hero-portrait-stage__plinth" aria-hidden />
         </div>
       </div>
     </div>

@@ -14,9 +14,6 @@ if (GA_ID) ReactGA.initialize(GA_ID);
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
-const ParticlesContainer = lazy(
-  () => import("./components/ParticlesContainer"),
-);
 
 const Loading = () => (
   <div className="pt-20 bg-black text-white h-screen">
@@ -24,20 +21,8 @@ const Loading = () => (
   </div>
 );
 
-const scheduleIdle = (cb: () => void) => {
-  const w = window as Window & {
-    requestIdleCallback?: (
-      cb: () => void,
-      opts?: { timeout: number },
-    ) => number;
-  };
-  if (w.requestIdleCallback) w.requestIdleCallback(cb, { timeout: 2000 });
-  else setTimeout(cb, 1200);
-};
-
 function App() {
   const { pathname } = useLocation();
-  const [particlesReady, setParticlesReady] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -54,20 +39,9 @@ function App() {
     });
   }, [pathname]);
 
-  useEffect(() => {
-    if (import.meta.env.DEV) return;
-    // Defer particle mount until browser is idle so it never competes with LCP.
-    scheduleIdle(() => setParticlesReady(true));
-  }, []);
-
   return (
     <>
       <InteractionLayer />
-      {(particlesReady || import.meta.env.DEV) && (
-        <Suspense fallback={null}>
-          <ParticlesContainer />
-        </Suspense>
-      )}
       <ScrollProgress forceFull={mobileMenuOpen} />
       <DragonGuide />
       <Ilona />
