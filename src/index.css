@@ -121,7 +121,7 @@ html {
 .physics-portrait__image {
   opacity: 1;
   transform: translateZ(0);
-  transition: opacity 180ms cubic-bezier(0.23, 1, 0.32, 1);
+  transition: none;
   user-select: none;
 }
 
@@ -183,23 +183,39 @@ html {
 .portrait-fragment-canvas {
   position: fixed;
   inset: 0;
-  z-index: 35;
+  z-index: 5;
   width: 100vw;
   height: 100vh;
   contain: strict;
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
-  transition:
-    opacity 180ms cubic-bezier(0.23, 1, 0.32, 1),
-    visibility 0s linear 180ms;
+  transition: none;
 }
 
 .portrait-fragment-canvas--active {
   visibility: visible;
   opacity: 1;
   will-change: opacity;
-  transition-delay: 0s;
+}
+
+/* The fixed WebGL layer stays above section backgrounds but below readable
+   and interactive content from the first released frame onward. */
+main h1,
+main h2,
+main h3,
+main p,
+main a,
+main button,
+main form,
+main img,
+main .about-item,
+main .cert-swiper,
+main .portfolio-card,
+main .skill-card,
+main .contact-field {
+  position: relative;
+  z-index: 10;
 }
 
 @media (hover: hover) and (pointer: fine) {

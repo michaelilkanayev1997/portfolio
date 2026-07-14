@@ -699,6 +699,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
 
         const completeAssembly = () => {
           if (!runtime || runtime.destroyed) return;
+          // Re-read the live DOM bounds immediately before the handoff. This
+          // prevents a stale hero rect from assembling a subtly smaller image.
+          runtime.readRect();
           runtime.exploded = false;
           runtime.journeyStarted = false;
           runtime.returning = false;
@@ -726,9 +729,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             piece.zVelocity = 0;
             piece.shearVelocity = 0;
           });
-          // Keep the original image fully opaque underneath the exact final
-          // canvas frame. Only the canvas fades, so two half-transparent
-          // copies can never create a dark midpoint during the handoff.
+          // The canvas and source image now show the exact same geometry.
+          // Reveal the source underneath, then remove the canvas atomically;
+          // fading two identical portraits causes a visible doubled silhouette.
           image.style.setProperty("transition", "none");
           image.style.setProperty("opacity", "1");
           // Paint one pixel-exact assembled frame before React starts the
@@ -742,8 +745,11 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           );
           runtime.renderFrames += 1;
           updateVisualState("assembled");
-          updateCanvasActive(false);
-          scheduleCanvasRelease();
+          requestAnimationFrame(() => {
+            if (!runtime || runtime.destroyed) return;
+            updateCanvasActive(false);
+            scheduleCanvasRelease();
+          });
         };
 
         const startReturn = () => {
@@ -1130,7 +1136,11 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
 
           const hoverReturning = !runtime.pointer.active && !runtime.exploded;
           const hoverSettled = hoverReturning && maxError < 0.12;
-          const returnSettled = runtime.returning && returnAge > 0.9 && maxError < 0.35;
+          // Do not hand off while the spring is merely "close". Scale error is
+          // particularly visible because it makes the canvas portrait smaller
+          // than the DOM image underneath.
+          const returnSettled =
+            runtime.returning && returnAge > 1.05 && maxError < 0.065;
           const burstAnimating =
             runtime.exploded &&
             !runtime.journeyStarted &&
