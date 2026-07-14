@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar";
 import ScrollProgress from "./components/ScrollProgress";
 import DragonGuide from "./components/DragonGuide";
 import Ilona from "./components/Ilona";
+import InteractionLayer from "./components/InteractionLayer";
 
 const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS;
 if (GA_ID) ReactGA.initialize(GA_ID);
@@ -61,6 +62,7 @@ function App() {
 
   return (
     <>
+      <InteractionLayer />
       {(particlesReady || import.meta.env.DEV) && (
         <Suspense fallback={null}>
           <ParticlesContainer />

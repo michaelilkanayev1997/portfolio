@@ -10,6 +10,7 @@ import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
 import { isiPhone, isMobile } from "../utils";
 import { getRevealMotion, prefersReducedMotion } from "../utils/motion";
+import PhysicsPortrait from "./PhysicsPortrait";
 
 const Home = () => {
   const [typeEffect] = useTypewriter({
@@ -164,6 +165,8 @@ const Home = () => {
                 href=""
                 smooth
                 duration={500}
+                data-magnetic
+                data-ripple
                 className="group text-white w-fit px-6 py-3 my-2 flex items-center
              rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 cursor-pointer z-10"
               >
@@ -178,6 +181,8 @@ const Home = () => {
                 href=""
                 smooth
                 duration={500}
+                data-magnetic
+                data-ripple
                 className="group text-white w-fit px-6 py-3 my-2 flex items-center
              rounded-md bg-gradient-to-r from-indigo-600 to-blue-400 cursor-pointer z-10"
               >
@@ -234,12 +239,12 @@ const Home = () => {
           className="relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3"
           ref={imageRef}
         >
-          <img
-            src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
-            alt="my profile"
-            className="w-full h-full object-cover scale-75 g_grow"
-            fetchPriority="high"
-          />
+          <div className="g_grow scale-75">
+            <PhysicsPortrait
+              src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
+              alt="Michael Ilkanayev"
+            />
+          </div>
           <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md" />
         </div>
       </div>

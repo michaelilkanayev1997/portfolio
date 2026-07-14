@@ -63,6 +63,7 @@ const NavBar = ({ nav, setNav }: NavBarProps) => {
           {links.map(({ id, link }) => (
             <li
               key={id}
+              data-magnetic
               className="px-4 cursor-pointer capitalize font-medium text-gray-400 hover:text-gray-300 hover:scale-105 duration-200"
             >
               <Link to={link} href={`#${link}`} duration={0}>
@@ -92,6 +93,7 @@ const NavBar = ({ nav, setNav }: NavBarProps) => {
           {links.map(({ id, link }) => (
             <li
               key={id}
+              data-magnetic
               className="px-4 cursor-pointer capitalize py-6 text-4xl"
             >
               <Link
