@@ -191,7 +191,7 @@ void main() {
   );
   gl_Position = vec4(clip, 0.0, 1.0);
   float pulse = a_kind > 0.5
-    ? 0.94 + sin(u_time * (3.4 + a_seed * 1.7) + a_seed * 17.0) * 0.06
+    ? 0.975 + sin(u_time * (2.4 + a_seed * 1.2) + a_seed * 17.0) * 0.025
     : 1.0;
   gl_PointSize = max(1.0, a_size * pulse * u_pixelRatio);
   v_alpha = a_alpha;
@@ -220,8 +220,8 @@ void main() {
   float distanceFromCenter = length(point);
   if (distanceFromCenter > 0.5) discard;
 
-  float core = 1.0 - smoothstep(0.025, 0.18, distanceFromCenter);
-  float halo = (1.0 - smoothstep(0.04, 0.5, distanceFromCenter)) * 0.22;
+  float core = 1.0 - smoothstep(0.018, 0.13, distanceFromCenter);
+  float halo = (1.0 - smoothstep(0.05, 0.48, distanceFromCenter)) * 0.11;
 
   if (v_kind < 0.5) {
     vec3 cool = vec3(0.46, 0.88, 1.0);
@@ -232,25 +232,24 @@ void main() {
     return;
   }
 
-  // Seeded stellar silhouettes: every point gets a different number of rays,
-  // rotation, compression and halo instead of sharing one cross-shaped sprite.
-  float angle = atan(point.y, point.x) + v_seed * 6.2831853;
-  float rayCount = floor(4.0 + v_seed * 4.0);
-  float radialRay = pow(abs(cos(angle * rayCount * 0.5)), 18.0);
-  float longRay =
-    (1.0 - smoothstep(0.012, 0.055 + v_seed * 0.025, abs(point.y))) *
-    (1.0 - smoothstep(0.08, 0.5, abs(point.x)));
-  float rotatedRay =
-    (1.0 - smoothstep(0.012, 0.05, abs(point.x + point.y * (0.35 + v_seed)))) *
-    (1.0 - smoothstep(0.1, 0.5, distanceFromCenter));
-  float diffraction = max(radialRay * (1.0 - smoothstep(0.08, 0.5, distanceFromCenter)), max(longRay, rotatedRay));
+  float rotation = (v_seed - 0.5) * 0.48;
+  float c = cos(rotation);
+  float s = sin(rotation);
+  vec2 starPoint = mat2(c, -s, s, c) * point;
+  float horizontalRay =
+    (1.0 - smoothstep(0.008, 0.026, abs(starPoint.y))) *
+    (1.0 - smoothstep(0.08, 0.48, abs(starPoint.x)));
+  float verticalRay =
+    (1.0 - smoothstep(0.008, 0.024, abs(starPoint.x))) *
+    (1.0 - smoothstep(0.07, 0.4, abs(starPoint.y)));
+  float diffraction = max(horizontalRay * 0.72, verticalRay * 0.52);
   float twinkle =
-    0.9 + sin(u_time * (3.1 + v_seed * 1.9) + v_seed * 19.0) * 0.1;
+    0.96 + sin(u_time * (2.2 + v_seed * 1.4) + v_seed * 19.0) * 0.04;
 
   vec3 ice = vec3(0.38, 0.84, 1.0);
   vec3 silver = vec3(0.78, 0.9, 1.0);
   vec3 indigo = vec3(0.26, 0.48, 0.9);
-  vec3 skin = vec3(1.0, 0.72, 0.52);
+  vec3 skin = vec3(0.82, 0.88, 1.0);
   vec3 midnight = vec3(0.2, 0.46, 0.72);
   vec3 materialColor = v_material < 0.5
     ? ice
@@ -262,12 +261,12 @@ void main() {
           ? skin
           : midnight;
   vec3 sourceColor = texture(u_texture, v_uv).rgb;
-  vec3 color = mix(materialColor, sourceColor, 0.38);
-  color = mix(color, vec3(1.0), core * 0.7);
+  vec3 color = mix(materialColor, sourceColor, 0.16);
+  color = mix(color, vec3(1.0), core * 0.62);
 
-  float shape = core + halo * (0.7 + v_seed * 0.55);
-  shape += diffraction * (0.42 + (1.0 - v_seed) * 0.5);
-  shape *= 0.82 + fract(v_seed * 7.31) * 0.3;
+  float shape = core + halo * (0.72 + v_seed * 0.22);
+  shape += diffraction * (0.32 + (1.0 - v_seed) * 0.18);
+  shape *= 0.9 + fract(v_seed * 7.31) * 0.16;
 
   float alpha = min(1.0, shape * v_alpha * twinkle);
   outColor = vec4(color * alpha, alpha);
@@ -743,13 +742,13 @@ export class PortraitRenderer {
       const offset = pointCount * POINT_STRIDE;
       this.sparkData[offset] = screenX;
       this.sparkData[offset + 1] = screenY;
-      const sizeVariance = 0.72 + definition.randomB * 0.72;
+      const sizeVariance = 0.78 + definition.randomB * 0.46;
       this.sparkData[offset + 2] =
-        (7.2 + Math.min(1.4, transform.z) * 19) *
+        (5.6 + Math.min(1.35, transform.z) * 12.5) *
         sizeVariance;
       this.sparkData[offset + 3] = Math.min(
-        0.98,
-        strength * materialAlpha * 1.22,
+        0.86,
+        strength * materialAlpha * 1.08,
       );
       this.sparkData[offset + 4] = definition.materialId;
       this.sparkData[offset + 5] = definition.randomA;

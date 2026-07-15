@@ -36,21 +36,20 @@ const CONSTELLATION_LANDMARKS = new Map<string, number>([
   ["hair-crown-left", 0],
   ["hair-fringe", 1],
   ["hair-crown-right", 2],
-  ["skin-ear-right", 3],
-  ["glass-right-feature", 4],
+  ["skin-forehead", 3],
+  ["skin-cheek-right", 4],
   ["skin-nose", 5],
-  ["glass-left-feature", 6],
+  ["skin-cheek-left", 6],
   ["skin-ear-left", 7],
   ["beard-left", 8],
   ["skin-mouth", 9],
   ["beard-right", 10],
   ["hand-index-tip", 11],
-  ["watch-center", 12],
+  ["hand-lower", 12],
   ["cloth-logo", 13],
   ["cloth-shoulder-left", 14],
-  ["glass-bridge", 15],
+  ["cloth-shoulder-right", 15],
 ]);
-const CONSTELLATION_LEAD = "glass-left-feature";
 
 type PortraitState =
   | "assembled"
@@ -140,9 +139,9 @@ const MATERIAL_PROFILES: Record<MaterialName, MaterialProfile> = {
     damping: 7.2,
     rotation: 0.26,
     shear: 0,
-    returnDelay: 0.2,
-    returnStiffness: 25,
-    returnDamping: 8.4,
+    returnDelay: 0.035,
+    returnStiffness: 31,
+    returnDamping: 9.6,
   },
   metal: {
     hoverDepth: 0.86,
@@ -152,7 +151,7 @@ const MATERIAL_PROFILES: Record<MaterialName, MaterialProfile> = {
     damping: 10.5,
     rotation: 0.12,
     shear: 0,
-    returnDelay: 0.03,
+    returnDelay: 0.02,
     returnStiffness: 34,
     returnDamping: 10.2,
   },
@@ -164,9 +163,9 @@ const MATERIAL_PROFILES: Record<MaterialName, MaterialProfile> = {
     damping: 5.8,
     rotation: 0.48,
     shear: 0.14,
-    returnDelay: 0.1,
-    returnStiffness: 16,
-    returnDamping: 6.4,
+    returnDelay: 0.055,
+    returnStiffness: 24,
+    returnDamping: 8.2,
   },
   skin: {
     hoverDepth: 0.86,
@@ -176,9 +175,9 @@ const MATERIAL_PROFILES: Record<MaterialName, MaterialProfile> = {
     damping: 8.6,
     rotation: 0.13,
     shear: 0,
-    returnDelay: 0.14,
-    returnStiffness: 19,
-    returnDamping: 7.2,
+    returnDelay: 0.035,
+    returnStiffness: 29,
+    returnDamping: 9,
   },
   hair: {
     hoverDepth: 0.94,
@@ -188,9 +187,9 @@ const MATERIAL_PROFILES: Record<MaterialName, MaterialProfile> = {
     damping: 8,
     rotation: 0.2,
     shear: 0,
-    returnDelay: 0.06,
-    returnStiffness: 22,
-    returnDamping: 8,
+    returnDelay: 0.025,
+    returnStiffness: 30,
+    returnDamping: 9,
   },
 };
 
@@ -793,7 +792,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           const returnAge = Math.max(0, (time - runtime.returnStart) / 1000);
           const journeyDistance = Math.max(360, runtime.viewportHeight * 0.82);
           const journeyProgress = clamp(runtime.scrollY / journeyDistance);
-          const journeyEase = Math.pow(smoothstep(journeyProgress), 1.3);
           const documentTravel = clamp(
             runtime.scrollY /
               Math.max(1, runtime.documentHeight - runtime.viewportHeight),
@@ -869,7 +867,14 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             let damping = profile.damping;
 
             if (runtime!.returning) {
-              const delay = profile.returnDelay + piece.definition.randomA * 0.045;
+              const homeRadius = Math.hypot(
+                piece.definition.center.x - 0.52,
+                piece.definition.center.y - 0.49,
+              );
+              const delay =
+                profile.returnDelay +
+                homeRadius * 0.045 +
+                piece.definition.randomA * 0.025;
               if (returnAge < delay) {
                 targetX = piece.returnHoldX;
                 targetY = piece.returnHoldY;
@@ -880,9 +885,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
               }
               stiffness = profile.returnStiffness;
               damping = profile.returnDamping;
-              targetEdge = piece.definition.material === "glass"
-                ? clamp(1 - Math.max(0, returnAge - delay) / 1.15) * 0.72
-                : clamp(1 - returnAge / 1.05) * 0.3;
+              targetEdge = clamp(
+                1 - Math.max(0, returnAge - delay) / 0.9,
+              ) * 0.26;
             } else if (runtime!.exploded && runtime!.journeyStarted) {
               const randomA = piece.definition.randomA;
               const randomB = piece.definition.randomB;
@@ -890,20 +895,11 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 piece.definition.id,
               );
               const isLandmark = landmarkSlot !== undefined;
-              const isLead = piece.definition.id === CONSTELLATION_LEAD;
-              const materialLead = piece.definition.material === "glass"
-                ? 0.34
-                : piece.definition.material === "metal"
-                  ? 0.2
-                  : piece.definition.material === "cloth"
-                    ? -0.12
-                    : 0;
               const sectionTempo = [0.5, 0.78, 0.56, 0.68, 0.44][flowIndex] ?? 0.5;
               const phase =
                 runtime!.flowClock * sectionTempo +
                 documentTravel * TAU * 1.35 +
-                randomA * TAU +
-                materialLead;
+                randomA * TAU;
               const laneSeed = (randomA * 0.61803398875 + randomB * 0.38196601125) % 1;
               const laneInset = compact ? 18 : 34;
               const flightWidth = Math.max(1, runtime!.viewportWidth - laneInset * 2);
@@ -932,30 +928,13 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 0.35 +
                 Math.pow(Math.sin(Math.PI * runtime!.sectionProgress), 4) *
                   0.65;
-              const activeCluster =
-                isLandmark &&
-                (flowIndex === 0 ||
-                  (flowIndex === 1 && piece.definition.material === "glass") ||
-                  (flowIndex === 2 && piece.definition.material === "cloth") ||
-                  (flowIndex === 3 &&
-                    (piece.definition.id.includes("watch") ||
-                      piece.definition.id.includes("hand"))) ||
-                  (flowIndex === 4 && piece.definition.id.includes("hand")));
-              const isSectionLead =
-                (flowIndex === 0 && piece.definition.id === "glass-left-feature") ||
-                (flowIndex === 1 && piece.definition.id === "glass-bridge") ||
-                (flowIndex === 2 && piece.definition.id === "cloth-logo") ||
-                (flowIndex === 3 && piece.definition.id === "watch-center") ||
-                (flowIndex === 4 && piece.definition.id === "hand-index-tip");
-              const sectionShine = activeCluster
-                ? sectionEnvelope * (isSectionLead ? 1 : 0.48)
-                : 0;
+              const sectionShine = isLandmark ? sectionEnvelope * 0.2 : 0;
               const twinkle = Math.pow(
                 Math.max(0, Math.sin(phase * 2.15 + randomB * 9)),
                 10,
               );
               const mapShine = portraitMapBlend *
-                (isLead ? 1.18 : isLandmark ? 0.78 : 0.34);
+                (isLandmark ? 0.7 : 0.32);
               const dustDepth = Math.max(
                 0.24 + randomB * 0.38 + twinkle * 0.34 + sectionShine,
                 mapShine,
@@ -969,12 +948,20 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 piece.dustOpacity * 1.35 + 0.08 + twinkle * 0.14 + sectionShine * 0.2,
               ) * obstacleVisibility;
               const fadeProgress = smoothstep((journeyProgress - 0.06) / 0.94);
+              const releaseOffset = randomA * 0.045;
+              const pieceJourneyProgress = clamp(
+                (journeyProgress - releaseOffset) / (1 - releaseOffset),
+              );
+              const pieceJourneyEase = Math.pow(
+                smoothstep(pieceJourneyProgress),
+                1.24,
+              );
               const captureProgress = portraitMapBlend > 0.001
                 ? Math.max(
-                    journeyEase,
+                    pieceJourneyEase,
                     smoothstep((journeyProgress - 0.06) / 0.44),
                   )
-                : journeyEase;
+                : pieceJourneyEase;
               targetX = lerp(piece.scatterX, dustX - centerX, captureProgress);
               targetY = lerp(piece.scatterY, dustY - centerY, captureProgress);
               targetRotation = lerp(
@@ -982,7 +969,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 (randomA - 0.5) * 2.3 +
                   documentTravel * 1.65 +
                   Math.sin(phase) * 0.16,
-                journeyEase,
+                pieceJourneyEase,
               );
               const mapScale = 0.105 + randomA * 0.04;
               const destinationScale = lerp(
@@ -990,19 +977,21 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 mapScale,
                 portraitMapBlend,
               );
-              const scaleProgress = smoothstep((journeyProgress - 0.04) / 0.52);
+              const scaleProgress = smoothstep(
+                (pieceJourneyProgress - 0.035) / 0.52,
+              );
               targetScale = lerp(1, destinationScale, scaleProgress);
               targetZ = lerp(0, dustDepth, captureProgress);
               targetAlpha = lerp(1, dustAlpha, fadeProgress);
               if (portraitMapBlend > 0.001) {
-                const mapAlpha = isLead ? 0.92 : isLandmark ? 0.68 : 0.42;
+                const mapAlpha = isLandmark ? 0.72 : 0.42;
                 targetAlpha = Math.max(
                   targetAlpha,
                   mapAlpha * portraitMapBlend * obstacleVisibility,
                 );
               }
               targetEdge = lerp(0, dustEdge, captureProgress);
-              targetShear = lerp(piece.scatterShear, 0, journeyEase);
+              targetShear = lerp(piece.scatterShear, 0, pieceJourneyEase);
               stiffness = journeyProgress > 0.58 ? 36 : profile.stiffness;
               damping = journeyProgress > 0.58 ? 10.2 : profile.damping;
             } else if (runtime!.exploded) {
@@ -1236,10 +1225,19 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             runtime.pointer.active = false;
             runtime.flowClock = 0;
             runtime.pieces.forEach((piece) => {
-              piece.scatterX = 0;
-              piece.scatterY = 0;
-              piece.scatterRotation = 0;
+              const dx = piece.definition.center.x - 0.52;
+              const dy = piece.definition.center.y - 0.49;
+              const angle = Math.atan2(dy, dx) +
+                (piece.definition.randomA - 0.5) * 0.28;
+              const release = runtime!.rectDocument.width *
+                (0.035 + piece.definition.randomB * 0.045);
+              piece.scatterX = Math.cos(angle) * release;
+              piece.scatterY = Math.sin(angle) * release - release * 0.08;
+              piece.scatterRotation =
+                (piece.definition.randomA - 0.5) * 0.24;
               piece.scatterShear = 0;
+              piece.vx += Math.cos(angle) * release * 1.25;
+              piece.vy += Math.sin(angle) * release * 1.15 - 5;
             });
           } else if (joinsJourney || resumesJourney) {
             runtime.journeyStarted = true;
@@ -1500,7 +1498,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         const centerX = portrait.left + piece.definition.center.x * portrait.width;
         const centerY = portrait.top + piece.definition.center.y * portrait.height;
         const baseAngle = Math.atan2(centerY - clickY, centerX - clickX);
-        const angle = baseAngle + (piece.definition.randomA - 0.5) * 0.72;
+        const angle = baseAngle + (piece.definition.randomA - 0.5) * 0.42;
         const directionX = Math.cos(angle);
         const directionY = Math.sin(angle);
         const horizontalSpread = directionX < 0 ? 0.62 : 1;
@@ -1508,7 +1506,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           portrait.width *
           profile.scatter *
           faceFactor *
-          (0.72 + piece.definition.randomB * 0.58);
+          (0.76 + piece.definition.randomB * 0.38);
         piece.scatterX = directionX * radius * horizontalSpread;
         piece.scatterY = directionY * radius - portrait.width * 0.025;
         piece.scatterRotation =
@@ -1517,12 +1515,13 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           ? (piece.definition.randomB - 0.5) * 2 * profile.shear
           : 0;
         const velocity =
-          portrait.width * profile.impulse * faceFactor * (1.45 + piece.definition.randomB);
+          portrait.width * profile.impulse * faceFactor *
+          (1.05 + piece.definition.randomB * 0.72);
         piece.vx += directionX * velocity * horizontalSpread;
         piece.vy += directionY * velocity - portrait.width * 0.18;
         piece.rotationVelocity +=
-          (piece.definition.randomA - 0.5) * profile.rotation * 8;
-        piece.edge = piece.definition.material === "glass" ? 1 : 0.52;
+          (piece.definition.randomA - 0.5) * profile.rotation * 5;
+        piece.edge = 0.42;
       });
 
       // The burst belongs to the whole portrait. A watch-origin spark made the
