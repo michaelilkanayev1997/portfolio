@@ -115,28 +115,12 @@ void main() {
 
   vec3 color = source.rgb;
 
-  if (v_material < 0.5) {
-    float shimmer = 0.35 + 0.65 * v_edge;
-    vec2 direction = vec2(
-      sin(u_time * 1.7 + v_seed * 9.0),
-      cos(u_time * 1.3 + v_seed * 7.0)
-    );
-    vec2 offset = direction * (0.00035 + shimmer * 0.0012);
-    vec4 redSample = texture(u_texture, v_uv + offset);
-    vec4 blueSample = texture(u_texture, v_uv - offset);
-    color = vec3(redSample.r, source.g, blueSample.b);
-    float caustic = pow(
-      max(0.0, sin((v_uv.x * 1.2 + v_uv.y) * 38.0 - u_time * 2.1 + v_seed * 5.0)),
-      22.0
-    );
-    color += vec3(0.18, 0.34, 0.5) * caustic * v_edge * source.a;
-  } else if (v_material < 1.5) {
-    float metalBand = pow(
-      max(0.0, sin((v_uv.x * 1.35 + v_uv.y * 0.7) * 62.0 + u_time * 6.0 + v_seed * 8.0)),
-      26.0
-    );
-    color += vec3(0.34, 0.43, 0.52) * metalBand * (0.3 + v_edge) * source.a;
-  } else if (v_material < 2.5) {
+  // Keep the shared time channel alive without spotlighting any accessory.
+  // The extremely restrained pulse gives the assembled particle surface a
+  // cohesive breath and prevents WebGL from optimizing u_time away.
+  color *= 1.0 + sin(u_time * 0.55 + v_seed * 0.35) * 0.0025 * v_edge;
+
+  if (v_material > 1.5 && v_material < 2.5) {
     float fold = sin(v_uv.y * 48.0 + v_uv.x * 13.0 + v_seed * 11.0);
     float foldAmount = min(1.0, abs(v_shear) * 8.0 + v_edge * 0.28);
     color *= 0.97 + fold * 0.055 * foldAmount;
@@ -751,23 +735,18 @@ export class PortraitRenderer {
       this.stellarStrengths[index] = strength;
       if (strength < 0.018 || pointCount >= MAX_FRAGMENTS) return;
 
-      const materialAlpha = definition.material === "glass"
-        ? 1
-        : definition.material === "metal"
-          ? 0.9
-          : definition.material === "cloth"
+      const materialAlpha = definition.material === "cloth"
             ? 0.7
             : definition.material === "skin"
               ? 0.72
-              : 0.52;
+              : 0.56;
       const offset = pointCount * POINT_STRIDE;
       this.sparkData[offset] = screenX;
       this.sparkData[offset + 1] = screenY;
       const sizeVariance = 0.72 + definition.randomB * 0.72;
       this.sparkData[offset + 2] =
         (7.2 + Math.min(1.4, transform.z) * 19) *
-        sizeVariance *
-        (definition.id === "glass-left-feature" ? 1.2 : 1);
+        sizeVariance;
       this.sparkData[offset + 3] = Math.min(
         0.98,
         strength * materialAlpha * 1.22,

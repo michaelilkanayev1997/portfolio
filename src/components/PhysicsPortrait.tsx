@@ -27,7 +27,6 @@ const MAX_DELTA = 1 / 30;
 const ALPHA_MAP_SIZE = 192;
 const CLICK_RETURN_DELAY = 1_450;
 const SCROLL_DRIFT_WINDOW = 1_050;
-const HANDOFF_CLEAR_DELAY = 220;
 const TOP_EPSILON = 18;
 const TAU = Math.PI * 2;
 
@@ -628,29 +627,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           height: runtime!.rectDocument.height,
         });
 
-        const releaseCanvas = () => {
-          if (!runtime || runtime.destroyed) return;
-          runtime.renderer.clear();
-          canvas.width = 1;
-          canvas.height = 1;
-          runtime.canvasSized = false;
-        };
-
-        const scheduleCanvasRelease = () => {
-          if (!runtime || runtime.destroyed) return;
-          if (runtime.releaseTimer !== null) {
-            window.clearTimeout(runtime.releaseTimer);
-          }
-          runtime.releaseTimer = window.setTimeout(() => {
-            if (!runtime || runtime.destroyed) return;
-            runtime.releaseTimer = null;
-            image.style.removeProperty("opacity");
-            image.style.removeProperty("transition");
-            if (activeRef.current) return;
-            releaseCanvas();
-          }, HANDOFF_CLEAR_DELAY);
-        };
-
         runtime.readRect = () => {
           if (!runtime || runtime.destroyed) return;
           const nextRect = image.getBoundingClientRect();
@@ -711,7 +687,14 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           runtime.assembledAt = performance.now();
           runtime.activeSection = "hero";
           runtime.sectionProgress = 0;
-          runtime.pointer.active = false;
+          const assembledRect = currentRect();
+          const shouldResumeHover =
+            runtime.canHover &&
+            runtime.pointer.active &&
+            runtime.pointer.x >= assembledRect.left &&
+            runtime.pointer.x <= assembledRect.left + assembledRect.width &&
+            runtime.pointer.y >= assembledRect.top &&
+            runtime.pointer.y <= assembledRect.top + assembledRect.height;
           runtime.sparks = [];
           runtime.pieces.forEach((piece) => {
             piece.x = 0;
@@ -729,14 +712,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             piece.zVelocity = 0;
             piece.shearVelocity = 0;
           });
-          // The canvas and source image now show the exact same geometry.
-          // Reveal the source underneath, then remove the canvas atomically;
-          // fading two identical portraits causes a visible doubled silhouette.
-          image.style.setProperty("transition", "none");
-          image.style.setProperty("opacity", "1");
-          // Paint one pixel-exact assembled frame before React starts the
-          // canvas-to-image crossfade. The populated canvas stays alive until
-          // both opacity transitions have finished, preventing a blank frame.
+          // Keep one rendering surface for the portrait's entire lifetime.
+          // Swapping back to the DOM image creates a visible scale/alpha pop,
+          // even when both sources use the same nominal bounds.
           runtime.renderer.draw(
             currentRect(),
             runtime.pieces,
@@ -744,19 +722,15 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             performance.now() / 1000,
           );
           runtime.renderFrames += 1;
-          updateVisualState("assembled");
-          requestAnimationFrame(() => {
-            if (!runtime || runtime.destroyed) return;
-            updateCanvasActive(false);
-            scheduleCanvasRelease();
-          });
+          updateVisualState(shouldResumeHover ? "hover" : "assembled");
+          updateCanvasActive(true);
+          if (shouldResumeHover) runtime.scheduleFrame();
         };
 
         const startReturn = () => {
           if (!runtime || runtime.destroyed || runtime.returning) return;
           runtime.returning = true;
           runtime.autoReturnAt = 0;
-          runtime.pointer.active = false;
           runtime.returnStart = performance.now();
           runtime.returnStartedAt = runtime.returnStart;
           runtime.pieces.forEach((piece) => {
@@ -860,6 +834,23 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           // Each fragment owns a stable seeded flight path across the viewport.
           const portraitMapBlend = 0;
           let maxError = 0;
+
+          // Once the silhouette is back, let hover retarget the same springs
+          // from their current transforms. No transform is reset here, so an
+          // interrupted return remains continuous and cannot produce a jump.
+          if (
+            runtime.returning &&
+            runtime.pointer.active &&
+            returnAge > 0.72 &&
+            (runtime.scrollY < TOP_EPSILON || runtime.activationSource === "click")
+          ) {
+            runtime.returning = false;
+            runtime.exploded = false;
+            runtime.journeyStarted = false;
+            runtime.activationSource = "none";
+            runtime.returnStartedAt = 0;
+            updateVisualState("hover");
+          }
 
           runtime.pieces.forEach((piece) => {
             const profile = MATERIAL_PROFILES[piece.definition.material];
@@ -1136,11 +1127,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
 
           const hoverReturning = !runtime.pointer.active && !runtime.exploded;
           const hoverSettled = hoverReturning && maxError < 0.12;
-          // Do not hand off while the spring is merely "close". Scale error is
-          // particularly visible because it makes the canvas portrait smaller
-          // than the DOM image underneath.
+          // When there is no hover interruption, let the return finish on the
+          // actual spring state instead of cutting it off at a fixed time.
           const returnSettled =
-            runtime.returning && returnAge > 1.05 && maxError < 0.065;
+            runtime.returning && returnAge > 0.9 && maxError < 0.065;
           const burstAnimating =
             runtime.exploded &&
             !runtime.journeyStarted &&
@@ -1331,6 +1321,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
 
         runtimeRef.current = runtime;
         setQuality(label);
+        runtime.ensureCanvasSize();
+        runtime.renderer.draw(currentRect(), runtime.pieces, [], performance.now() / 1000);
+        runtime.renderFrames += 1;
+        updateCanvasActive(true);
         updateVisualState("assembled");
         if (window.scrollY > 0) onScroll();
 
@@ -1432,7 +1426,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
       if (
         !runtime ||
         runtime.destroyed ||
-        runtime.exploded ||
         !runtime.canHover ||
         event.pointerType === "touch"
       ) {
@@ -1440,6 +1433,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
       }
       runtime.readRect();
       runtime.pointer = { x: event.clientX, y: event.clientY, active: true };
+      // Remember cursor presence during the explosion/return. Pointer-enter
+      // will not fire again if the cursor never leaves the portrait, so the
+      // completed assembly uses this state to resume hover immediately.
+      if (runtime.exploded) return;
       runtime.ensureCanvasSize();
       updateCanvasActive(true);
       updateVisualState("hover");
@@ -1450,16 +1447,18 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
 
   const onPointerMove = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
     const runtime = runtimeRef.current;
-    if (!runtime?.pointer.active || runtime.exploded) return;
+    if (!runtime?.pointer.active) return;
     runtime.pointer.x = event.clientX;
     runtime.pointer.y = event.clientY;
+    if (runtime.exploded) return;
     runtime.scheduleFrame();
   }, []);
 
   const onPointerLeave = useCallback(() => {
     const runtime = runtimeRef.current;
-    if (!runtime || runtime.exploded) return;
+    if (!runtime) return;
     runtime.pointer.active = false;
+    if (runtime.exploded) return;
     runtime.scheduleFrame();
   }, []);
 
@@ -1488,7 +1487,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
       runtime.activationAt = activationTime;
       runtime.autoReturnAt = activationTime + CLICK_RETURN_DELAY;
       runtime.returnStartedAt = 0;
-      runtime.pointer.active = false;
+      runtime.pointer = { x: clickX, y: clickY, active: runtime.canHover };
       runtime.scrollY = window.scrollY;
       runtime.previousScrollY = window.scrollY;
       runtime.burstStart = activationTime;
@@ -1526,25 +1525,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         piece.edge = piece.definition.material === "glass" ? 1 : 0.52;
       });
 
-      const watchX = portrait.left + portrait.width * 0.68;
-      const watchY = portrait.top + portrait.height * 0.72;
-      const sparkCount = runtime.tier === "high" ? 4 : runtime.tier === "medium" ? 3 : 2;
-      runtime.sparks = Array.from({ length: sparkCount }, (_, index) => {
-        const angle = -1.2 + index * 0.48 + runtime.pieces[index].definition.randomA * 0.18;
-        const speed = 88 + index * 20;
-        const life = 0.34 + index * 0.028;
-        return {
-          x: watchX,
-          y: watchY,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: 3.25 + index * 0.44,
-          alpha: 1,
-          warmth: index % 2,
-          life,
-          maxLife: life,
-        };
-      });
+      // The burst belongs to the whole portrait. A watch-origin spark made the
+      // accessory read as a separate glowing object, so no local flare is used.
+      runtime.sparks = [];
 
       updateCanvasActive(true);
       updateVisualState("exploded");

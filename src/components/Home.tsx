@@ -18,6 +18,7 @@ const Home = () => {
       ? "/mobileHeroImage.webp"
       : "/heroImage.webp",
   );
+  const [portraitReady, setPortraitReady] = useState(prefersReducedMotion);
   const [typeEffect] = useTypewriter({
     words: ["Software Developer", "Full Stack Developer", "Software Engineer"],
     loop: 0,
@@ -28,7 +29,6 @@ const Home = () => {
 
   const main = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const buttonGroupRef = useRef<HTMLDivElement>(null);
   const linkGroupRef = useRef<HTMLDivElement>(null);
   const typeEffectRef = useRef<HTMLHeadingElement>(null);
@@ -44,22 +44,16 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    if (portraitReady) return undefined;
+    const frame = requestAnimationFrame(() => setPortraitReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, [portraitReady]);
+
+  useEffect(() => {
     if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
       const motion = getRevealMotion();
-      gsap.fromTo(
-        imageRef.current,
-        { opacity: 0, scale: motion.isMobile ? 0.82 : 0.5, y: motion.largeDistance },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: motion.isMobile ? 0.65 : 1.5,
-          ease: motion.ease,
-        },
-      );
-
       gsap.fromTo(
         textRef.current,
         { opacity: 0, y: motion.largeDistance },
@@ -240,8 +234,9 @@ const Home = () => {
         </div>
 
         <div
-          className="hero-portrait-stage relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3"
-          ref={imageRef}
+          className={`hero-portrait-stage relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3 ${
+            portraitReady ? "hero-portrait-stage--ready" : ""
+          }`}
         >
           <span className="hero-portrait-stage__halo" aria-hidden />
           <PhysicsPortrait src={portraitSource} alt="Michael Ilkanayev" />
