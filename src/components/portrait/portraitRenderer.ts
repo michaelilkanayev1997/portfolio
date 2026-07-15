@@ -190,8 +190,19 @@ void main() {
     1.0 - a_position.y / u_resolution.y * 2.0
   );
   gl_Position = vec4(clip, 0.0, 1.0);
+  float shineClock = u_time * (0.52 + a_seed * 0.34) + a_seed * 23.7;
+  float shineSlot = floor(shineClock);
+  float shinePhase = fract(shineClock);
+  float shineChance = fract(
+    sin((shineSlot + a_seed * 31.17) * 12.9898) * 43758.5453
+  );
+  float randomShine =
+    pow(max(0.0, sin(shinePhase * 3.14159265)), 9.0) *
+    smoothstep(0.72, 0.98, shineChance);
   float pulse = a_kind > 0.5
-    ? 0.975 + sin(u_time * (2.4 + a_seed * 1.2) + a_seed * 17.0) * 0.025
+    ? 0.98 +
+      sin(u_time * (2.1 + a_seed) + a_seed * 17.0) * 0.02 +
+      randomShine * 0.3
     : 1.0;
   gl_PointSize = max(1.0, a_size * pulse * u_pixelRatio);
   v_alpha = a_alpha;
@@ -227,7 +238,25 @@ void main() {
     vec3 cool = vec3(0.46, 0.88, 1.0);
     vec3 warm = vec3(1.0, 0.76, 0.34);
     vec3 color = mix(cool, warm, clamp(v_material, 0.0, 1.0));
-    float alpha = (core + halo) * v_alpha;
+    float burstRotation = v_seed * 6.2831853 + 0.22;
+    float burstCos = cos(burstRotation);
+    float burstSin = sin(burstRotation);
+    vec2 burstPoint = mat2(
+      burstCos,
+      -burstSin,
+      burstSin,
+      burstCos
+    ) * point;
+    float burstRayX =
+      (1.0 - smoothstep(0.008, 0.026, abs(burstPoint.y))) *
+      (1.0 - smoothstep(0.06, 0.5, abs(burstPoint.x)));
+    float burstRayY =
+      (1.0 - smoothstep(0.008, 0.024, abs(burstPoint.x))) *
+      (1.0 - smoothstep(0.05, 0.42, abs(burstPoint.y)));
+    float burstShape =
+      core + halo * 0.8 + max(burstRayX * 0.72, burstRayY * 0.56);
+    float alpha = min(1.0, burstShape * v_alpha);
+    color = mix(color, vec3(1.0), core * 0.78);
     outColor = vec4(color * alpha, alpha);
     return;
   }
@@ -243,8 +272,19 @@ void main() {
     (1.0 - smoothstep(0.008, 0.024, abs(starPoint.x))) *
     (1.0 - smoothstep(0.07, 0.4, abs(starPoint.y)));
   float diffraction = max(horizontalRay * 0.72, verticalRay * 0.52);
+  float shineClock = u_time * (0.52 + v_seed * 0.34) + v_seed * 23.7;
+  float shineSlot = floor(shineClock);
+  float shinePhase = fract(shineClock);
+  float shineChance = fract(
+    sin((shineSlot + v_seed * 31.17) * 12.9898) * 43758.5453
+  );
+  float randomShine =
+    pow(max(0.0, sin(shinePhase * 3.14159265)), 9.0) *
+    smoothstep(0.72, 0.98, shineChance);
   float twinkle =
-    0.96 + sin(u_time * (2.2 + v_seed * 1.4) + v_seed * 19.0) * 0.04;
+    0.96 +
+    sin(u_time * (2.0 + v_seed * 1.2) + v_seed * 19.0) * 0.03 +
+    randomShine * 0.38;
 
   vec3 ice = vec3(0.38, 0.84, 1.0);
   vec3 silver = vec3(0.78, 0.9, 1.0);
@@ -263,9 +303,11 @@ void main() {
   vec3 sourceColor = texture(u_texture, v_uv).rgb;
   vec3 color = mix(materialColor, sourceColor, 0.16);
   color = mix(color, vec3(1.0), core * 0.62);
+  color = mix(color, vec3(0.94, 0.985, 1.0), randomShine * 0.72);
 
-  float shape = core + halo * (0.72 + v_seed * 0.22);
-  shape += diffraction * (0.32 + (1.0 - v_seed) * 0.18);
+  float shape = core + halo * (0.72 + v_seed * 0.22 + randomShine * 0.5);
+  shape += diffraction *
+    (0.32 + (1.0 - v_seed) * 0.18 + randomShine * 0.62);
   shape *= 0.9 + fract(v_seed * 7.31) * 0.16;
 
   float alpha = min(1.0, shape * v_alpha * twinkle);
@@ -742,13 +784,13 @@ export class PortraitRenderer {
       const offset = pointCount * POINT_STRIDE;
       this.sparkData[offset] = screenX;
       this.sparkData[offset + 1] = screenY;
-      const sizeVariance = 0.78 + definition.randomB * 0.46;
+      const sizeVariance = 0.86 + definition.randomB * 0.54;
       this.sparkData[offset + 2] =
-        (5.6 + Math.min(1.35, transform.z) * 12.5) *
+        (10.2 + Math.min(1.35, transform.z) * 22.4) *
         sizeVariance;
       this.sparkData[offset + 3] = Math.min(
-        0.86,
-        strength * materialAlpha * 1.08,
+        0.97,
+        strength * materialAlpha * 1.24,
       );
       this.sparkData[offset + 4] = definition.materialId;
       this.sparkData[offset + 5] = definition.randomA;

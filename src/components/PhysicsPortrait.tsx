@@ -259,7 +259,7 @@ type Runtime = {
   flowSections: FlowSection[];
   activeSection: FlowSectionName;
   sectionProgress: number;
-  pointer: { x: number; y: number; active: boolean };
+  pointer: { x: number; y: number; active: boolean; seen: boolean };
   readRect: () => void;
   readFlowSections: () => void;
   ensureCanvasSize: () => void;
@@ -611,7 +611,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           flowSections: [],
           activeSection: "hero",
           sectionProgress: 0,
-          pointer: { x: 0, y: 0, active: false },
+          pointer: { x: 0, y: 0, active: false, seen: false },
           readRect: () => undefined,
           readFlowSections: () => undefined,
           ensureCanvasSize: () => undefined,
@@ -689,11 +689,12 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           const assembledRect = currentRect();
           const shouldResumeHover =
             runtime.canHover &&
-            runtime.pointer.active &&
+            runtime.pointer.seen &&
             runtime.pointer.x >= assembledRect.left &&
             runtime.pointer.x <= assembledRect.left + assembledRect.width &&
             runtime.pointer.y >= assembledRect.top &&
             runtime.pointer.y <= assembledRect.top + assembledRect.height;
+          runtime.pointer.active = shouldResumeHover;
           runtime.sparks = [];
           runtime.pieces.forEach((piece) => {
             piece.x = 0;
@@ -788,6 +789,13 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             runtime.flowClock += delta;
           }
           const portrait = currentRect();
+          const pointerOverPortrait =
+            runtime.canHover &&
+            runtime.pointer.seen &&
+            runtime.pointer.x >= portrait.left &&
+            runtime.pointer.x <= portrait.left + portrait.width &&
+            runtime.pointer.y >= portrait.top &&
+            runtime.pointer.y <= portrait.top + portrait.height;
           const burstAge = Math.max(0, (time - runtime.burstStart) / 1000);
           const returnAge = Math.max(0, (time - runtime.returnStart) / 1000);
           const journeyDistance = Math.max(360, runtime.viewportHeight * 0.82);
@@ -838,10 +846,11 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           // interrupted return remains continuous and cannot produce a jump.
           if (
             runtime.returning &&
-            runtime.pointer.active &&
+            pointerOverPortrait &&
             returnAge > 0.72 &&
             (runtime.scrollY < TOP_EPSILON || runtime.activationSource === "click")
           ) {
+            runtime.pointer.active = true;
             runtime.returning = false;
             runtime.exploded = false;
             runtime.journeyStarted = false;
@@ -1046,16 +1055,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                         : 0.024) *
                   faceFactor;
               targetZ = lift;
-              targetEdge = lift *
-                (piece.definition.material === "glass"
-                  ? 0.68
-                  : piece.definition.material === "metal"
-                    ? 0.28
-                    : piece.definition.material === "skin"
-                      ? 0.07
-                      : piece.definition.material === "cloth"
-                        ? 0.11
-                        : 0.08);
+              // Apply the glasses' colored edge strength to whichever local
+              // fragments are inside the cursor field. Everything outside the
+              // hover radius remains at its untouched assembled state.
+              targetEdge = lift * 0.68;
               targetShear = piece.definition.material === "cloth"
                 ? directionX * pressure * 0.045
                 : 0;
@@ -1282,6 +1285,14 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           }
         };
 
+        const onGlobalPointerMove = (event: PointerEvent) => {
+          if (!runtime || runtime.destroyed || !runtime.canHover) return;
+          if (event.pointerType === "touch") return;
+          runtime.pointer.x = event.clientX;
+          runtime.pointer.y = event.clientY;
+          runtime.pointer.seen = true;
+        };
+
         const onVisibilityChange = () => {
           if (!runtime) return;
           if (document.hidden && runtime.frame !== null) {
@@ -1314,6 +1325,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         });
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", onResize, { passive: true });
+        window.addEventListener("pointermove", onGlobalPointerMove, { passive: true });
         document.addEventListener("visibilitychange", onVisibilityChange);
         canvas.addEventListener("webglcontextlost", onContextLost);
 
@@ -1381,6 +1393,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           resizeObserver.disconnect();
           window.removeEventListener("scroll", onScroll);
           window.removeEventListener("resize", onResize);
+          window.removeEventListener("pointermove", onGlobalPointerMove);
           document.removeEventListener("visibilitychange", onVisibilityChange);
           canvas.removeEventListener("webglcontextlost", onContextLost);
           if (debugWindow.__portraitDebug === debugApi) {
@@ -1430,7 +1443,12 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         return;
       }
       runtime.readRect();
-      runtime.pointer = { x: event.clientX, y: event.clientY, active: true };
+      runtime.pointer = {
+        x: event.clientX,
+        y: event.clientY,
+        active: true,
+        seen: true,
+      };
       // Remember cursor presence during the explosion/return. Pointer-enter
       // will not fire again if the cursor never leaves the portrait, so the
       // completed assembly uses this state to resume hover immediately.
@@ -1485,7 +1503,12 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
       runtime.activationAt = activationTime;
       runtime.autoReturnAt = activationTime + CLICK_RETURN_DELAY;
       runtime.returnStartedAt = 0;
-      runtime.pointer = { x: clickX, y: clickY, active: runtime.canHover };
+      runtime.pointer = {
+        x: clickX,
+        y: clickY,
+        active: runtime.canHover,
+        seen: true,
+      };
       runtime.scrollY = window.scrollY;
       runtime.previousScrollY = window.scrollY;
       runtime.burstStart = activationTime;
@@ -1506,7 +1529,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           portrait.width *
           profile.scatter *
           faceFactor *
-          (0.76 + piece.definition.randomB * 0.38);
+          (0.92 + piece.definition.randomB * 0.5);
         piece.scatterX = directionX * radius * horizontalSpread;
         piece.scatterY = directionY * radius - portrait.width * 0.025;
         piece.scatterRotation =
@@ -1516,17 +1539,39 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           : 0;
         const velocity =
           portrait.width * profile.impulse * faceFactor *
-          (1.05 + piece.definition.randomB * 0.72);
+          (1.28 + piece.definition.randomB * 0.9);
         piece.vx += directionX * velocity * horizontalSpread;
-        piece.vy += directionY * velocity - portrait.width * 0.18;
+        piece.vy += directionY * velocity - portrait.width * 0.22;
         piece.rotationVelocity +=
-          (piece.definition.randomA - 0.5) * profile.rotation * 5;
+          (piece.definition.randomA - 0.5) * profile.rotation * 7;
+        piece.scaleVelocity -= 0.28 + piece.definition.randomB * 0.24;
+        piece.zVelocity += 0.7 + piece.definition.randomA * 1.15;
         piece.edge = 0.42;
       });
 
-      // The burst belongs to the whole portrait. A watch-origin spark made the
-      // accessory read as a separate glowing object, so no local flare is used.
-      runtime.sparks = [];
+      const sparkCount = runtime.tier === "high" ? 8 : runtime.tier === "medium" ? 6 : 4;
+      runtime.sparks = Array.from({ length: sparkCount }, (_, index) => {
+        const seed = runtime.pieces[index].definition.randomA;
+        const isCore = index === 0;
+        const rayIndex = Math.max(0, index - 1);
+        const rayCount = Math.max(1, sparkCount - 1);
+        const angle =
+          (rayIndex / rayCount) * TAU +
+          (seed - 0.5) * 0.22;
+        const speed = isCore ? 0 : portrait.width * (0.34 + seed * 0.28);
+        const life = isCore ? 0.3 : 0.46 + seed * 0.2;
+        return {
+          x: clickX,
+          y: clickY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - (isCore ? 0 : 18),
+          size: isCore ? 34 : 12 + seed * 9,
+          alpha: 1,
+          warmth: isCore ? 0.18 : seed * 0.08,
+          life,
+          maxLife: life,
+        };
+      });
 
       updateCanvasActive(true);
       updateVisualState("exploded");
