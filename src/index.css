@@ -145,47 +145,6 @@ html {
   transition: opacity 240ms ease;
 }
 
-.physics-portrait__caption {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  min-height: 2rem;
-  padding: 0.55rem 0.35rem 0;
-  color: rgba(153, 170, 192, 0.68);
-  font-size: 0.56rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  transition: color 220ms ease, opacity 180ms ease;
-}
-
-.physics-portrait[data-portrait-state="exploded"] .physics-portrait__caption,
-.physics-portrait[data-portrait-state="journey"] .physics-portrait__caption,
-.physics-portrait[data-portrait-state="dust"] .physics-portrait__caption,
-.physics-portrait[data-portrait-state="returning"] .physics-portrait__caption {
-  opacity: 0;
-}
-
-.physics-portrait__caption-line {
-  width: 1.7rem;
-  height: 1px;
-  flex: 0 0 auto;
-  background: linear-gradient(90deg, #54d9ff, rgba(84, 217, 255, 0.08));
-}
-
-.physics-portrait__caption-copy {
-  min-width: 0;
-}
-
-.physics-portrait__caption-index {
-  flex: 0 0 auto;
-  margin-left: auto;
-  color: rgba(118, 200, 238, 0.55);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
 .portrait-fragment-canvas {
   position: fixed;
   inset: 0;
@@ -229,9 +188,6 @@ main .contact-field {
     opacity: 1;
   }
 
-  .physics-portrait:hover .physics-portrait__caption {
-    color: rgba(196, 218, 238, 0.86);
-  }
 }
 
 @media (max-width: 640px) {
@@ -239,17 +195,6 @@ main .contact-field {
     bottom: 1.8rem;
   }
 
-  .physics-portrait__caption {
-    gap: 0.4rem;
-    padding-top: 0.45rem;
-    color: rgba(166, 187, 210, 0.78);
-    font-size: 0.48rem;
-    letter-spacing: 0.08em;
-  }
-
-  .physics-portrait__caption-line {
-    width: 1.1rem;
-  }
 }
 
 body {

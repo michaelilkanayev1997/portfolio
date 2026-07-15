@@ -1596,16 +1596,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         : visualState === "journey" || visualState === "dust"
           ? "Michael's portrait fragments are following the page"
           : "Explode Michael's portrait";
-  const instruction = isStatic
-    ? "Portrait motion is reduced"
-    : visualState === "exploded"
-      ? "Released fragments return automatically"
-      : visualState === "journey" || visualState === "dust"
-        ? "Scroll carries fragments through the work"
-      : visualState === "returning"
-        ? "Material memory is reassembling"
-        : "Move bends depth / click releases";
-
   return (
     <div
       className="physics-portrait"
@@ -1639,14 +1629,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         />
         <span className="physics-portrait__focus" aria-hidden />
       </button>
-
-      <div className="physics-portrait__caption" aria-hidden>
-        <span className="physics-portrait__caption-line" />
-        <span className="physics-portrait__caption-copy">{instruction}</span>
-        <span className="physics-portrait__caption-index">
-          {quality === "full" ? "MM / 01" : quality === "low" ? "MM / L" : "MM / S"}
-        </span>
-      </div>
 
       {typeof document !== "undefined" &&
         createPortal(
