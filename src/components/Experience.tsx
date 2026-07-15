@@ -158,6 +158,7 @@ const Experience = memo(() => {
                         alt={title}
                         className="w-6 h-6 sm:w-10 sm:h-10 mr-2 sm:mr-4"
                         loading="lazy"
+                        decoding="async"
                       />
                       <p className="font-semibold text-sm sm:text-lg">
                         {title}

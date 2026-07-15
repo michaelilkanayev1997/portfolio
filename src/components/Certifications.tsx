@@ -85,7 +85,7 @@ const Certifications = memo(() => {
   return (
     <div
       ref={sectionRef}
-      className="bg-gradient-to-b from-black to-black w-full  pb-22 pt-0 select-none"
+      className="bg-gradient-to-b from-black to-black w-full pt-0 select-none"
     >
       <div
         id="certifications"
@@ -132,7 +132,7 @@ const Certifications = memo(() => {
                 role="link"
                 aria-label={`View certificate for ${title}`}
               >
-                <img src={img} alt={title} loading="lazy" />
+                <img src={img} alt={title} loading="lazy" decoding="async" />
               </SwiperSlide>
             ))}
           </Swiper>

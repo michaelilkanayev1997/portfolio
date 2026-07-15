@@ -1,25 +1,28 @@
-import { useEffect, useRef, memo } from "react";
+import { useRef, memo } from "react";
 import gsap from "gsap";
 
 import { links } from "../data/socialLinksData";
-import { prefersReducedMotion } from "../utils/motion";
+import { useDeferredGsap } from "../hooks/useDeferredGsap";
 
 const SocialLinks = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!containerRef.current || prefersReducedMotion()) return;
-    gsap.fromTo(
-      containerRef.current,
-      { x: "-200px", opacity: 0 },
-      {
-        x: "0",
-        opacity: 1,
-        duration: 1,
-        ease: "back.out",
-      }
-    );
-  }, []);
+  useDeferredGsap(
+    containerRef,
+    () => {
+      gsap.fromTo(
+        containerRef.current,
+        { x: "-200px", opacity: 0 },
+        {
+          x: "0",
+          opacity: 1,
+          duration: 1,
+          ease: "back.out",
+        },
+      );
+    },
+    [],
+  );
 
   return (
     <div

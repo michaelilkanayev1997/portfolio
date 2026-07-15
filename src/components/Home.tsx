@@ -1,7 +1,6 @@
 import { useEffect, useRef, memo, useState } from "react";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
-import { useTypewriter, Cursor } from "react-simple-typewriter";
 import gsap from "gsap";
 
 import whatsapp from "../assets/svg/whatsapp.svg";
@@ -10,6 +9,7 @@ import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
 import { isiPhone } from "../utils";
 import { getRevealMotion, prefersReducedMotion } from "../utils/motion";
+import HeroTypewriter from "./HeroTypewriter";
 import PhysicsPortrait from "./PhysicsPortrait";
 
 const Home = () => {
@@ -19,14 +19,6 @@ const Home = () => {
       : "/heroImage.webp",
   );
   const [portraitReady, setPortraitReady] = useState(prefersReducedMotion);
-  const [typeEffect] = useTypewriter({
-    words: ["Software Developer", "Full Stack Developer", "Software Engineer"],
-    loop: 0,
-    typeSpeed: 150,
-    deleteSpeed: 40,
-    delaySpeed: 2000,
-  });
-
   const main = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const buttonGroupRef = useRef<HTMLDivElement>(null);
@@ -131,13 +123,7 @@ const Home = () => {
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
-          <h2
-            ref={typeEffectRef}
-            className="pt-11 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[35rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]"
-          >
-            I'm a <span className="text-blue-400"> {typeEffect}</span>
-            <Cursor />
-          </h2>
+          <HeroTypewriter headingRef={typeEffectRef} />
 
           <p
             className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10 font-bold"
@@ -204,7 +190,12 @@ const Home = () => {
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My LinkedIn profile"
           >
-            <img src={linkedin} alt="linkedin" loading="lazy" />
+            <img
+              src={linkedin}
+              alt="linkedin"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <a
             href="https://github.com/michaelilkanayev1997"
@@ -213,14 +204,24 @@ const Home = () => {
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My Github profile"
           >
-            <img src={github} alt="github" loading="lazy" />
+            <img
+              src={github}
+              alt="github"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <a
             href="tel:972546132140"
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My phone number"
           >
-            <img src={phone} alt="phone" loading="lazy" />
+            <img
+              src={phone}
+              alt="phone"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <a
             href="https://api.whatsapp.com/send?phone=972546132140"
@@ -229,7 +230,12 @@ const Home = () => {
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My Whatsapp"
           >
-            <img src={whatsapp} alt="whatsapp" loading="lazy" />
+            <img
+              src={whatsapp}
+              alt="whatsapp"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
         </div>
 

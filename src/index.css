@@ -222,11 +222,6 @@ body.ilona-game-open .Cursor--blinking {
   }
 }
 
-.reveal-init {
-  opacity: 0;
-  will-change: opacity, transform;
-}
-
 .dragon-enter {
   opacity: 0;
   animation: dragonFadeIn 600ms ease-out forwards;
@@ -239,23 +234,6 @@ body.ilona-game-open .Cursor--blinking {
   to {
     opacity: 0.9;
   }
-}
-
-.heading-underline {
-  position: relative;
-  display: inline-block;
-}
-.heading-underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  height: 4px;
-  width: 100%;
-  background: linear-gradient(90deg, #22d3ee, #3b82f6, #a855f7);
-  transform: scaleX(0);
-  transform-origin: left center;
-  border-radius: 2px;
 }
 
 .tilt-card {
@@ -304,18 +282,4 @@ body.ilona-game-open .Cursor--blinking {
     font-family: "Raleway", sans-serif;
   }
 
-  /* Style for the custom scrollbar */
-  .scrollbar-dark::-webkit-scrollbar {
-    width: 8px; /* Width of the scrollbar */
-  }
-
-  .scrollbar-dark::-webkit-scrollbar-thumb {
-    background-color: #6b7280; /* Thumb color */
-    border-radius: 4px;
-  }
-
-  .scrollbar-dark::-webkit-scrollbar-track {
-    background-color: #1f2937; /* Track color */
-    border-radius: 4px;
-  }
 }

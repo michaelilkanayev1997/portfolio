@@ -10,505 +10,45 @@ import {
 import { createPortal } from "react-dom";
 
 import { prefersReducedMotion } from "../utils/motion";
+import { createFragmentDefinitions } from "./portrait/fragmentMesh";
 import {
-  createFragmentDefinitions,
-  type FragmentDefinition,
-  type MaterialName,
-  type QualityTier,
-} from "./portrait/fragmentMesh";
+  CONSTELLATION_LANDMARKS,
+  MATERIAL_PROFILES,
+  MAX_DELTA,
+  TAU,
+  TOP_EPSILON,
+} from "./portrait/portraitConfig";
+import {
+  collectFlowSections,
+  flowRoot,
+  FLOW_SECTIONS,
+  obstacleVisibilityAt,
+} from "./portrait/portraitFlow";
+import { explodePortrait } from "./portrait/portraitExplosion";
+import { clamp, lerp, smoothstep } from "./portrait/portraitMath";
+import { isFacialFragment, makePiece } from "./portrait/portraitMotion";
 import {
   PortraitRenderer,
-  type FragmentTransform,
   type PortraitRect,
-  type SparkRender,
 } from "./portrait/portraitRenderer";
-
-const MAX_DELTA = 1 / 30;
-const ALPHA_MAP_SIZE = 192;
-const CLICK_RETURN_DELAY = 1_450;
-const SCROLL_DRIFT_WINDOW = 1_050;
-const TOP_EPSILON = 18;
-const TAU = Math.PI * 2;
-
-// These are recognizable landmarks from the portrait, not arbitrary particles.
-// They become the bright nodes of a miniature portrait-shaped star map.
-const CONSTELLATION_LANDMARKS = new Map<string, number>([
-  ["hair-crown-left", 0],
-  ["hair-fringe", 1],
-  ["hair-crown-right", 2],
-  ["skin-forehead", 3],
-  ["skin-cheek-right", 4],
-  ["skin-nose", 5],
-  ["skin-cheek-left", 6],
-  ["skin-ear-left", 7],
-  ["beard-left", 8],
-  ["skin-mouth", 9],
-  ["beard-right", 10],
-  ["hand-index-tip", 11],
-  ["hand-lower", 12],
-  ["cloth-logo", 13],
-  ["cloth-shoulder-left", 14],
-  ["cloth-shoulder-right", 15],
-]);
-
-type PortraitState =
-  | "assembled"
-  | "hover"
-  | "exploded"
-  | "journey"
-  | "dust"
-  | "returning"
-  | "static";
-
-type QualityLabel = "full" | "low" | "static";
-type ActivationSource = "none" | "click" | "scroll";
-type FlowSectionName =
-  | "hero"
-  | "about"
-  | "certifications"
-  | "portfolio"
-  | "experience"
-  | "contact";
-
-type FlowObstacle = {
-  left: number;
-  top: number;
-  right: number;
-  bottom: number;
-  kind: "soft" | "hard";
-};
-
-type FlowSection = {
-  name: Exclude<FlowSectionName, "hero">;
-  top: number;
-  bottom: number;
-  obstacles: FlowObstacle[];
-};
-
-const FLOW_SECTIONS: Array<{
-  name: FlowSection["name"];
-  soft: string;
-  hard: string;
-}> = [
-  {
-    name: "about",
-    soft: ".about-heading, .about-intro, .about-lead, .about-item",
-    hard: "",
-  },
-  {
-    name: "certifications",
-    soft: ".cert-heading, .cert-caption",
-    hard: ".cert-swiper",
-  },
-  {
-    name: "portfolio",
-    soft: ".portfolio-heading",
-    hard: ".portfolio-card",
-  },
-  {
-    name: "experience",
-    soft: ".skills-heading, .skill-category-title",
-    hard: ".skill-card",
-  },
-  {
-    name: "contact",
-    soft: ".contact-heading, .contact-sub",
-    hard: "#contact form",
-  },
-];
-
-type MaterialProfile = {
-  hoverDepth: number;
-  scatter: number;
-  impulse: number;
-  stiffness: number;
-  damping: number;
-  rotation: number;
-  shear: number;
-  returnDelay: number;
-  returnStiffness: number;
-  returnDamping: number;
-};
-
-const MATERIAL_PROFILES: Record<MaterialName, MaterialProfile> = {
-  glass: {
-    hoverDepth: 1.3,
-    scatter: 0.3,
-    impulse: 1.05,
-    stiffness: 34,
-    damping: 7.2,
-    rotation: 0.26,
-    shear: 0,
-    returnDelay: 0.035,
-    returnStiffness: 31,
-    returnDamping: 9.6,
-  },
-  metal: {
-    hoverDepth: 0.86,
-    scatter: 0.2,
-    impulse: 0.66,
-    stiffness: 48,
-    damping: 10.5,
-    rotation: 0.12,
-    shear: 0,
-    returnDelay: 0.02,
-    returnStiffness: 34,
-    returnDamping: 10.2,
-  },
-  cloth: {
-    hoverDepth: 1.02,
-    scatter: 0.42,
-    impulse: 1.14,
-    stiffness: 19,
-    damping: 5.8,
-    rotation: 0.48,
-    shear: 0.14,
-    returnDelay: 0.055,
-    returnStiffness: 24,
-    returnDamping: 8.2,
-  },
-  skin: {
-    hoverDepth: 0.86,
-    scatter: 0.19,
-    impulse: 0.56,
-    stiffness: 25,
-    damping: 8.6,
-    rotation: 0.13,
-    shear: 0,
-    returnDelay: 0.035,
-    returnStiffness: 29,
-    returnDamping: 9,
-  },
-  hair: {
-    hoverDepth: 0.94,
-    scatter: 0.25,
-    impulse: 0.78,
-    stiffness: 29,
-    damping: 8,
-    rotation: 0.2,
-    shear: 0,
-    returnDelay: 0.025,
-    returnStiffness: 30,
-    returnDamping: 9,
-  },
-};
-
-type PieceMotion = FragmentTransform & {
-  definition: FragmentDefinition;
-  vx: number;
-  vy: number;
-  rotationVelocity: number;
-  scaleVelocity: number;
-  zVelocity: number;
-  shearVelocity: number;
-  scatterX: number;
-  scatterY: number;
-  scatterRotation: number;
-  scatterShear: number;
-  dustScale: number;
-  dustOpacity: number;
-  returnHoldX: number;
-  returnHoldY: number;
-  returnHoldRotation: number;
-  returnHoldScale: number;
-  returnHoldZ: number;
-  returnHoldShear: number;
-};
-
-type Spark = SparkRender & {
-  vx: number;
-  vy: number;
-  life: number;
-  maxLife: number;
-};
-
-type Runtime = {
-  renderer: PortraitRenderer;
-  fragments: FragmentDefinition[];
-  pieces: PieceMotion[];
-  sparks: Spark[];
-  tier: QualityTier;
-  quality: QualityLabel;
-  canHover: boolean;
-  exploded: boolean;
-  journeyStarted: boolean;
-  returning: boolean;
-  activationSource: ActivationSource;
-  activationAt: number;
-  autoReturnAt: number;
-  returnStartedAt: number;
-  assembledAt: number;
-  destroyed: boolean;
-  canvasSized: boolean;
-  releaseTimer: number | null;
-  frame: number | null;
-  lastTime: number;
-  burstStart: number;
-  returnStart: number;
-  flowClock: number;
-  driftUntil: number;
-  renderFrames: number;
-  rectDocument: PortraitRect;
-  viewportWidth: number;
-  viewportHeight: number;
-  documentHeight: number;
-  pixelRatio: number;
-  scrollY: number;
-  previousScrollY: number;
-  scrollDirection: -1 | 0 | 1;
-  flowSections: FlowSection[];
-  activeSection: FlowSectionName;
-  sectionProgress: number;
-  pointer: { x: number; y: number; active: boolean; seen: boolean };
-  readRect: () => void;
-  readFlowSections: () => void;
-  ensureCanvasSize: () => void;
-  scheduleFrame: () => void;
-  startReturn: () => void;
-};
+import {
+  type DebugWindow,
+  type PortraitState,
+  type QualityLabel,
+  type Runtime,
+} from "./portrait/portraitRuntime";
+import { createPortraitScrollHandler } from "./portrait/portraitScroll";
+import {
+  calculatePixelRatio,
+  createAlphaMap,
+  detectQualityTier,
+  waitForImage,
+} from "./portrait/portraitSetup";
 
 interface PhysicsPortraitProps {
   src: string;
   alt: string;
 }
-
-type DebugWindow = Window & {
-  __portraitDebug?: {
-    snapshot: () => {
-      state: PortraitState;
-      quality: QualityLabel;
-      renderFrames: number;
-      activationSource: ActivationSource;
-      activationAt: number;
-      returnStartedAt: number;
-      assembledAt: number;
-      journeyStarted: boolean;
-      scrollY: number;
-      activeSection: FlowSectionName;
-      sectionProgress: number;
-      pixelRatio: number;
-      canvasActive: boolean;
-      sparkCount: number;
-      fragments: Array<{
-        id: string;
-        material: MaterialName;
-        sourceUv: [number, number];
-        vertices: Array<[number, number]>;
-        x: number;
-        y: number;
-        z: number;
-        rotation: number;
-        opacity: number;
-        size: number;
-        edge: number;
-        shear: number;
-        screenX: number;
-        screenY: number;
-      }>;
-    };
-  };
-};
-
-const clamp = (value: number, minimum = 0, maximum = 1) =>
-  Math.max(minimum, Math.min(maximum, value));
-
-const lerp = (start: number, end: number, amount: number) =>
-  start + (end - start) * amount;
-
-const smoothstep = (value: number) => {
-  const normalized = clamp(value);
-  return normalized * normalized * (3 - 2 * normalized);
-};
-
-const isFacialFragment = (definition: FragmentDefinition) =>
-  definition.id.startsWith("skin-") || definition.id.startsWith("beard-");
-
-const detectQualityTier = (): QualityTier => {
-  const nav = navigator as Navigator & {
-    deviceMemory?: number;
-    connection?: { saveData?: boolean };
-  };
-  const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
-  const memory = nav.deviceMemory ?? 8;
-  const cores = nav.hardwareConcurrency ?? 8;
-  if (
-    nav.connection?.saveData ||
-    memory <= 4 ||
-    cores <= 4 ||
-    (coarsePointer && window.innerWidth < 820)
-  ) {
-    return "low";
-  }
-  if (memory <= 6 || cores <= 6 || window.innerWidth < 1080) return "medium";
-  return "high";
-};
-
-const calculatePixelRatio = (
-  tier: QualityTier,
-  width: number,
-  height: number,
-) => {
-  const cap = tier === "high" ? 1.5 : tier === "medium" ? 1.25 : 1;
-  const pixelBudget = tier === "high" ? 3_200_000 : tier === "medium" ? 2_000_000 : 1_100_000;
-  const budgetRatio = Math.sqrt(pixelBudget / Math.max(1, width * height));
-  return Math.max(1, Math.min(window.devicePixelRatio || 1, cap, budgetRatio));
-};
-
-const createAlphaMap = (image: HTMLImageElement) => {
-  const canvas = document.createElement("canvas");
-  canvas.width = ALPHA_MAP_SIZE;
-  canvas.height = ALPHA_MAP_SIZE;
-  const context = canvas.getContext("2d", { willReadFrequently: true });
-  if (!context) throw new Error("Unable to inspect portrait alpha");
-  context.clearRect(0, 0, ALPHA_MAP_SIZE, ALPHA_MAP_SIZE);
-  context.drawImage(image, 0, 0, ALPHA_MAP_SIZE, ALPHA_MAP_SIZE);
-  return context.getImageData(0, 0, ALPHA_MAP_SIZE, ALPHA_MAP_SIZE);
-};
-
-const waitForImage = async (image: HTMLImageElement) => {
-  if (!image.complete) {
-    await new Promise<void>((resolve, reject) => {
-      image.addEventListener("load", () => resolve(), { once: true });
-      image.addEventListener("error", () => reject(new Error("Portrait failed to load")), {
-        once: true,
-      });
-    });
-  }
-  if (image.decode) await image.decode().catch(() => undefined);
-  if (!image.naturalWidth || !image.naturalHeight) {
-    throw new Error("Portrait has no intrinsic size");
-  }
-};
-
-const flowRoot = (name: FlowSection["name"]) => {
-  const anchor = document.getElementById(name);
-  if (!anchor) return null;
-  if (name === "certifications") return anchor.parentElement;
-  if (name === "contact") return anchor.parentElement?.parentElement ?? anchor;
-  return anchor;
-};
-
-const readObstacleRects = (
-  root: HTMLElement,
-  selector: string,
-  kind: FlowObstacle["kind"],
-) => {
-  if (!selector) return [];
-  return Array.from(root.querySelectorAll<HTMLElement>(selector)).flatMap(
-    (element) => {
-      const rect = element.getBoundingClientRect();
-      if (rect.width < 2 || rect.height < 2) return [];
-      return [
-        {
-          left: rect.left + window.scrollX,
-          top: rect.top + window.scrollY,
-          right: rect.right + window.scrollX,
-          bottom: rect.bottom + window.scrollY,
-          kind,
-        } satisfies FlowObstacle,
-      ];
-    },
-  );
-};
-
-const collectFlowSections = (): FlowSection[] =>
-  FLOW_SECTIONS.flatMap((definition) => {
-    const root = flowRoot(definition.name);
-    if (!root) return [];
-    const rect = root.getBoundingClientRect();
-    return [
-      {
-        name: definition.name,
-        top: rect.top + window.scrollY,
-        bottom: rect.bottom + window.scrollY,
-        obstacles: [
-          ...readObstacleRects(root, definition.soft, "soft"),
-          ...readObstacleRects(root, definition.hard, "hard"),
-        ],
-      },
-    ];
-  });
-
-const obstacleVisibilityAt = (
-  obstacles: FlowObstacle[] | undefined,
-  x: number,
-  y: number,
-  scrollY: number,
-  tier: QualityTier,
-) => {
-  let visibility = y < 90 ? 0.08 : 1;
-  if (window.innerWidth >= 1280 && x < 70 && y > 315 && y < 580) {
-    visibility = Math.min(visibility, 0.08);
-  }
-  if (!obstacles) return visibility;
-
-  for (const obstacle of obstacles) {
-    const top = obstacle.top - scrollY;
-    const bottom = obstacle.bottom - scrollY;
-    const dx = Math.max(obstacle.left - x, 0, x - obstacle.right);
-    const dy = Math.max(top - y, 0, y - bottom);
-    const influence = obstacle.kind === "hard" ? 30 : 22;
-    if (dx >= influence || dy >= influence) continue;
-    const distance = Math.hypot(dx, dy);
-    if (distance >= influence) continue;
-    const minimum = obstacle.kind === "hard"
-      ? tier === "low"
-        ? 0.2
-        : 0.08
-      : tier === "low"
-        ? 0.38
-        : 0.28;
-    visibility = Math.min(
-      visibility,
-      lerp(minimum, 1, smoothstep(distance / influence)),
-    );
-    if (visibility <= 0.08) break;
-  }
-  return visibility;
-};
-
-const makePiece = (
-  definition: FragmentDefinition,
-  tier: QualityTier,
-): PieceMotion => ({
-  definition,
-  x: 0,
-  y: 0,
-  rotation: 0,
-  scale: 1,
-  z: 0,
-  alpha: 1,
-  edge: 0,
-  shear: 0,
-  vx: 0,
-  vy: 0,
-  rotationVelocity: 0,
-  scaleVelocity: 0,
-  zVelocity: 0,
-  shearVelocity: 0,
-  scatterX: 0,
-  scatterY: 0,
-  scatterRotation: 0,
-  scatterShear: 0,
-  dustScale:
-    tier === "high"
-      ? 0.06 + definition.randomA * 0.04
-      : tier === "medium"
-        ? 0.052 + definition.randomA * 0.034
-        : 0.042 + definition.randomA * 0.024,
-  dustOpacity:
-    tier === "high"
-      ? 0.25 + definition.randomB * 0.21
-      : tier === "medium"
-        ? 0.22 + definition.randomB * 0.18
-        : 0.19 + definition.randomB * 0.15,
-  returnHoldX: 0,
-  returnHoldY: 0,
-  returnHoldRotation: 0,
-  returnHoldScale: 1,
-  returnHoldZ: 0,
-  returnHoldShear: 0,
-});
 
 const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -836,9 +376,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             1,
             runtime.viewportHeight - verticalStart - 12,
           );
-          // Stars never converge into a shared constellation or edge lane.
-          // Each fragment owns a stable seeded flight path across the viewport.
-          const portraitMapBlend = 0;
           let maxError = 0;
 
           // Once the silhouette is back, let hover retarget the same springs
@@ -942,12 +479,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 Math.max(0, Math.sin(phase * 2.15 + randomB * 9)),
                 10,
               );
-              const mapShine = portraitMapBlend *
-                (isLandmark ? 0.7 : 0.32);
-              const dustDepth = Math.max(
-                0.24 + randomB * 0.38 + twinkle * 0.34 + sectionShine,
-                mapShine,
-              );
+              const dustDepth =
+                0.24 + randomB * 0.38 + twinkle * 0.34 + sectionShine;
               // The stellar sprite now carries the light. Polygon edges stay
               // restrained so deep sections read as a constellation, not confetti.
               const dustEdge =
@@ -965,12 +498,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 smoothstep(pieceJourneyProgress),
                 1.24,
               );
-              const captureProgress = portraitMapBlend > 0.001
-                ? Math.max(
-                    pieceJourneyEase,
-                    smoothstep((journeyProgress - 0.06) / 0.44),
-                  )
-                : pieceJourneyEase;
+              const captureProgress = pieceJourneyEase;
               targetX = lerp(piece.scatterX, dustX - centerX, captureProgress);
               targetY = lerp(piece.scatterY, dustY - centerY, captureProgress);
               targetRotation = lerp(
@@ -980,25 +508,12 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                   Math.sin(phase) * 0.16,
                 pieceJourneyEase,
               );
-              const mapScale = 0.105 + randomA * 0.04;
-              const destinationScale = lerp(
-                piece.dustScale,
-                mapScale,
-                portraitMapBlend,
-              );
               const scaleProgress = smoothstep(
                 (pieceJourneyProgress - 0.035) / 0.52,
               );
-              targetScale = lerp(1, destinationScale, scaleProgress);
+              targetScale = lerp(1, piece.dustScale, scaleProgress);
               targetZ = lerp(0, dustDepth, captureProgress);
               targetAlpha = lerp(1, dustAlpha, fadeProgress);
-              if (portraitMapBlend > 0.001) {
-                const mapAlpha = isLandmark ? 0.72 : 0.42;
-                targetAlpha = Math.max(
-                  targetAlpha,
-                  mapAlpha * portraitMapBlend * obstacleVisibility,
-                );
-              }
               targetEdge = lerp(0, dustEdge, captureProgress);
               targetShear = lerp(piece.scatterShear, 0, pieceJourneyEase);
               stiffness = journeyProgress > 0.58 ? 36 : profile.stiffness;
@@ -1113,7 +628,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             runtime.pieces,
             runtime.sparks,
             time / 1000,
-            portraitMapBlend,
           );
           runtime.renderFrames += 1;
 
@@ -1169,108 +683,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           runtime.frame = requestAnimationFrame(frame);
         };
 
-        const onScroll = () => {
-          if (!runtime || runtime.destroyed) return;
-          const nextScroll = window.scrollY;
-          const previousScroll = runtime.previousScrollY;
-          const difference = nextScroll - previousScroll;
-          const journeyDistance = Math.max(360, runtime.viewportHeight * 0.82);
-          const previousJourneyEase = Math.pow(
-            smoothstep(clamp(previousScroll / journeyDistance)),
-            1.3,
-          );
-          const currentJourneyEase = Math.pow(
-            smoothstep(clamp(nextScroll / journeyDistance)),
-            1.3,
-          );
-          const isRestoredPosition =
-            runtime.renderFrames === 0 &&
-            Math.abs(difference) <= 0.01 &&
-            nextScroll > 0;
-          const beginsJourney =
-            !runtime.exploded &&
-            nextScroll > 0 &&
-            (difference > 0 || isRestoredPosition);
-          const joinsJourney =
-            runtime.exploded &&
-            !runtime.journeyStarted &&
-            nextScroll > 0 &&
-            difference > 0;
-          const resumesJourney =
-            runtime.returning && nextScroll > 0 && difference > 0;
-          const establishedJourney =
-            runtime.journeyStarted && !runtime.returning;
-          const rebaseDelta = isRestoredPosition ? nextScroll : difference;
-          if (
-            (establishedJourney || beginsJourney || joinsJourney || resumesJourney) &&
-            Math.abs(rebaseDelta) > 0.01
-          ) {
-            const rebaseEase = establishedJourney
-              ? previousJourneyEase
-              : currentJourneyEase;
-            runtime.pieces.forEach((piece) => {
-              piece.y += rebaseDelta * rebaseEase;
-            });
-          }
-          runtime.scrollDirection = difference > 0.5 ? 1 : difference < -0.5 ? -1 : 0;
-          runtime.previousScrollY = nextScroll;
-          runtime.scrollY = nextScroll;
-          const now = performance.now();
-
-          if (beginsJourney) {
-            runtime.exploded = true;
-            runtime.journeyStarted = true;
-            runtime.returning = false;
-            runtime.activationSource = "scroll";
-            runtime.activationAt = now;
-            runtime.autoReturnAt = 0;
-            runtime.burstStart = now;
-            runtime.pointer.active = false;
-            runtime.flowClock = 0;
-            runtime.pieces.forEach((piece) => {
-              const dx = piece.definition.center.x - 0.52;
-              const dy = piece.definition.center.y - 0.49;
-              const angle = Math.atan2(dy, dx) +
-                (piece.definition.randomA - 0.5) * 0.28;
-              const release = runtime!.rectDocument.width *
-                (0.035 + piece.definition.randomB * 0.045);
-              piece.scatterX = Math.cos(angle) * release;
-              piece.scatterY = Math.sin(angle) * release - release * 0.08;
-              piece.scatterRotation =
-                (piece.definition.randomA - 0.5) * 0.24;
-              piece.scatterShear = 0;
-              piece.vx += Math.cos(angle) * release * 1.25;
-              piece.vy += Math.sin(angle) * release * 1.15 - 5;
-            });
-          } else if (joinsJourney || resumesJourney) {
-            runtime.journeyStarted = true;
-            runtime.returning = false;
-            runtime.autoReturnAt = 0;
-            runtime.returnStartedAt = 0;
-          }
-
-          if (!runtime.exploded) return;
-          runtime.driftUntil =
-            now + (runtime.tier === "high" ? SCROLL_DRIFT_WINDOW : 650);
-
-          const journeyProgress = clamp(
-            nextScroll / journeyDistance,
-          );
-          if (runtime.journeyStarted && !runtime.returning) {
-            updateVisualState(journeyProgress > 0.52 ? "dust" : "journey");
-            updateCanvasActive(true);
-          }
-          if (
-            runtime.journeyStarted &&
-            runtime.scrollDirection < 0 &&
-            nextScroll < runtime.viewportHeight * 0.3 &&
-            !runtime.returning
-          ) {
-            runtime.startReturn();
-          }
-          runtime.ensureCanvasSize();
-          runtime.scheduleFrame();
-        };
+        const onScroll = createPortraitScrollHandler(runtime, {
+          updateVisualState,
+          updateCanvasActive,
+        });
 
         const onResize = () => {
           if (!runtime || runtime.destroyed) return;
@@ -1483,95 +899,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
       const runtime = runtimeRef.current;
       if (!runtime || runtime.destroyed || quality === "static") return;
       if (runtime.exploded) return;
-
-      runtime.readRect();
-      runtime.ensureCanvasSize();
-      const portrait: PortraitRect = {
-        left: runtime.rectDocument.left - window.scrollX,
-        top: runtime.rectDocument.top - window.scrollY,
-        width: runtime.rectDocument.width,
-        height: runtime.rectDocument.height,
-      };
-      const clickX = event.clientX || portrait.left + portrait.width / 2;
-      const clickY = event.clientY || portrait.top + portrait.height / 2;
-
-      const activationTime = performance.now();
-      runtime.exploded = true;
-      runtime.journeyStarted = false;
-      runtime.returning = false;
-      runtime.activationSource = "click";
-      runtime.activationAt = activationTime;
-      runtime.autoReturnAt = activationTime + CLICK_RETURN_DELAY;
-      runtime.returnStartedAt = 0;
-      runtime.pointer = {
-        x: clickX,
-        y: clickY,
-        active: runtime.canHover,
-        seen: true,
-      };
-      runtime.scrollY = window.scrollY;
-      runtime.previousScrollY = window.scrollY;
-      runtime.burstStart = activationTime;
-      runtime.lastTime = 0;
-      runtime.flowClock = 0;
-
-      runtime.pieces.forEach((piece) => {
-        const profile = MATERIAL_PROFILES[piece.definition.material];
-        const faceFactor = isFacialFragment(piece.definition) ? 0.58 : 1;
-        const centerX = portrait.left + piece.definition.center.x * portrait.width;
-        const centerY = portrait.top + piece.definition.center.y * portrait.height;
-        const baseAngle = Math.atan2(centerY - clickY, centerX - clickX);
-        const angle = baseAngle + (piece.definition.randomA - 0.5) * 0.42;
-        const directionX = Math.cos(angle);
-        const directionY = Math.sin(angle);
-        const horizontalSpread = directionX < 0 ? 0.62 : 1;
-        const radius =
-          portrait.width *
-          profile.scatter *
-          faceFactor *
-          (0.92 + piece.definition.randomB * 0.5);
-        piece.scatterX = directionX * radius * horizontalSpread;
-        piece.scatterY = directionY * radius - portrait.width * 0.025;
-        piece.scatterRotation =
-          (piece.definition.randomA - 0.5) * 2 * profile.rotation * faceFactor;
-        piece.scatterShear = piece.definition.material === "cloth"
-          ? (piece.definition.randomB - 0.5) * 2 * profile.shear
-          : 0;
-        const velocity =
-          portrait.width * profile.impulse * faceFactor *
-          (1.28 + piece.definition.randomB * 0.9);
-        piece.vx += directionX * velocity * horizontalSpread;
-        piece.vy += directionY * velocity - portrait.width * 0.22;
-        piece.rotationVelocity +=
-          (piece.definition.randomA - 0.5) * profile.rotation * 7;
-        piece.scaleVelocity -= 0.28 + piece.definition.randomB * 0.24;
-        piece.zVelocity += 0.7 + piece.definition.randomA * 1.15;
-        piece.edge = 0.42;
-      });
-
-      const sparkCount = runtime.tier === "high" ? 8 : runtime.tier === "medium" ? 6 : 4;
-      runtime.sparks = Array.from({ length: sparkCount }, (_, index) => {
-        const seed = runtime.pieces[index].definition.randomA;
-        const isCore = index === 0;
-        const rayIndex = Math.max(0, index - 1);
-        const rayCount = Math.max(1, sparkCount - 1);
-        const angle =
-          (rayIndex / rayCount) * TAU +
-          (seed - 0.5) * 0.22;
-        const speed = isCore ? 0 : portrait.width * (0.34 + seed * 0.28);
-        const life = isCore ? 0.3 : 0.46 + seed * 0.2;
-        return {
-          x: clickX,
-          y: clickY,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed - (isCore ? 0 : 18),
-          size: isCore ? 34 : 12 + seed * 9,
-          alpha: 1,
-          warmth: isCore ? 0.18 : seed * 0.08,
-          life,
-          maxLife: life,
-        };
-      });
+      explodePortrait(runtime, event.clientX, event.clientY);
 
       updateCanvasActive(true);
       updateVisualState("exploded");

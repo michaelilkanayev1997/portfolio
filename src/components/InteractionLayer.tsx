@@ -1,25 +1,41 @@
 import { memo, useEffect } from "react";
 
-import { canHover, prefersReducedMotion } from "../utils/motion";
+import { prefersReducedMotion } from "../utils/motion";
 
 const InteractionLayer = () => {
   useEffect(() => {
     if (prefersReducedMotion()) return;
+    const hoverQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    let frame: number | null = null;
+    let pendingTarget: HTMLElement | null = null;
+    let pointerX = 0;
+    let pointerY = 0;
 
-    const onPointerMove = (event: PointerEvent) => {
-      if (!canHover()) return;
-      const target = (event.target as Element | null)?.closest<HTMLElement>("[data-magnetic]");
+    const updateMagneticTarget = () => {
+      frame = null;
+      const target = pendingTarget;
       if (!target) return;
       const rect = target.getBoundingClientRect();
-      const x = (event.clientX - rect.left - rect.width / 2) * 0.16;
-      const y = (event.clientY - rect.top - rect.height / 2) * 0.16;
+      const x = (pointerX - rect.left - rect.width / 2) * 0.16;
+      const y = (pointerY - rect.top - rect.height / 2) * 0.16;
       target.style.setProperty("--magnetic-x", `${x}px`);
       target.style.setProperty("--magnetic-y", `${y}px`);
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (!hoverQuery.matches) return;
+      const target = (event.target as Element | null)?.closest<HTMLElement>("[data-magnetic]");
+      if (!target) return;
+      pendingTarget = target;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      if (frame === null) frame = requestAnimationFrame(updateMagneticTarget);
     };
 
     const onPointerOut = (event: PointerEvent) => {
       const target = (event.target as Element | null)?.closest<HTMLElement>("[data-magnetic]");
       if (!target || target.contains(event.relatedTarget as Node | null)) return;
+      if (pendingTarget === target) pendingTarget = null;
       target.style.setProperty("--magnetic-x", "0px");
       target.style.setProperty("--magnetic-y", "0px");
     };
@@ -43,6 +59,7 @@ const InteractionLayer = () => {
       document.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("pointerout", onPointerOut);
       document.removeEventListener("pointerdown", onPointerDown);
+      if (frame !== null) cancelAnimationFrame(frame);
     };
   }, []);
 

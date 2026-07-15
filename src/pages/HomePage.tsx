@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from "react";
-import { ScrollTrigger } from "gsap/all";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
 
 import Home from "../components/Home";
@@ -22,9 +22,16 @@ const HomePage = () => {
   useEffect(() => {
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
     };
-    if (w.requestIdleCallback) w.requestIdleCallback(() => setHydrated(true), { timeout: 3000 });
-    else setTimeout(() => setHydrated(true), 1500);
+    if (w.requestIdleCallback) {
+      const idleId = w.requestIdleCallback(() => setHydrated(true), {
+        timeout: 3000,
+      });
+      return () => w.cancelIdleCallback?.(idleId);
+    }
+    const timeoutId = window.setTimeout(() => setHydrated(true), 1500);
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   return (

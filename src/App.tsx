@@ -1,7 +1,6 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
-import ReactGA from "react-ga4";
 
 import NavBar from "./components/NavBar";
 import ScrollProgress from "./components/ScrollProgress";
@@ -10,7 +9,15 @@ import Ilona from "./components/Ilona";
 import InteractionLayer from "./components/InteractionLayer";
 
 const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS;
-if (GA_ID) ReactGA.initialize(GA_ID);
+let analyticsPromise: Promise<typeof import("react-ga4").default> | undefined;
+
+const getAnalytics = () => {
+  analyticsPromise ??= import("react-ga4").then(({ default: analytics }) => {
+    analytics.initialize(GA_ID);
+    return analytics;
+  });
+  return analyticsPromise;
+};
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
@@ -32,11 +39,17 @@ function App() {
 
   useEffect(() => {
     if (!GA_ID) return;
-    ReactGA.send({
-      hitType: "pageview",
-      page: pathname,
-      title: document.title,
-    });
+    void getAnalytics()
+      .then((analytics) => {
+        analytics.send({
+          hitType: "pageview",
+          page: pathname,
+          title: document.title,
+        });
+      })
+      .catch(() => {
+        analyticsPromise = undefined;
+      });
   }, [pathname]);
 
   return (

@@ -122,7 +122,6 @@ import lowercancerjourney3 from "../assets/portfolio/CancerJourney/lowercancerjo
 import lowercancerjourney4 from "../assets/portfolio/CancerJourney/lowercancerjourney4.webp";
 import lowercancerjourney5 from "../assets/portfolio/CancerJourney/lowercancerjourney5.webp";
 import lowercancerjourney6 from "../assets/portfolio/CancerJourney/lowercancerjourney6.webp";
-import lowercancerjourney7 from "../assets/portfolio/CancerJourney/lowercancerjourney7.webp";
 import lowercancerjourney8 from "../assets/portfolio/CancerJourney/lowercancerjourney8.webp";
 import cancerjourney0 from "../assets/portfolio/CancerJourney/cancerjourney0.png";
 import cancerjourney1 from "../assets/portfolio/CancerJourney/cancerjourney1.png";
@@ -178,7 +177,7 @@ const portfolioDetails: ProjectDetails[] = [
         { lower: lowercancerjourney4, big: cancerjourney4 },
         { lower: lowercancerjourney5, big: cancerjourney5 },
         { lower: lowercancerjourney6, big: cancerjourney6 },
-        { lower: lowercancerjourney7, big: cancerjourney7 },
+        { lower: cancerjourney7, big: cancerjourney7 },
         { lower: lowercancerjourney8, big: cancerjourney8 },
       ],
       thirdTitle: "Features",
