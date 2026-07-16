@@ -49,12 +49,14 @@ import {
 interface PhysicsPortraitProps {
   src: string;
   alt: string;
+  onReady?: () => void;
 }
 
-const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
+const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const runtimeRef = useRef<Runtime | null>(null);
+  const entrancePlayedRef = useRef(false);
   const visualStateRef = useRef<PortraitState>("assembled");
   const activeRef = useRef(false);
   const [visualState, setVisualState] = useState<PortraitState>("assembled");
@@ -88,6 +90,12 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
 
     let cancelled = false;
     let runtime: Runtime | null = null;
+    let readyReported = false;
+    const reportReady = () => {
+      if (cancelled || readyReported) return;
+      readyReported = true;
+      onReady?.();
+    };
 
     updateCanvasActive(false);
     if (motionReduced) {
@@ -95,7 +103,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
       canvas.height = 1;
       setQuality("static");
       updateVisualState("static");
-      return undefined;
+      void waitForImage(image).then(reportReady).catch(reportReady);
+      return () => {
+        cancelled = true;
+      };
     }
     updateVisualState("assembled");
 
@@ -110,6 +121,28 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         );
         const renderer = new PortraitRenderer(canvas, image, fragments);
         const pieces = fragments.map((fragment) => makePiece(fragment, tier));
+        const shouldPlayEntrance =
+          !entrancePlayedRef.current && window.scrollY < TOP_EPSILON;
+        const entranceStartedAt = performance.now();
+        if (shouldPlayEntrance) {
+          pieces.forEach((piece) => {
+            const deltaX = piece.definition.center.x - 0.52;
+            const deltaY = piece.definition.center.y - 0.48;
+            const distance = Math.max(0.08, Math.hypot(deltaX, deltaY));
+            const spread = 4 + piece.definition.randomB * 7;
+            piece.x =
+              (deltaX / distance) * spread +
+              (piece.definition.randomA - 0.5) * 2.5;
+            piece.y =
+              (deltaY / distance) * spread +
+              7 +
+              piece.definition.randomB * 4;
+            piece.rotation = (piece.definition.randomA - 0.5) * 0.035;
+            piece.alpha = 0;
+            piece.z = 0.06 + piece.definition.randomB * 0.06;
+            piece.edge = 0.08;
+          });
+        }
         const rect = image.getBoundingClientRect();
         const label: QualityLabel = tier === "high" ? "full" : "low";
 
@@ -347,6 +380,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             runtime.pointer.y <= portrait.top + portrait.height;
           const burstAge = Math.max(0, (time - runtime.burstStart) / 1000);
           const returnAge = Math.max(0, (time - runtime.returnStart) / 1000);
+          const entranceAge = shouldPlayEntrance
+            ? Math.max(0, (time - entranceStartedAt) / 1000)
+            : Number.POSITIVE_INFINITY;
           const journeyDistance = Math.max(360, runtime.viewportHeight * 0.82);
           const journeyProgress = clamp(runtime.scrollY / journeyDistance);
           const documentTravel = clamp(
@@ -719,6 +755,33 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                   : 0;
               stiffness = piece.definition.material === "cloth" ? 31 : 46;
               damping = piece.definition.material === "cloth" ? 7.4 : 9.6;
+            } else if (shouldPlayEntrance && entranceAge < 1.2) {
+              const distanceFromFocus = Math.hypot(
+                piece.definition.center.x - 0.52,
+                piece.definition.center.y - 0.43,
+              );
+              const entranceDelay =
+                0.035 +
+                distanceFromFocus * 0.17 +
+                piece.definition.randomA * 0.065;
+              const entranceProgress = smoothstep(
+                (entranceAge - entranceDelay) /
+                  (0.68 + piece.definition.randomB * 0.13),
+              );
+              const lightPulse = Math.pow(
+                Math.max(
+                  0,
+                  1 - Math.abs(entranceProgress - 0.62) / 0.38,
+                ),
+                2,
+              );
+              targetAlpha = entranceProgress;
+              targetZ =
+                lightPulse * (0.12 + piece.definition.randomB * 0.08);
+              targetEdge =
+                lightPulse * (0.085 + piece.definition.randomA * 0.045);
+              stiffness = lerp(21, 36, entranceProgress);
+              damping = lerp(8.5, 10.6, entranceProgress);
             }
 
             const decay = Math.exp(-damping * delta);
@@ -776,7 +839,14 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           );
           runtime.renderFrames += 1;
 
-          const hoverReturning = !runtime.pointer.active && !runtime.exploded;
+          const entranceAnimating =
+            shouldPlayEntrance &&
+            !runtime.exploded &&
+            entranceAge < 1.2;
+          const hoverReturning =
+            !entranceAnimating &&
+            !runtime.pointer.active &&
+            !runtime.exploded;
           const hoverSettled = hoverReturning && maxError < 0.12;
           // When there is no hover interruption, let the return finish on the
           // actual spring state instead of cutting it off at a fixed time.
@@ -792,6 +862,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             !runtime.returning &&
             time < runtime.driftUntil;
           const shouldContinue =
+            entranceAnimating ||
             runtime.pointer.active ||
             runtime.sparks.length > 0 ||
             burstAnimating ||
@@ -930,6 +1001,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         runtime.renderFrames += 1;
         updateCanvasActive(true);
         updateVisualState("assembled");
+        entrancePlayedRef.current = true;
+        reportReady();
+        if (shouldPlayEntrance) runtime.scheduleFrame();
         if (window.scrollY > 0) onScroll();
 
         const debugWindow = window as DebugWindow;
@@ -1002,6 +1076,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           console.warn("Portrait interaction fallback", error);
         setQuality("static");
         updateVisualState("static");
+        reportReady();
       }
     };
 
@@ -1027,7 +1102,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
       image.style.removeProperty("transition");
       if (runtimeRef.current === runtime) runtimeRef.current = null;
     };
-  }, [motionReduced, src, updateCanvasActive, updateVisualState]);
+  }, [motionReduced, onReady, src, updateCanvasActive, updateVisualState]);
 
   const onPointerEnter = useCallback(
     (event: ReactPointerEvent<HTMLButtonElement>) => {

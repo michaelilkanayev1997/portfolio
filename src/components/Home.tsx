@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo, useState } from "react";
+import { useCallback, useEffect, useRef, memo, useState } from "react";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
 import gsap from "gsap";
@@ -18,12 +18,15 @@ const Home = () => {
       ? "/mobileHeroImage.webp"
       : "/heroImage.webp",
   );
-  const [portraitReady, setPortraitReady] = useState(prefersReducedMotion);
+  const [portraitReady, setPortraitReady] = useState(false);
   const main = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const buttonGroupRef = useRef<HTMLDivElement>(null);
   const linkGroupRef = useRef<HTMLDivElement>(null);
   const typeEffectRef = useRef<HTMLHeadingElement>(null);
+  const handlePortraitReady = useCallback(() => {
+    setPortraitReady(true);
+  }, []);
 
   useEffect(() => {
     const query = window.matchMedia("(max-width: 640px)");
@@ -34,12 +37,6 @@ const Home = () => {
     query.addEventListener("change", updateSource);
     return () => query.removeEventListener("change", updateSource);
   }, []);
-
-  useEffect(() => {
-    if (portraitReady) return undefined;
-    const frame = requestAnimationFrame(() => setPortraitReady(true));
-    return () => cancelAnimationFrame(frame);
-  }, [portraitReady]);
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -245,7 +242,11 @@ const Home = () => {
           }`}
         >
           <span className="hero-portrait-stage__halo" aria-hidden />
-          <PhysicsPortrait src={portraitSource} alt="Michael Ilkanayev" />
+          <PhysicsPortrait
+            src={portraitSource}
+            alt="Michael Ilkanayev"
+            onReady={handlePortraitReady}
+          />
           <div className="hero-portrait-stage__plinth" aria-hidden />
         </div>
       </div>
