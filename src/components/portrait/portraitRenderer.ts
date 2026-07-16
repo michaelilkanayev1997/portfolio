@@ -17,7 +17,7 @@ import {
 } from "./webglHelpers";
 
 const POINT_STRIDE = 9;
-const MAX_EVENT_SPARKS = 8;
+const MAX_EVENT_SPARKS = 12;
 const MAX_STELLAR_POINTS = MAX_PORTRAIT_FRAGMENTS + MAX_EVENT_SPARKS;
 
 export type FragmentTransform = {
@@ -82,7 +82,9 @@ export class PortraitRenderer {
   private readonly fillUniforms: FragmentUniformLocations & {
     time: WebGLUniformLocation;
   };
-  private readonly edgeUniforms: FragmentUniformLocations;
+  private readonly edgeUniforms: FragmentUniformLocations & {
+    time: WebGLUniformLocation;
+  };
   private readonly sparkUniforms: {
     resolution: WebGLUniformLocation;
     pixelRatio: WebGLUniformLocation;
@@ -128,7 +130,10 @@ export class PortraitRenderer {
       ...fragmentUniformLocations(gl, this.fillProgram),
       time: uniform(gl, this.fillProgram, "u_time"),
     };
-    this.edgeUniforms = fragmentUniformLocations(gl, this.edgeProgram);
+    this.edgeUniforms = {
+      ...fragmentUniformLocations(gl, this.edgeProgram),
+      time: uniform(gl, this.edgeProgram, "u_time"),
+    };
     this.sparkUniforms = {
       resolution: uniform(gl, this.sparkProgram, "u_resolution"),
       pixelRatio: uniform(gl, this.sparkProgram, "u_pixelRatio"),
@@ -285,6 +290,7 @@ export class PortraitRenderer {
     gl.drawArrays(gl.TRIANGLES, 0, this.fillVertexCount);
 
     applyFragmentUniforms(this.edgeProgram, this.edgeUniforms);
+    gl.uniform1f(this.edgeUniforms.time, time);
     gl.bindVertexArray(this.edgeVao);
     gl.drawArrays(gl.LINES, 0, this.edgeVertexCount);
 

@@ -25,6 +25,7 @@ import {
   obstacleVisibilityAt,
 } from "./portrait/portraitFlow";
 import { explodePortrait } from "./portrait/portraitExplosion";
+import { emitHoverGlint } from "./portrait/portraitHover";
 import { clamp, lerp, smoothstep } from "./portrait/portraitMath";
 import { isFacialFragment, makePiece } from "./portrait/portraitMotion";
 import {
@@ -152,6 +153,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           activeSection: "hero",
           sectionProgress: 0,
           pointer: { x: 0, y: 0, active: false, seen: false },
+          hoverTrace: { x: 0, y: 0, time: 0 },
           readRect: () => undefined,
           readFlowSections: () => undefined,
           ensureCanvasSize: () => undefined,
@@ -235,6 +237,11 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             runtime.pointer.y >= assembledRect.top &&
             runtime.pointer.y <= assembledRect.top + assembledRect.height;
           runtime.pointer.active = shouldResumeHover;
+          runtime.hoverTrace = {
+            x: runtime.pointer.x,
+            y: runtime.pointer.y,
+            time: performance.now(),
+          };
           runtime.sparks = [];
           runtime.pieces.forEach((piece) => {
             piece.x = 0;
@@ -297,7 +304,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             spark.vy *= Math.exp(-2.1 * delta);
             spark.x += spark.vx * delta;
             spark.y += spark.vy * delta;
-            spark.alpha = clamp(spark.life / spark.maxLife);
+            spark.alpha =
+              spark.peakAlpha * clamp(spark.life / spark.maxLife);
           });
           runtime.sparks = runtime.sparks.filter(({ life }) => life > 0);
         };
@@ -534,10 +542,18 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
               const fromCursorY = centerY - runtime!.pointer.y;
               const distance = Math.max(1, Math.hypot(fromCursorX, fromCursorY));
               const radius = clamp(portrait.width * 0.3, 82, 128);
+              const normalizedDistance = distance / radius;
               const proximity = distance < radius
                 ? smoothstep(1 - distance / radius)
                 : 0;
               const pressure = proximity * proximity;
+              const lensRim = Math.pow(
+                Math.max(
+                  0,
+                  1 - Math.abs(normalizedDistance - 0.62) / 0.28,
+                ),
+                2,
+              );
               const directionX = fromCursorX / distance;
               const directionY = fromCursorY / distance;
               const materialDistance = piece.definition.material === "glass"
@@ -557,7 +573,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
               const push = pressure * materialDistance * faceFactor;
               targetX = directionX * push;
               targetY = directionY * push - lift * 1.55;
-              targetRotation = directionX * pressure * profile.rotation * 0.18;
+              targetRotation =
+                directionX * pressure * profile.rotation * 0.18 +
+                directionY * lensRim * 0.018 * faceFactor;
               targetScale =
                 1 +
                 proximity *
@@ -568,12 +586,20 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                       : piece.definition.material === "metal"
                         ? 0.03
                         : 0.024) *
+                  faceFactor +
+                lensRim *
+                  (piece.definition.material === "glass" ? 0.018 : 0.011) *
                   faceFactor;
-              targetZ = lift;
+              targetZ =
+                lift +
+                lensRim * profile.hoverDepth * faceFactor * 0.22;
               // Apply the glasses' colored edge strength to whichever local
               // fragments are inside the cursor field. Everything outside the
               // hover radius remains at its untouched assembled state.
-              targetEdge = lift * 0.68;
+              targetEdge = Math.max(
+                lift * 0.68,
+                lensRim * 0.32 * faceFactor,
+              );
               targetShear = piece.definition.material === "cloth"
                 ? directionX * pressure * 0.045
                 : 0;
@@ -865,6 +891,11 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         active: true,
         seen: true,
       };
+      runtime.hoverTrace = {
+        x: event.clientX,
+        y: event.clientY,
+        time: performance.now(),
+      };
       // Remember cursor presence during the explosion/return. Pointer-enter
       // will not fire again if the cursor never leaves the portrait, so the
       // completed assembly uses this state to resume hover immediately.
@@ -880,6 +911,9 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
   const onPointerMove = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
     const runtime = runtimeRef.current;
     if (!runtime?.pointer.active) return;
+    if (!runtime.exploded) {
+      emitHoverGlint(runtime, event.clientX, event.clientY);
+    }
     runtime.pointer.x = event.clientX;
     runtime.pointer.y = event.clientY;
     if (runtime.exploded) return;
@@ -955,7 +989,6 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           fetchPriority="high"
           draggable={false}
         />
-        <span className="physics-portrait__focus" aria-hidden />
       </button>
 
       {typeof document !== "undefined" &&

@@ -77,7 +77,8 @@ export const explodePortrait = (
     piece.edge = 0.42;
   });
 
-  const sparkCount = runtime.tier === "high" ? 8 : runtime.tier === "medium" ? 6 : 4;
+  const sparkCount =
+    runtime.tier === "high" ? 11 : runtime.tier === "medium" ? 8 : 5;
   runtime.sparks = Array.from({ length: sparkCount }, (_, index) => {
     const seed = runtime.pieces[index].definition.randomA;
     const isCore = index === 0;
@@ -86,18 +87,20 @@ export const explodePortrait = (
     const angle =
       (rayIndex / rayCount) * TAU +
       (seed - 0.5) * 0.22;
-    const speed = isCore ? 0 : portrait.width * (0.34 + seed * 0.28);
-    const life = isCore ? 0.3 : 0.46 + seed * 0.2;
+    const speed = isCore ? 0 : portrait.width * (0.36 + seed * 0.34);
+    const life = isCore ? 0.34 : 0.46 + seed * 0.24;
     return {
       x: clickX,
       y: clickY,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed - (isCore ? 0 : 18),
-      size: isCore ? 34 : 12 + seed * 9,
+      size: isCore ? 40 : 12 + seed * 11,
       alpha: 1,
+      peakAlpha: 1,
       warmth: isCore ? 0.18 : seed * 0.08,
       life,
       maxLife: life,
+      source: "burst" as const,
     };
   });
 };

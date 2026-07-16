@@ -28,6 +28,8 @@ export type Spark = SparkRender & {
   vy: number;
   life: number;
   maxLife: number;
+  peakAlpha: number;
+  source: "burst" | "hover";
 };
 
 export const isFacialFragment = (definition: FragmentDefinition) =>

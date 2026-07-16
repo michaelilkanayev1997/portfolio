@@ -71,6 +71,38 @@ void main() {
   if (source.a < 0.006 || v_alpha < 0.004) discard;
 
   vec3 color = source.rgb;
+  float energy = smoothstep(0.035, 0.72, v_edge);
+  float chroma =
+    energy * (0.00055 + fract(v_seed * 17.13) * 0.0004);
+  vec2 prismAxis = normalize(vec2(
+    0.82 + fract(v_seed * 7.7) * 0.16,
+    0.24 + fract(v_seed * 4.9) * 0.2
+  ));
+  vec4 redSample = texture(u_texture, v_uv + prismAxis * chroma);
+  vec4 blueSample = texture(u_texture, v_uv - prismAxis * chroma);
+  float sampleGuard = clamp(
+    min(redSample.a, blueSample.a) / max(source.a, 0.001),
+    0.0,
+    1.0
+  );
+  vec3 refracted = vec3(redSample.r, source.g, blueSample.b);
+  color = mix(color, refracted, energy * sampleGuard * 0.34);
+
+  float caustic = pow(max(
+    0.0,
+    sin(
+      v_uv.x * 34.0 -
+      v_uv.y * 21.0 +
+      u_time * 1.45 +
+      v_seed * 13.0
+    )
+  ), 14.0);
+  vec3 causticColor = mix(
+    vec3(0.28, 0.78, 1.0),
+    vec3(0.56, 0.42, 1.0),
+    fract(v_seed * 3.7)
+  );
+  color += causticColor * caustic * energy * source.a * 0.065;
 
   // Keep the shared time channel alive without spotlighting any accessory.
   // The extremely restrained pulse gives the assembled particle surface a
@@ -95,6 +127,7 @@ export const edgeFragmentShader = `#version 300 es
 precision highp float;
 
 uniform sampler2D u_texture;
+uniform float u_time;
 
 in vec2 v_uv;
 in float v_material;
@@ -115,7 +148,26 @@ void main() {
   else if (v_material < 2.5) edgeColor = vec3(0.18, 0.42, 0.72);
   else if (v_material < 3.5) edgeColor = vec3(0.38, 0.7, 0.9);
 
-  float alpha = (0.02 + v_edge * 0.42) * v_alpha * textureAlpha;
+  float spectrumPhase =
+    v_uv.x * 8.0 +
+    v_uv.y * 5.0 +
+    v_seed * 9.0 +
+    u_time * 0.42;
+  vec3 spectrum =
+    vec3(0.56) +
+    vec3(0.44) * cos(
+      spectrumPhase + vec3(0.0, 2.0943951, 4.1887902)
+    );
+  float prism = smoothstep(0.12, 0.58, v_edge);
+  edgeColor = mix(edgeColor, spectrum, prism * 0.76);
+  float shimmer =
+    0.92 +
+    sin(u_time * 2.4 + v_seed * 18.0) * 0.08 * prism;
+  float alpha =
+    (0.02 + v_edge * 0.46) *
+    v_alpha *
+    textureAlpha *
+    shimmer;
   outColor = vec4(edgeColor * alpha, alpha);
 }
 `;

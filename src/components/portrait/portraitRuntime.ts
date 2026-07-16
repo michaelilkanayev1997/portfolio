@@ -57,6 +57,7 @@ export type Runtime = {
   activeSection: FlowSectionName;
   sectionProgress: number;
   pointer: { x: number; y: number; active: boolean; seen: boolean };
+  hoverTrace: { x: number; y: number; time: number };
   readRect: () => void;
   readFlowSections: () => void;
   ensureCanvasSize: () => void;

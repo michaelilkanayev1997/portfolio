@@ -135,16 +135,6 @@ html {
   opacity: 0;
 }
 
-.physics-portrait__focus {
-  position: absolute;
-  inset: 21% 26% 48% 26%;
-  border-radius: 42%;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(circle, rgba(116, 224, 255, 0.08), transparent 68%);
-  transition: opacity 240ms ease;
-}
-
 .portrait-fragment-canvas {
   position: fixed;
   inset: 0;
@@ -181,13 +171,6 @@ main .skill-card,
 main .contact-field {
   position: relative;
   z-index: 10;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .physics-portrait__trigger:hover .physics-portrait__focus {
-    opacity: 1;
-  }
-
 }
 
 @media (max-width: 640px) {
