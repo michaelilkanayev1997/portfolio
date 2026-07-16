@@ -1,49 +1,51 @@
-import { useEffect, useRef, memo } from "react";
+import { useEffect, useRef, memo, useState } from "react";
 import { HiChevronDoubleRight } from "react-icons/hi";
 import { Link } from "react-scroll";
-import { useTypewriter, Cursor } from "react-simple-typewriter";
 import gsap from "gsap";
 
 import whatsapp from "../assets/svg/whatsapp.svg";
 import linkedin from "../assets/svg/linkedin.svg";
 import github from "../assets/svg/github.svg";
 import phone from "../assets/svg/phone.svg";
-import { isiPhone, isMobile } from "../utils";
+import { isiPhone } from "../utils";
 import { getRevealMotion, prefersReducedMotion } from "../utils/motion";
+import HeroTypewriter from "./HeroTypewriter";
+import PhysicsPortrait from "./PhysicsPortrait";
 
 const Home = () => {
-  const [typeEffect] = useTypewriter({
-    words: ["Software Developer", "Full Stack Developer", "Software Engineer"],
-    loop: 0,
-    typeSpeed: 150,
-    deleteSpeed: 40,
-    delaySpeed: 2000,
-  });
-
+  const [portraitSource, setPortraitSource] = useState(() =>
+    window.matchMedia("(max-width: 640px)").matches
+      ? "/mobileHeroImage.webp"
+      : "/heroImage.webp",
+  );
+  const [portraitReady, setPortraitReady] = useState(prefersReducedMotion);
   const main = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
   const buttonGroupRef = useRef<HTMLDivElement>(null);
   const linkGroupRef = useRef<HTMLDivElement>(null);
   const typeEffectRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)");
+    const updateSource = () =>
+      setPortraitSource(
+        query.matches ? "/mobileHeroImage.webp" : "/heroImage.webp",
+      );
+    query.addEventListener("change", updateSource);
+    return () => query.removeEventListener("change", updateSource);
+  }, []);
+
+  useEffect(() => {
+    if (portraitReady) return undefined;
+    const frame = requestAnimationFrame(() => setPortraitReady(true));
+    return () => cancelAnimationFrame(frame);
+  }, [portraitReady]);
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
       const motion = getRevealMotion();
-      gsap.fromTo(
-        imageRef.current,
-        { opacity: 0, scale: motion.isMobile ? 0.82 : 0.5, y: motion.largeDistance },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: motion.isMobile ? 0.65 : 1.5,
-          ease: motion.ease,
-        },
-      );
-
       gsap.fromTo(
         textRef.current,
         { opacity: 0, y: motion.largeDistance },
@@ -106,17 +108,6 @@ const Home = () => {
           ease: motion.ease,
         },
       );
-      gsap.to(".g_grow", {
-        scale: 1.05,
-        opacity: 1,
-        ease: "power1",
-        scrollTrigger: {
-          trigger: ".g_grow",
-          toggleActions: "restart reverse restart reverse",
-          start: "top 100%",
-          scrub: motion.isMobile ? 0.4 : 2,
-        },
-      });
     }, main);
 
     return () => ctx.revert();
@@ -132,13 +123,7 @@ const Home = () => {
     >
       <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
         <div className="flex flex-col justify-center h-full">
-          <h2
-            ref={typeEffectRef}
-            className="pt-11 text-4xl sm:text-7xl font-bold text-white z-10 max-w-[35rem] sm:min-w-[35rem] xl:min-w-[35rem] 3xl:min-w-[35rem] min-h-[8rem] md:min-h-[12rem]"
-          >
-            I'm a <span className="text-blue-400"> {typeEffect}</span>
-            <Cursor />
-          </h2>
+          <HeroTypewriter headingRef={typeEffectRef} />
 
           <p
             className="text-gray-400 text-sm sm:text-lg py-4 max-w-md z-10 font-bold"
@@ -164,6 +149,8 @@ const Home = () => {
                 href=""
                 smooth
                 duration={500}
+                data-magnetic
+                data-ripple
                 className="group text-white w-fit px-6 py-3 my-2 flex items-center
              rounded-md bg-gradient-to-r from-cyan-500 to-blue-500 cursor-pointer z-10"
               >
@@ -178,6 +165,8 @@ const Home = () => {
                 href=""
                 smooth
                 duration={500}
+                data-magnetic
+                data-ripple
                 className="group text-white w-fit px-6 py-3 my-2 flex items-center
              rounded-md bg-gradient-to-r from-indigo-600 to-blue-400 cursor-pointer z-10"
               >
@@ -201,7 +190,12 @@ const Home = () => {
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My LinkedIn profile"
           >
-            <img src={linkedin} alt="linkedin" loading="lazy" />
+            <img
+              src={linkedin}
+              alt="linkedin"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <a
             href="https://github.com/michaelilkanayev1997"
@@ -210,14 +204,24 @@ const Home = () => {
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My Github profile"
           >
-            <img src={github} alt="github" loading="lazy" />
+            <img
+              src={github}
+              alt="github"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <a
             href="tel:972546132140"
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My phone number"
           >
-            <img src={phone} alt="phone" loading="lazy" />
+            <img
+              src={phone}
+              alt="phone"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
           <a
             href="https://api.whatsapp.com/send?phone=972546132140"
@@ -226,21 +230,23 @@ const Home = () => {
             className="p-2 transition duration-300 transform hover:scale-110 z-10"
             aria-label="My Whatsapp"
           >
-            <img src={whatsapp} alt="whatsapp" loading="lazy" />
+            <img
+              src={whatsapp}
+              alt="whatsapp"
+              loading="lazy"
+              decoding="async"
+            />
           </a>
         </div>
 
         <div
-          className="relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3"
-          ref={imageRef}
+          className={`hero-portrait-stage relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3 ${
+            portraitReady ? "hero-portrait-stage--ready" : ""
+          }`}
         >
-          <img
-            src={isMobile ? "/mobileHeroImage.webp" : "/heroImage.webp"}
-            alt="my profile"
-            className="w-full h-full object-cover scale-75 g_grow"
-            fetchPriority="high"
-          />
-          <div className="absolute -bottom-1 left-0 right-0 h-2 mx-5 bg-gradient-to-t from-white to-transparent blur-md" />
+          <span className="hero-portrait-stage__halo" aria-hidden />
+          <PhysicsPortrait src={portraitSource} alt="Michael Ilkanayev" />
+          <div className="hero-portrait-stage__plinth" aria-hidden />
         </div>
       </div>
     </div>

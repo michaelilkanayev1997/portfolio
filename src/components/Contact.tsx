@@ -6,9 +6,6 @@ import {
   type FormEvent,
   type ChangeEvent,
 } from "react";
-import emailjs from "@emailjs/browser";
-import Swal from "sweetalert2";
-import { toast } from "react-toastify";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -16,6 +13,25 @@ import { useDeferredGsap } from "../hooks/useDeferredGsap";
 import { getRevealMotion } from "../utils/motion";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const showValidationError = async (message: string) => {
+  const { toast } = await import("react-toastify");
+  toast.error(message, {
+    position: "bottom-left",
+    autoClose: 3900,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    style: {
+      fontFamily: "Arial",
+      fontSize: "15px",
+      fontWeight: "bold",
+      color: "red",
+      borderRadius: "5px",
+      padding: "10px",
+    },
+  });
+};
 
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -97,83 +113,61 @@ const Contact = () => {
   }, []);
 
   const sendEmail = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      if (!form.current) return;
+      const formElement = form.current;
+      if (!formElement) return;
 
       if (isValid) {
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!email.match(emailPattern)) {
-          toast.error("Please enter a valid email address", {
-            position: "bottom-left",
-            autoClose: 3900,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            style: {
-              fontFamily: "Arial",
-              fontSize: "15px",
-              fontWeight: "bold",
-              color: "red",
-              borderRadius: "5px",
-              padding: "10px",
-            },
-          });
+          await showValidationError("Please enter a valid email address");
           return;
         }
         setIsLoading(true);
-        emailjs
-          .sendForm(
+        let alert: typeof import("sweetalert2").default | undefined;
+        try {
+          const [{ default: emailjs }, { default: Swal }] = await Promise.all([
+            import("@emailjs/browser"),
+            import("sweetalert2"),
+          ]);
+          alert = Swal;
+          await emailjs.sendForm(
             import.meta.env.VITE_SERVICE,
             import.meta.env.VITE_TEMPLATE,
-            form.current,
+            formElement,
             import.meta.env.VITE_KEY,
-          )
-          .then(
-            async () => {
-              resetFields();
-              form.current?.reset();
-              setIsLoading(false);
-              await Swal.fire({
-                title: "Your message have been sent !",
-                text: "Thanks!",
-                icon: "success",
-                showCloseButton: true,
-                showCancelButton: false,
-                confirmButtonColor: "#3085d6",
-                confirmButtonText: "OK",
-              });
-            },
-            async (error: { text: string }) => {
-              setIsLoading(false);
-              await Swal.fire({
-                title: "Error in Email sending",
-                text: error.text,
-                icon: "error",
-                showCloseButton: true,
-                showCancelButton: false,
-                confirmButtonColor: "#f44336",
-                confirmButtonText: "OK",
-              });
-            },
           );
-      } else {
-        toast.error("Please enter all fields", {
-          position: "bottom-left",
-          autoClose: 3900,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          style: {
-            fontFamily: "Arial",
-            fontSize: "15px",
-            fontWeight: "bold",
-            color: "red",
-            borderRadius: "5px",
-            padding: "10px",
-          },
+        } catch (error) {
+          setIsLoading(false);
+          const Swal = alert ?? (await import("sweetalert2")).default;
+          await Swal.fire({
+            title: "Error in Email sending",
+            text: (error as { text?: string }).text ?? "Unable to send message",
+            icon: "error",
+            showCloseButton: true,
+            showCancelButton: false,
+            confirmButtonColor: "#f44336",
+            confirmButtonText: "OK",
+          });
+          return;
+        }
+
+        resetFields();
+        formElement.reset();
+        setIsLoading(false);
+        await alert!.fire({
+          title: "Your message have been sent !",
+          text: "Thanks!",
+          icon: "success",
+          showCloseButton: true,
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "OK",
         });
+      } else {
+        await showValidationError("Please enter all fields");
       }
     },
     [email, isValid, resetFields],
@@ -182,7 +176,7 @@ const Contact = () => {
   return (
     <div
       ref={sectionRef}
-      className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 2xl:pb-unset select-none"
+      className="w-full bg-gradient-to-b from-black to-gray-800 p-4 text-white pt-40 sm:pt-20 md:pb-0 select-none"
     >
       <div className="flex flex-col p-4 justify-center max-w-screen-lg mx-auto">
         <div className="pb-8">

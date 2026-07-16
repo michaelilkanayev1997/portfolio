@@ -1,21 +1,26 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
-import ReactGA from "react-ga4";
 
 import NavBar from "./components/NavBar";
 import ScrollProgress from "./components/ScrollProgress";
 import DragonGuide from "./components/DragonGuide";
 import Ilona from "./components/Ilona";
+import InteractionLayer from "./components/InteractionLayer";
 
 const GA_ID = import.meta.env.VITE_GOOGLE_ANALYTICS;
-if (GA_ID) ReactGA.initialize(GA_ID);
+let analyticsPromise: Promise<typeof import("react-ga4").default> | undefined;
+
+const getAnalytics = () => {
+  analyticsPromise ??= import("react-ga4").then(({ default: analytics }) => {
+    analytics.initialize(GA_ID);
+    return analytics;
+  });
+  return analyticsPromise;
+};
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProjectDetails = lazy(() => import("./pages/ProjectDetails"));
-const ParticlesContainer = lazy(
-  () => import("./components/ParticlesContainer"),
-);
 
 const Loading = () => (
   <div className="pt-20 bg-black text-white h-screen">
@@ -23,20 +28,8 @@ const Loading = () => (
   </div>
 );
 
-const scheduleIdle = (cb: () => void) => {
-  const w = window as Window & {
-    requestIdleCallback?: (
-      cb: () => void,
-      opts?: { timeout: number },
-    ) => number;
-  };
-  if (w.requestIdleCallback) w.requestIdleCallback(cb, { timeout: 2000 });
-  else setTimeout(cb, 1200);
-};
-
 function App() {
   const { pathname } = useLocation();
-  const [particlesReady, setParticlesReady] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -46,26 +39,22 @@ function App() {
 
   useEffect(() => {
     if (!GA_ID) return;
-    ReactGA.send({
-      hitType: "pageview",
-      page: pathname,
-      title: document.title,
-    });
+    void getAnalytics()
+      .then((analytics) => {
+        analytics.send({
+          hitType: "pageview",
+          page: pathname,
+          title: document.title,
+        });
+      })
+      .catch(() => {
+        analyticsPromise = undefined;
+      });
   }, [pathname]);
-
-  useEffect(() => {
-    if (import.meta.env.DEV) return;
-    // Defer particle mount until browser is idle so it never competes with LCP.
-    scheduleIdle(() => setParticlesReady(true));
-  }, []);
 
   return (
     <>
-      {(particlesReady || import.meta.env.DEV) && (
-        <Suspense fallback={null}>
-          <ParticlesContainer />
-        </Suspense>
-      )}
+      <InteractionLayer />
       <ScrollProgress forceFull={mobileMenuOpen} />
       <DragonGuide />
       <Ilona />

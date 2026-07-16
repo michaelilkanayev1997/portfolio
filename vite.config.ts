@@ -27,7 +27,6 @@ export default defineConfig({
             return "react";
 
           if (id.includes("/gsap/")) return "gsap";
-          if (id.includes("@tsparticles")) return "particles";
           if (id.includes("/swiper/")) return "swiper";
           if (id.includes("@mui") || id.includes("@emotion")) return "mui";
           if (id.includes("sweetalert2")) return "swal";

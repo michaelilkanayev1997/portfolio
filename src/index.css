@@ -24,6 +24,162 @@ html {
   scroll-behavior: smooth;
 }
 
+[data-magnetic] {
+  transform: translate3d(var(--magnetic-x, 0), var(--magnetic-y, 0), 0);
+  transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+[data-ripple] {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.interaction-ripple {
+  position: absolute;
+  z-index: -1;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%) scale(0);
+  animation: interactionRipple 620ms ease-out forwards;
+}
+
+@keyframes interactionRipple {
+  to { transform: translate(-50%, -50%) scale(24); opacity: 0; }
+}
+
+.hero-portrait-stage {
+  isolation: isolate;
+  perspective: 1100px;
+  opacity: 0;
+  transition: opacity 620ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hero-portrait-stage--ready {
+  opacity: 1;
+}
+
+.hero-portrait-stage__halo {
+  position: absolute;
+  inset: 9% 5% 2%;
+  z-index: -2;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 52% 42%, rgba(88, 201, 255, 0.14), transparent 46%),
+    radial-gradient(circle at 62% 68%, rgba(104, 87, 255, 0.1), transparent 58%);
+  filter: blur(20px);
+  transform: translateZ(0) scale(0.94);
+}
+
+.hero-portrait-stage::before {
+  content: "";
+  position: absolute;
+  inset: 15% 9% 5%;
+  z-index: -1;
+  border: 1px solid rgba(121, 212, 255, 0.1);
+  border-radius: 48% 52% 45% 55%;
+  pointer-events: none;
+  transform: rotate(-8deg);
+  mask-image: linear-gradient(to bottom, transparent 2%, black 38%, transparent 96%);
+}
+
+.hero-portrait-stage__plinth {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 2.1rem;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(105, 226, 255, 0.25) 28%,
+    rgba(194, 222, 255, 0.72) 50%,
+    rgba(116, 112, 255, 0.22) 72%,
+    transparent
+  );
+  box-shadow: 0 -8px 24px rgba(76, 170, 255, 0.11);
+}
+
+.physics-portrait {
+  position: relative;
+  width: 100%;
+}
+
+.physics-portrait__trigger {
+  cursor: crosshair;
+  border-radius: 0.2rem;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.physics-portrait__trigger:active {
+  transform: scale(0.992);
+}
+
+.physics-portrait[data-quality="static"] .physics-portrait__trigger {
+  cursor: default;
+}
+
+.physics-portrait__image {
+  opacity: 1;
+  transform: translateZ(0);
+  transition: opacity 520ms cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
+}
+
+.physics-portrait__image--fragmented {
+  opacity: 0;
+}
+
+.portrait-fragment-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  width: 100vw;
+  height: 100vh;
+  contain: strict;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 520ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.portrait-fragment-canvas--active {
+  visibility: visible;
+  opacity: 1;
+  will-change: opacity;
+}
+
+/* The fixed WebGL layer stays above section backgrounds but below readable
+   and interactive content from the first released frame onward. */
+main h1,
+main h2,
+main h3,
+main p,
+main a,
+main button,
+main form,
+main img,
+main .about-item,
+main .cert-swiper,
+main .portfolio-card,
+main .skill-card,
+main .contact-field {
+  position: relative;
+  z-index: 10;
+}
+
+@media (max-width: 640px) {
+  .hero-portrait-stage__plinth {
+    bottom: 1.8rem;
+  }
+
+}
+
 body {
   /* fix for iOS */
   background-color: #06080b;
@@ -49,11 +205,6 @@ body.ilona-game-open .Cursor--blinking {
   }
 }
 
-.reveal-init {
-  opacity: 0;
-  will-change: opacity, transform;
-}
-
 .dragon-enter {
   opacity: 0;
   animation: dragonFadeIn 600ms ease-out forwards;
@@ -66,23 +217,6 @@ body.ilona-game-open .Cursor--blinking {
   to {
     opacity: 0.9;
   }
-}
-
-.heading-underline {
-  position: relative;
-  display: inline-block;
-}
-.heading-underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  height: 4px;
-  width: 100%;
-  background: linear-gradient(90deg, #22d3ee, #3b82f6, #a855f7);
-  transform: scaleX(0);
-  transform-origin: left center;
-  border-radius: 2px;
 }
 
 .tilt-card {
@@ -131,18 +265,4 @@ body.ilona-game-open .Cursor--blinking {
     font-family: "Raleway", sans-serif;
   }
 
-  /* Style for the custom scrollbar */
-  .scrollbar-dark::-webkit-scrollbar {
-    width: 8px; /* Width of the scrollbar */
-  }
-
-  .scrollbar-dark::-webkit-scrollbar-thumb {
-    background-color: #6b7280; /* Thumb color */
-    border-radius: 4px;
-  }
-
-  .scrollbar-dark::-webkit-scrollbar-track {
-    background-color: #1f2937; /* Track color */
-    border-radius: 4px;
-  }
 }

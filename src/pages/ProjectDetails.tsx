@@ -58,6 +58,7 @@ const ProjectDetails = () => {
         duration: motion.shortDuration,
         stagger: motion.stagger,
         ease: "back.out(1.35)",
+        immediateRender: false,
         scrollTrigger: {
           trigger: ".pd-actions",
           start: motion.isMobile ? "top 94%" : "top 90%",
@@ -110,7 +111,7 @@ const ProjectDetails = () => {
           </div>
 
           {/* Introduction */}
-          <p className="pd-intro text-lg sm:text-xl text-white-500 py-6 z-10 mx-auto text-center">
+          <p className="pd-intro text-lg sm:text-xl py-6 z-10 mx-auto text-center">
             {introduction}
           </p>
 
