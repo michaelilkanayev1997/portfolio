@@ -104,7 +104,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         await waitForImage(image);
         if (cancelled) return;
         const tier = detectQualityTier();
-        const fragments = createFragmentDefinitions(tier, createAlphaMap(image));
+        const fragments = createFragmentDefinitions(
+          tier,
+          createAlphaMap(image),
+        );
         const renderer = new PortraitRenderer(canvas, image, fragments);
         const pieces = fragments.map((fragment) => makePiece(fragment, tier));
         const rect = image.getBoundingClientRect();
@@ -117,7 +120,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           sparks: [],
           tier,
           quality: label,
-          canHover: window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+          canHover: window.matchMedia("(hover: hover) and (pointer: fine)")
+            .matches,
           exploded: false,
           journeyStarted: false,
           returning: false,
@@ -196,9 +200,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             runtime.journeyStarted &&
             !runtime.returning &&
             runtime.scrollY > Math.max(260, height * 0.46);
-          const ratio = isSettledDust
-            ? Math.min(baseRatio, 1)
-            : baseRatio;
+          const ratio = isSettledDust ? Math.min(baseRatio, 1) : baseRatio;
           if (
             runtime.canvasSized &&
             runtime.viewportWidth === width &&
@@ -304,8 +306,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             spark.vy *= Math.exp(-2.1 * delta);
             spark.x += spark.vx * delta;
             spark.y += spark.vy * delta;
-            spark.alpha =
-              spark.peakAlpha * clamp(spark.life / spark.maxLife);
+            spark.alpha = spark.peakAlpha * clamp(spark.life / spark.maxLife);
           });
           runtime.sparks = runtime.sparks.filter(({ life }) => life > 0);
         };
@@ -366,7 +367,7 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           );
           runtime.activeSection = beforeFirstSection
             ? "hero"
-            : flowSection?.name ?? "hero";
+            : (flowSection?.name ?? "hero");
           runtime.sectionProgress = flowSection
             ? clamp(
                 (sectionSample - flowSection.top) /
@@ -384,6 +385,16 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             1,
             runtime.viewportHeight - verticalStart - 12,
           );
+          const voidHoldRadius = clamp(
+            runtime.viewportHeight * 0.035,
+            24,
+            42,
+          );
+          const voidRevealRadius = clamp(
+            runtime.viewportHeight * 0.13,
+            84,
+            132,
+          );
           let maxError = 0;
 
           // Once the silhouette is back, let hover retarget the same springs
@@ -393,7 +404,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
             runtime.returning &&
             pointerOverPortrait &&
             returnAge > 0.72 &&
-            (runtime.scrollY < TOP_EPSILON || runtime.activationSource === "click")
+            (runtime.scrollY < TOP_EPSILON ||
+              runtime.activationSource === "click")
           ) {
             runtime.pointer.active = true;
             runtime.returning = false;
@@ -407,8 +419,10 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           runtime.pieces.forEach((piece) => {
             const profile = MATERIAL_PROFILES[piece.definition.material];
             const faceFactor = isFacialFragment(piece.definition) ? 0.82 : 1;
-            const centerX = portrait.left + piece.definition.center.x * portrait.width;
-            const centerY = portrait.top + piece.definition.center.y * portrait.height;
+            const centerX =
+              portrait.left + piece.definition.center.x * portrait.width;
+            const centerY =
+              portrait.top + piece.definition.center.y * portrait.height;
             let targetX = 0;
             let targetY = 0;
             let targetRotation = 0;
@@ -439,9 +453,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
               }
               stiffness = profile.returnStiffness;
               damping = profile.returnDamping;
-              targetEdge = clamp(
-                1 - Math.max(0, returnAge - delay) / 0.9,
-              ) * 0.26;
+              targetEdge =
+                clamp(1 - Math.max(0, returnAge - delay) / 0.9) * 0.26;
             } else if (runtime!.exploded && runtime!.journeyStarted) {
               const randomA = piece.definition.randomA;
               const randomB = piece.definition.randomB;
@@ -449,24 +462,44 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 piece.definition.id,
               );
               const isLandmark = landmarkSlot !== undefined;
-              const sectionTempo = [0.5, 0.78, 0.56, 0.68, 0.44][flowIndex] ?? 0.5;
+              const dominantSeed =
+                (randomA * 0.754877666 + randomB * 0.569840296) % 1;
+              const dominantThreshold =
+                runtime!.tier === "high"
+                  ? 0.82
+                  : runtime!.tier === "medium"
+                    ? 0.85
+                    : 0.88;
+              const isDominantStar = dominantSeed > dominantThreshold;
+              const sectionTempo =
+                [0.5, 0.78, 0.56, 0.68, 0.44][flowIndex] ?? 0.5;
               const phase =
                 runtime!.flowClock * sectionTempo +
                 documentTravel * TAU * 1.35 +
                 randomA * TAU;
-              const laneSeed = (randomA * 0.61803398875 + randomB * 0.38196601125) % 1;
+              const laneSeed =
+                (randomA * 0.61803398875 + randomB * 0.38196601125) % 1;
               const laneInset = compact ? 18 : 34;
-              const flightWidth = Math.max(1, runtime!.viewportWidth - laneInset * 2);
+              const flightWidth = Math.max(
+                1,
+                runtime!.viewportWidth - laneInset * 2,
+              );
               const fallSpeed = 0.16 + randomB * 0.3 + randomA * 0.08;
               const fallDistance = runtime!.scrollY * fallSpeed;
               const startY = (randomB * 0.73 + randomA * 0.27) * verticalSpan;
-              const wrappedY = ((startY + fallDistance) % verticalSpan + verticalSpan) % verticalSpan;
-              const swayAmplitude = compact ? 14 + randomB * 20 : 22 + randomB * 52;
+              const wrappedY =
+                (((startY + fallDistance) % verticalSpan) + verticalSpan) %
+                verticalSpan;
+              const swayAmplitude = compact
+                ? 14 + randomB * 20
+                : 22 + randomB * 52;
               const slowArc =
-                Math.sin(documentTravel * TAU * (0.72 + randomA * 0.9) + randomB * TAU) *
-                swayAmplitude;
+                Math.sin(
+                  documentTravel * TAU * (0.72 + randomA * 0.9) + randomB * TAU,
+                ) * swayAmplitude;
               const microDrift = Math.sin(phase * 0.42) * (5 + randomA * 9);
-              let dustX = laneInset + laneSeed * flightWidth + slowArc + microDrift;
+              let dustX =
+                laneInset + laneSeed * flightWidth + slowArc + microDrift;
               let dustY = verticalStart + wrappedY;
 
               dustX = clamp(dustX, 5, runtime!.viewportWidth - 5);
@@ -478,6 +511,35 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 runtime!.scrollY,
                 runtime!.tier,
               );
+              const starDocumentY = runtime!.scrollY + dustY;
+              let nearestBoundaryDistance = Number.POSITIVE_INFINITY;
+              for (
+                let index = 0;
+                index < runtime!.flowSections.length;
+                index += 1
+              ) {
+                const section = runtime!.flowSections[index];
+                const previousSection = runtime!.flowSections[index - 1];
+                const boundaryY = previousSection
+                  ? (previousSection.bottom + section.top) * 0.5
+                  : section.top;
+                nearestBoundaryDistance = Math.min(
+                  nearestBoundaryDistance,
+                  Math.abs(starDocumentY - boundaryY),
+                );
+              }
+              const voidEnvelope =
+                1 -
+                smoothstep(
+                  (nearestBoundaryDistance - voidHoldRadius) /
+                    Math.max(1, voidRevealRadius - voidHoldRadius),
+                );
+              const contentClearance = smoothstep(
+                (obstacleVisibility - 0.42) / 0.5,
+              );
+              const dominantMix = isDominantStar
+                ? voidEnvelope * contentClearance
+                : 0;
               const sectionEnvelope =
                 0.35 +
                 Math.pow(Math.sin(Math.PI * runtime!.sectionProgress), 4) *
@@ -487,16 +549,35 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 Math.max(0, Math.sin(phase * 2.15 + randomB * 9)),
                 10,
               );
-              const dustDepth =
+              const ambientDepth =
                 0.24 + randomB * 0.38 + twinkle * 0.34 + sectionShine;
+              const dustDepth = lerp(
+                ambientDepth,
+                Math.max(ambientDepth, 0.72 + randomB * 0.25),
+                dominantMix,
+              );
               // The stellar sprite now carries the light. Polygon edges stay
               // restrained so deep sections read as a constellation, not confetti.
-              const dustEdge =
+              const ambientEdge =
                 0.055 + randomB * 0.075 + (isLandmark ? 0.055 : 0);
-              const dustAlpha = Math.min(
+              const dustEdge = lerp(
+                ambientEdge,
+                Math.max(ambientEdge, 0.12 + randomA * 0.065),
+                dominantMix,
+              );
+              const ambientAlpha = Math.min(
                 0.94,
-                piece.dustOpacity * 1.35 + 0.08 + twinkle * 0.14 + sectionShine * 0.2,
-              ) * obstacleVisibility;
+                piece.dustOpacity * 1.35 +
+                  0.08 +
+                  twinkle * 0.14 +
+                  sectionShine * 0.2,
+              );
+              const dustAlpha =
+                lerp(
+                  ambientAlpha,
+                  Math.max(ambientAlpha, 0.82 + randomB * 0.16),
+                  dominantMix,
+                ) * obstacleVisibility;
               const fadeProgress = smoothstep((journeyProgress - 0.06) / 0.94);
               const releaseOffset = randomA * 0.045;
               const pieceJourneyProgress = clamp(
@@ -526,6 +607,43 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
               targetShear = lerp(piece.scatterShear, 0, pieceJourneyEase);
               stiffness = journeyProgress > 0.58 ? 36 : profile.stiffness;
               damping = journeyProgress > 0.58 ? 10.2 : profile.damping;
+
+              if (runtime!.canHover && runtime!.pointer.seen) {
+                const starScreenX = centerX + targetX;
+                const starScreenY = centerY + targetY;
+                const fromPointerX = starScreenX - runtime!.pointer.x;
+                const fromPointerY = starScreenY - runtime!.pointer.y;
+                const starDistance = Math.max(
+                  1,
+                  Math.hypot(fromPointerX, fromPointerY),
+                );
+                const pointerRadius = compact ? 72 : 96;
+                const starInfluence =
+                  starDistance < pointerRadius
+                    ? smoothstep(1 - starDistance / pointerRadius)
+                    : 0;
+                if (starInfluence > 0) {
+                  const starPressure = starInfluence * starInfluence;
+                  const directionX = fromPointerX / starDistance;
+                  const directionY = fromPointerY / starDistance;
+                  const orbitDirection = randomA > 0.5 ? 1 : -1;
+                  const push = starPressure * (18 + randomB * 18);
+                  const orbit =
+                    starInfluence * (7 + randomA * 11) * orbitDirection;
+                  targetX += directionX * push - directionY * orbit;
+                  targetY += directionY * push + directionX * orbit;
+                  targetRotation += orbitDirection * starInfluence * 0.16;
+                  targetScale *= 1 + starInfluence * 0.24;
+                  targetZ += starInfluence * 0.36;
+                  targetAlpha = Math.min(1, targetAlpha + starInfluence * 0.18);
+                  targetEdge = Math.max(
+                    targetEdge,
+                    0.16 + starInfluence * 0.28,
+                  );
+                  stiffness = Math.max(stiffness, 42);
+                  damping = Math.max(damping, 10.4);
+                }
+              }
             } else if (runtime!.exploded) {
               targetX = piece.scatterX;
               targetY = piece.scatterY;
@@ -540,31 +658,31 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
               // cluster. Material depth/refraction remains layered on top.
               const fromCursorX = centerX - runtime!.pointer.x;
               const fromCursorY = centerY - runtime!.pointer.y;
-              const distance = Math.max(1, Math.hypot(fromCursorX, fromCursorY));
+              const distance = Math.max(
+                1,
+                Math.hypot(fromCursorX, fromCursorY),
+              );
               const radius = clamp(portrait.width * 0.3, 82, 128);
               const normalizedDistance = distance / radius;
-              const proximity = distance < radius
-                ? smoothstep(1 - distance / radius)
-                : 0;
+              const proximity =
+                distance < radius ? smoothstep(1 - distance / radius) : 0;
               const pressure = proximity * proximity;
               const lensRim = Math.pow(
-                Math.max(
-                  0,
-                  1 - Math.abs(normalizedDistance - 0.62) / 0.28,
-                ),
+                Math.max(0, 1 - Math.abs(normalizedDistance - 0.62) / 0.28),
                 2,
               );
               const directionX = fromCursorX / distance;
               const directionY = fromCursorY / distance;
-              const materialDistance = piece.definition.material === "glass"
-                ? 10
-                : piece.definition.material === "cloth"
-                  ? 8.5
-                  : piece.definition.material === "metal"
-                    ? 6.5
-                    : piece.definition.material === "skin"
-                      ? 6.2
-                      : 6.5;
+              const materialDistance =
+                piece.definition.material === "glass"
+                  ? 10
+                  : piece.definition.material === "cloth"
+                    ? 8.5
+                    : piece.definition.material === "metal"
+                      ? 6.5
+                      : piece.definition.material === "skin"
+                        ? 6.2
+                        : 6.5;
               const lift =
                 proximity *
                 profile.hoverDepth *
@@ -590,37 +708,38 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
                 lensRim *
                   (piece.definition.material === "glass" ? 0.018 : 0.011) *
                   faceFactor;
-              targetZ =
-                lift +
-                lensRim * profile.hoverDepth * faceFactor * 0.22;
+              targetZ = lift + lensRim * profile.hoverDepth * faceFactor * 0.22;
               // Apply the glasses' colored edge strength to whichever local
               // fragments are inside the cursor field. Everything outside the
               // hover radius remains at its untouched assembled state.
-              targetEdge = Math.max(
-                lift * 0.68,
-                lensRim * 0.32 * faceFactor,
-              );
-              targetShear = piece.definition.material === "cloth"
-                ? directionX * pressure * 0.045
-                : 0;
+              targetEdge = Math.max(lift * 0.68, lensRim * 0.32 * faceFactor);
+              targetShear =
+                piece.definition.material === "cloth"
+                  ? directionX * pressure * 0.045
+                  : 0;
               stiffness = piece.definition.material === "cloth" ? 31 : 46;
               damping = piece.definition.material === "cloth" ? 7.4 : 9.6;
             }
 
             const decay = Math.exp(-damping * delta);
-            piece.vx = (piece.vx + (targetX - piece.x) * stiffness * delta) * decay;
-            piece.vy = (piece.vy + (targetY - piece.y) * stiffness * delta) * decay;
+            piece.vx =
+              (piece.vx + (targetX - piece.x) * stiffness * delta) * decay;
+            piece.vy =
+              (piece.vy + (targetY - piece.y) * stiffness * delta) * decay;
             piece.rotationVelocity =
               (piece.rotationVelocity +
                 (targetRotation - piece.rotation) * stiffness * 0.82 * delta) *
               decay;
             piece.scaleVelocity =
-              (piece.scaleVelocity + (targetScale - piece.scale) * stiffness * delta) *
+              (piece.scaleVelocity +
+                (targetScale - piece.scale) * stiffness * delta) *
               decay;
             piece.zVelocity =
-              (piece.zVelocity + (targetZ - piece.z) * stiffness * delta) * decay;
+              (piece.zVelocity + (targetZ - piece.z) * stiffness * delta) *
+              decay;
             piece.shearVelocity =
-              (piece.shearVelocity + (targetShear - piece.shear) * stiffness * delta) *
+              (piece.shearVelocity +
+                (targetShear - piece.shear) * stiffness * delta) *
               decay;
 
             piece.x += piece.vx * delta;
@@ -703,7 +822,12 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         };
 
         runtime.scheduleFrame = () => {
-          if (!runtime || runtime.destroyed || runtime.frame !== null || document.hidden) {
+          if (
+            !runtime ||
+            runtime.destroyed ||
+            runtime.frame !== null ||
+            document.hidden
+          ) {
             return;
           }
           runtime.frame = requestAnimationFrame(frame);
@@ -733,6 +857,23 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           runtime.pointer.x = event.clientX;
           runtime.pointer.y = event.clientY;
           runtime.pointer.seen = true;
+          if (runtime.journeyStarted && !runtime.returning) {
+            runtime.driftUntil = performance.now() + 260;
+            runtime.scheduleFrame();
+          }
+        };
+
+        const releaseStarPointer = () => {
+          if (!runtime || runtime.destroyed || !runtime.pointer.seen) return;
+          runtime.pointer.seen = false;
+          if (runtime.journeyStarted && !runtime.returning) {
+            runtime.driftUntil = performance.now() + 320;
+            runtime.scheduleFrame();
+          }
+        };
+
+        const onWindowPointerOut = (event: PointerEvent) => {
+          if (event.relatedTarget === null) releaseStarPointer();
         };
 
         const onVisibilityChange = () => {
@@ -767,14 +908,25 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         });
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", onResize, { passive: true });
-        window.addEventListener("pointermove", onGlobalPointerMove, { passive: true });
+        window.addEventListener("pointermove", onGlobalPointerMove, {
+          passive: true,
+        });
+        window.addEventListener("pointerout", onWindowPointerOut, {
+          passive: true,
+        });
+        window.addEventListener("blur", releaseStarPointer);
         document.addEventListener("visibilitychange", onVisibilityChange);
         canvas.addEventListener("webglcontextlost", onContextLost);
 
         runtimeRef.current = runtime;
         setQuality(label);
         runtime.ensureCanvasSize();
-        runtime.renderer.draw(currentRect(), runtime.pieces, [], performance.now() / 1000);
+        runtime.renderer.draw(
+          currentRect(),
+          runtime.pieces,
+          [],
+          performance.now() / 1000,
+        );
         runtime.renderFrames += 1;
         updateCanvasActive(true);
         updateVisualState("assembled");
@@ -836,6 +988,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
           window.removeEventListener("scroll", onScroll);
           window.removeEventListener("resize", onResize);
           window.removeEventListener("pointermove", onGlobalPointerMove);
+          window.removeEventListener("pointerout", onWindowPointerOut);
+          window.removeEventListener("blur", releaseStarPointer);
           document.removeEventListener("visibilitychange", onVisibilityChange);
           canvas.removeEventListener("webglcontextlost", onContextLost);
           if (debugWindow.__portraitDebug === debugApi) {
@@ -844,7 +998,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
         };
       } catch (error) {
         if (cancelled) return;
-        if (import.meta.env.DEV) console.warn("Portrait interaction fallback", error);
+        if (import.meta.env.DEV)
+          console.warn("Portrait interaction fallback", error);
         setQuality("static");
         updateVisualState("static");
       }
@@ -859,7 +1014,8 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
     return () => {
       cancelled = true;
       cleanupListeners?.();
-      if (runtime && runtime.frame !== null) cancelAnimationFrame(runtime.frame);
+      if (runtime && runtime.frame !== null)
+        cancelAnimationFrame(runtime.frame);
       if (runtime) {
         if (runtime.releaseTimer !== null) {
           window.clearTimeout(runtime.releaseTimer);
@@ -908,17 +1064,20 @@ const PhysicsPortrait = ({ src, alt }: PhysicsPortraitProps) => {
     [updateCanvasActive, updateVisualState],
   );
 
-  const onPointerMove = useCallback((event: ReactPointerEvent<HTMLButtonElement>) => {
-    const runtime = runtimeRef.current;
-    if (!runtime?.pointer.active) return;
-    if (!runtime.exploded) {
-      emitHoverGlint(runtime, event.clientX, event.clientY);
-    }
-    runtime.pointer.x = event.clientX;
-    runtime.pointer.y = event.clientY;
-    if (runtime.exploded) return;
-    runtime.scheduleFrame();
-  }, []);
+  const onPointerMove = useCallback(
+    (event: ReactPointerEvent<HTMLButtonElement>) => {
+      const runtime = runtimeRef.current;
+      if (!runtime?.pointer.active) return;
+      if (!runtime.exploded) {
+        emitHoverGlint(runtime, event.clientX, event.clientY);
+      }
+      runtime.pointer.x = event.clientX;
+      runtime.pointer.y = event.clientY;
+      if (runtime.exploded) return;
+      runtime.scheduleFrame();
+    },
+    [],
+  );
 
   const onPointerLeave = useCallback(() => {
     const runtime = runtimeRef.current;
