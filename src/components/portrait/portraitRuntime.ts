@@ -51,6 +51,7 @@ export type Runtime = {
   documentHeight: number;
   pixelRatio: number;
   scrollY: number;
+  journeyStartY: number;
   previousScrollY: number;
   scrollDirection: -1 | 0 | 1;
   flowSections: FlowSection[];

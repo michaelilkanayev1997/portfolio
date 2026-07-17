@@ -27,8 +27,22 @@ export const calculatePixelRatio = (
   width: number,
   height: number,
 ) => {
-  const cap = tier === "high" ? 1.5 : tier === "medium" ? 1.25 : 1;
-  const pixelBudget = tier === "high" ? 3_200_000 : tier === "medium" ? 2_000_000 : 1_100_000;
+  const isNarrowViewport = width < 760;
+  const cap = isNarrowViewport
+    ? 1.75
+    : tier === "high"
+      ? 1.75
+      : tier === "medium"
+        ? 1.5
+        : 1.25;
+  const pixelBudget =
+    tier === "high"
+      ? 4_400_000
+      : tier === "medium"
+        ? 2_800_000
+        : isNarrowViewport
+          ? 1_600_000
+          : 1_400_000;
   const budgetRatio = Math.sqrt(pixelBudget / Math.max(1, width * height));
   return Math.max(1, Math.min(window.devicePixelRatio || 1, cap, budgetRatio));
 };

@@ -16,32 +16,42 @@ export const createPortraitScrollHandler = (
   const previousScroll = runtime.previousScrollY;
   const difference = nextScroll - previousScroll;
   const journeyDistance = Math.max(360, runtime.viewportHeight * 0.82);
+  const previousJourneyScroll = Math.max(
+    0,
+    previousScroll - runtime.journeyStartY,
+  );
+  const currentJourneyScroll = Math.max(
+    0,
+    nextScroll - runtime.journeyStartY,
+  );
   const previousJourneyEase = Math.pow(
-    smoothstep(clamp(previousScroll / journeyDistance)),
+    smoothstep(clamp(previousJourneyScroll / journeyDistance)),
     1.3,
   );
   const currentJourneyEase = Math.pow(
-    smoothstep(clamp(nextScroll / journeyDistance)),
+    smoothstep(clamp(currentJourneyScroll / journeyDistance)),
     1.3,
   );
   const isRestoredPosition =
     runtime.renderFrames === 0 &&
     Math.abs(difference) <= 0.01 &&
-    nextScroll > 0;
+    currentJourneyScroll > 0;
   const beginsJourney =
     !runtime.exploded &&
-    nextScroll > 0 &&
+    currentJourneyScroll > 0 &&
     (difference > 0 || isRestoredPosition);
   const joinsJourney =
     runtime.exploded &&
     !runtime.journeyStarted &&
-    nextScroll > 0 &&
+    currentJourneyScroll > 0 &&
     difference > 0;
   const resumesJourney =
-    runtime.returning && nextScroll > 0 && difference > 0;
+    runtime.returning && currentJourneyScroll > 0 && difference > 0;
   const establishedJourney =
     runtime.journeyStarted && !runtime.returning;
-  const rebaseDelta = isRestoredPosition ? nextScroll : difference;
+  const rebaseDelta = isRestoredPosition
+    ? currentJourneyScroll
+    : difference;
   if (
     (establishedJourney || beginsJourney || joinsJourney || resumesJourney) &&
     Math.abs(rebaseDelta) > 0.01
@@ -95,7 +105,7 @@ export const createPortraitScrollHandler = (
     now + (runtime.tier === "high" ? SCROLL_DRIFT_WINDOW : 650);
 
   const journeyProgress = clamp(
-    nextScroll / journeyDistance,
+    currentJourneyScroll / journeyDistance,
   );
   if (runtime.journeyStarted && !runtime.returning) {
     updateVisualState(journeyProgress > 0.52 ? "dust" : "journey");
@@ -104,7 +114,7 @@ export const createPortraitScrollHandler = (
   if (
     runtime.journeyStarted &&
     runtime.scrollDirection < 0 &&
-    nextScroll < runtime.viewportHeight * 0.3 &&
+    currentJourneyScroll < runtime.viewportHeight * 0.3 &&
     !runtime.returning
   ) {
     runtime.startReturn();
