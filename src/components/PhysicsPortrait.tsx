@@ -91,6 +91,7 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
     let cancelled = false;
     let runtime: Runtime | null = null;
     let readyReported = false;
+    let viewportResizeTimer: number | null = null;
     const reportReady = () => {
       if (cancelled || readyReported) return;
       readyReported = true;
@@ -140,10 +141,15 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
             piece.x =
               (deltaX / distance) * spread +
               (piece.definition.randomA - 0.5) * 2.5;
+            // A shared downward entrance offset makes the entire portrait
+            // appear to ride the page when touch scrolling begins before the
+            // intro has settled. Mobile keeps the radial reveal, but its
+            // visual anchor never moves.
+            const entranceVerticalOffset = compactViewport
+              ? 0
+              : 7 + piece.definition.randomB * 4;
             piece.y =
-              (deltaY / distance) * spread +
-              7 +
-              piece.definition.randomB * 4;
+              (deltaY / distance) * spread + entranceVerticalOffset;
             piece.rotation = (piece.definition.randomA - 0.5) * 0.035;
             piece.alpha = 0;
             piece.z = 0.06 + piece.definition.randomB * 0.06;
@@ -235,7 +241,13 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
         runtime.ensureCanvasSize = () => {
           if (!runtime || runtime.destroyed) return;
           const width = window.innerWidth;
-          const height = window.innerHeight;
+          const keepsStableMobileViewport =
+            runtime.journeyStarted &&
+            runtime.viewportWidth < 760 &&
+            Math.abs(width - runtime.viewportWidth) < 1;
+          const height = keepsStableMobileViewport
+            ? runtime.viewportHeight
+            : window.innerHeight;
           const baseRatio = calculatePixelRatio(runtime.tier, width, height);
           const isSettledDust =
             runtime.journeyStarted &&
@@ -643,9 +655,20 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
                 smoothstep(pieceJourneyProgress),
                 1.24,
               );
-              const captureProgress = pieceJourneyEase;
+              // Large touch-scroll deltas must not drag the whole silhouette
+              // toward distant lanes. Let it break apart locally first, then
+              // hand the same particles to the star field continuously.
+              const mobileCaptureGate = compact
+                ? smoothstep((burstAge - 0.14) / 0.58)
+                : 1;
+              const captureProgress =
+                pieceJourneyEase * mobileCaptureGate;
               targetX = lerp(piece.scatterX, dustX - centerX, captureProgress);
-              targetY = lerp(piece.scatterY, dustY - centerY, captureProgress);
+              targetY = lerp(
+                piece.scatterY,
+                dustY - centerY,
+                captureProgress,
+              );
               targetRotation = lerp(
                 piece.scatterRotation,
                 (randomA - 0.5) * 2.3 +
@@ -929,7 +952,7 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
           updateCanvasActive,
         });
 
-        const onResize = () => {
+        const syncViewport = () => {
           if (!runtime || runtime.destroyed) return;
           runtime.viewportWidth = window.innerWidth;
           runtime.viewportHeight = window.innerHeight;
@@ -940,6 +963,30 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
             runtime.ensureCanvasSize();
             runtime.scheduleFrame();
           }
+        };
+
+        const onResize = () => {
+          if (!runtime || runtime.destroyed) return;
+          const toolbarOnlyResize =
+            runtime.journeyStarted &&
+            runtime.viewportWidth < 760 &&
+            Math.abs(window.innerWidth - runtime.viewportWidth) < 1;
+          if (!toolbarOnlyResize) {
+            if (viewportResizeTimer !== null) {
+              window.clearTimeout(viewportResizeTimer);
+              viewportResizeTimer = null;
+            }
+            syncViewport();
+            return;
+          }
+
+          if (viewportResizeTimer !== null) {
+            window.clearTimeout(viewportResizeTimer);
+          }
+          viewportResizeTimer = window.setTimeout(() => {
+            viewportResizeTimer = null;
+            syncViewport();
+          }, 160);
         };
 
         const onGlobalPointerMove = (event: PointerEvent) => {
@@ -1078,6 +1125,10 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
         if (import.meta.env.DEV) debugWindow.__portraitDebug = debugApi;
 
         return () => {
+          if (viewportResizeTimer !== null) {
+            window.clearTimeout(viewportResizeTimer);
+            viewportResizeTimer = null;
+          }
           resizeObserver.disconnect();
           window.removeEventListener("scroll", onScroll);
           window.removeEventListener("resize", onResize);

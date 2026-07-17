@@ -233,6 +233,8 @@ export class PortraitRenderer {
     this.cssWidth = Math.max(1, width);
     this.cssHeight = Math.max(1, height);
     this.pixelRatio = Math.max(1, pixelRatio);
+    this.canvas.style.width = `${this.cssWidth}px`;
+    this.canvas.style.height = `${this.cssHeight}px`;
     const backingWidth = Math.max(1, Math.round(this.cssWidth * this.pixelRatio));
     const backingHeight = Math.max(1, Math.round(this.cssHeight * this.pixelRatio));
     if (this.canvas.width !== backingWidth) this.canvas.width = backingWidth;
