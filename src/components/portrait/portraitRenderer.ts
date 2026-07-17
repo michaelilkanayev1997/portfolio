@@ -296,7 +296,7 @@ export class PortraitRenderer {
 
     this.sparkData.fill(0);
     let pointCount = 0;
-    const journeyStarScale = this.cssWidth < 760 ? 1.18 : 1;
+    const journeyStarScale = this.cssWidth < 760 ? 1.25 : 1;
 
     transforms.forEach((transform, index) => {
       const definition = this.fragments[index];
