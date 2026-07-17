@@ -13,11 +13,6 @@ import HeroTypewriter from "./HeroTypewriter";
 import PhysicsPortrait from "./PhysicsPortrait";
 
 const Home = () => {
-  const [portraitSource, setPortraitSource] = useState(() =>
-    window.matchMedia("(max-width: 640px)").matches
-      ? "/mobileHeroImage.webp"
-      : "/heroImage.webp",
-  );
   const [portraitReady, setPortraitReady] = useState(false);
   const main = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -26,16 +21,6 @@ const Home = () => {
   const typeEffectRef = useRef<HTMLHeadingElement>(null);
   const handlePortraitReady = useCallback(() => {
     setPortraitReady(true);
-  }, []);
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 640px)");
-    const updateSource = () =>
-      setPortraitSource(
-        query.matches ? "/mobileHeroImage.webp" : "/heroImage.webp",
-      );
-    query.addEventListener("change", updateSource);
-    return () => query.removeEventListener("change", updateSource);
   }, []);
 
   useEffect(() => {
@@ -114,7 +99,7 @@ const Home = () => {
     <div
       id="home"
       ref={main}
-      className={`h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none ${
+      className={`h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none supports-[height:100svh]:h-svh md:h-screen ${
         isiPhone() ? "pt-14" : ""
       }`}
     >
@@ -190,6 +175,8 @@ const Home = () => {
             <img
               src={linkedin}
               alt="linkedin"
+              width={50}
+              height={50}
               loading="lazy"
               decoding="async"
             />
@@ -204,6 +191,8 @@ const Home = () => {
             <img
               src={github}
               alt="github"
+              width={45}
+              height={45}
               loading="lazy"
               decoding="async"
             />
@@ -216,6 +205,8 @@ const Home = () => {
             <img
               src={phone}
               alt="phone"
+              width={37}
+              height={37}
               loading="lazy"
               decoding="async"
             />
@@ -230,6 +221,8 @@ const Home = () => {
             <img
               src={whatsapp}
               alt="whatsapp"
+              width={48}
+              height={48}
               loading="lazy"
               decoding="async"
             />
@@ -243,7 +236,7 @@ const Home = () => {
         >
           <span className="hero-portrait-stage__halo" aria-hidden />
           <PhysicsPortrait
-            src={portraitSource}
+            src="/heroImage.webp"
             alt="Michael Ilkanayev"
             onReady={handlePortraitReady}
           />

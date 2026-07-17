@@ -52,6 +52,11 @@ interface PhysicsPortraitProps {
   onReady?: () => void;
 }
 
+const getJourneyStartY = () =>
+  window.matchMedia("(pointer: coarse)").matches && window.innerWidth < 760
+    ? clamp(window.innerHeight * 0.12, 72, 112)
+    : 0;
+
 const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -115,8 +120,13 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
         await waitForImage(image);
         if (cancelled) return;
         const tier = detectQualityTier();
+        // Keep costly rendering limits tied to device capability, but do not
+        // reduce the portrait/star field to only 31 pieces on narrow screens.
+        // Fifty-six fragments remain inexpensive while making the mobile
+        // journey feel as complete as the desktop experience.
+        const fragmentTier = window.innerWidth < 760 ? "medium" : tier;
         const fragments = createFragmentDefinitions(
-          tier,
+          fragmentTier,
           createAlphaMap(image),
         );
         const renderer = new PortraitRenderer(canvas, image, fragments);
@@ -184,6 +194,7 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
           documentHeight: document.documentElement.scrollHeight,
           pixelRatio: 1,
           scrollY: window.scrollY,
+          journeyStartY: getJourneyStartY(),
           previousScrollY: window.scrollY,
           scrollDirection: 0,
           flowSections: [],
@@ -263,6 +274,7 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
           runtime.assembledAt = performance.now();
           runtime.activeSection = "hero";
           runtime.sectionProgress = 0;
+          runtime.journeyStartY = getJourneyStartY();
           const assembledRect = currentRect();
           const shouldResumeHover =
             runtime.canHover &&
@@ -384,7 +396,11 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
             ? Math.max(0, (time - entranceStartedAt) / 1000)
             : Number.POSITIVE_INFINITY;
           const journeyDistance = Math.max(360, runtime.viewportHeight * 0.82);
-          const journeyProgress = clamp(runtime.scrollY / journeyDistance);
+          const journeyScroll = Math.max(
+            0,
+            runtime.scrollY - runtime.journeyStartY,
+          );
+          const journeyProgress = clamp(journeyScroll / journeyDistance);
           const documentTravel = clamp(
             runtime.scrollY /
               Math.max(1, runtime.documentHeight - runtime.viewportHeight),
@@ -608,12 +624,16 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
                   twinkle * 0.14 +
                   sectionShine * 0.2,
               );
-              const dustAlpha =
+              const dustAlpha = Math.min(
+                1,
                 lerp(
                   ambientAlpha,
                   Math.max(ambientAlpha, 0.82 + randomB * 0.16),
                   dominantMix,
-                ) * obstacleVisibility;
+                ) *
+                  obstacleVisibility *
+                  (compact ? 1.16 : 1),
+              );
               const fadeProgress = smoothstep((journeyProgress - 0.06) / 0.94);
               const releaseOffset = randomA * 0.045;
               const pieceJourneyProgress = clamp(
@@ -911,6 +931,9 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
 
         const onResize = () => {
           if (!runtime || runtime.destroyed) return;
+          if (!runtime.journeyStarted && !runtime.exploded) {
+            runtime.journeyStartY = getJourneyStartY();
+          }
           runtime.viewportWidth = window.innerWidth;
           runtime.viewportHeight = window.innerHeight;
           runtime.readRect();

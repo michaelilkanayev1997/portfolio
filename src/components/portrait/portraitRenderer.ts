@@ -296,6 +296,7 @@ export class PortraitRenderer {
 
     this.sparkData.fill(0);
     let pointCount = 0;
+    const journeyStarScale = this.cssWidth < 760 ? 1.18 : 1;
 
     transforms.forEach((transform, index) => {
       const definition = this.fragments[index];
@@ -331,7 +332,8 @@ export class PortraitRenderer {
       const sizeVariance = 0.86 + definition.randomB * 0.54;
       this.sparkData[offset + 2] =
         (10.2 + Math.min(1.35, transform.z) * 22.4) *
-        sizeVariance;
+        sizeVariance *
+        journeyStarScale;
       this.sparkData[offset + 3] = Math.min(
         0.97,
         strength * materialAlpha * 1.24,
