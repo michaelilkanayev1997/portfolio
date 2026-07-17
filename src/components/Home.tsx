@@ -13,6 +13,11 @@ import HeroTypewriter from "./HeroTypewriter";
 import PhysicsPortrait from "./PhysicsPortrait";
 
 const Home = () => {
+  const [portraitSource, setPortraitSource] = useState(() =>
+    window.matchMedia("(max-width: 640px)").matches
+      ? "/mobileHeroImage.webp"
+      : "/heroImage.webp",
+  );
   const [portraitReady, setPortraitReady] = useState(false);
   const main = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
@@ -21,6 +26,16 @@ const Home = () => {
   const typeEffectRef = useRef<HTMLHeadingElement>(null);
   const handlePortraitReady = useCallback(() => {
     setPortraitReady(true);
+  }, []);
+
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 640px)");
+    const updateSource = () =>
+      setPortraitSource(
+        query.matches ? "/mobileHeroImage.webp" : "/heroImage.webp",
+      );
+    query.addEventListener("change", updateSource);
+    return () => query.removeEventListener("change", updateSource);
   }, []);
 
   useEffect(() => {
@@ -99,12 +114,12 @@ const Home = () => {
     <div
       id="home"
       ref={main}
-      className={`h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none supports-[height:100svh]:h-svh md:h-screen ${
+      className={`min-h-screen w-full bg-gradient-to-b from-black via-black to-gray-800 select-none supports-[height:100svh]:min-h-svh md:h-screen ${
         isiPhone() ? "pt-14" : ""
       }`}
     >
-      <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex flex-col items-center justify-center h-full px-4 md:flex-row">
-        <div className="flex flex-col justify-center h-full">
+      <div className="max-w-screen-lg 3xl:max-w-screen-xl mx-auto flex min-h-screen flex-col items-center justify-center px-4 supports-[height:100svh]:min-h-svh md:h-full md:min-h-0 md:flex-row">
+        <div className="flex flex-col justify-center md:h-full">
           <HeroTypewriter headingRef={typeEffectRef} />
 
           <p
@@ -230,13 +245,13 @@ const Home = () => {
         </div>
 
         <div
-          className={`hero-portrait-stage relative 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 w-2/3 ${
+          className={`hero-portrait-stage relative w-1/2 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:w-2/3 md:max-w-44 ${
             portraitReady ? "hero-portrait-stage--ready" : ""
           }`}
         >
           <span className="hero-portrait-stage__halo" aria-hidden />
           <PhysicsPortrait
-            src="/heroImage.webp"
+            src={portraitSource}
             alt="Michael Ilkanayev"
             onReady={handlePortraitReady}
           />
