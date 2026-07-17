@@ -250,6 +250,23 @@ main .contact-field {
 
 }
 
+/* Touch users can scroll while the reveal is still running. Keep the fixed
+   WebGL surface locked to the viewport; the fragments provide the motion. */
+@media (max-width: 759px) {
+  .portrait-fragment-canvas,
+  .portrait-fragment-canvas--active {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .portrait-fragment-canvas {
+    transition: opacity 720ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .portrait-fragment-canvas--active {
+    will-change: opacity;
+  }
+}
+
 body {
   /* fix for iOS */
   background-color: #06080b;

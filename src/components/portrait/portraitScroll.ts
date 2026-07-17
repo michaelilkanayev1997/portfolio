@@ -85,13 +85,16 @@ export const createPortraitScrollHandler = (
         (piece.definition.randomA - 0.5) * 0.28;
       const release = runtime.rectDocument.width *
         (0.035 + piece.definition.randomB * 0.045);
+      const mobileRelease = runtime.viewportWidth < 760;
       piece.scatterX = Math.cos(angle) * release;
-      piece.scatterY = Math.sin(angle) * release - release * 0.08;
+      piece.scatterY =
+        Math.sin(angle) * release - (mobileRelease ? 0 : release * 0.08);
       piece.scatterRotation =
         (piece.definition.randomA - 0.5) * 0.24;
       piece.scatterShear = 0;
       piece.vx += Math.cos(angle) * release * 1.25;
-      piece.vy += Math.sin(angle) * release * 1.15 - 5;
+      piece.vy +=
+        Math.sin(angle) * release * 1.15 - (mobileRelease ? 0 : 5);
     });
   } else if (joinsJourney || resumesJourney) {
     runtime.journeyStarted = true;

@@ -245,7 +245,7 @@ const Home = () => {
         </div>
 
         <div
-          className={`hero-portrait-stage relative w-1/2 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:w-2/3 md:max-w-44 ${
+          className={`hero-portrait-stage relative w-2/3 3xl:max-w-2xl 2xl:max-w-xl xl:max-w-sm lg:max-w-xs md:max-w-44 ${
             portraitReady ? "hero-portrait-stage--ready" : ""
           }`}
         >
