@@ -1247,6 +1247,13 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
     [quality, updateCanvasActive, updateVisualState],
   );
 
+  const preventNativePortraitMenu = useCallback(
+    (event: ReactMouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+    },
+    [],
+  );
+
   const isStatic = quality === "static";
   const isReturning = visualState === "returning";
   const hasReleased =
@@ -1273,6 +1280,7 @@ const PhysicsPortrait = ({ src, alt, onReady }: PhysicsPortraitProps) => {
         type="button"
         disabled={isStatic}
         onClick={toggleExplosion}
+        onContextMenu={preventNativePortraitMenu}
         onPointerEnter={onPointerEnter}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}

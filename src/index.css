@@ -175,6 +175,7 @@ html {
   cursor: crosshair;
   border-radius: 0.2rem;
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
 
 .physics-portrait__trigger:active {
@@ -189,6 +190,7 @@ html {
   opacity: 1;
   transform: translateZ(0);
   transition: opacity 520ms cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-touch-callout: none;
   user-select: none;
 }
 
